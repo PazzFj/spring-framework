@@ -27,20 +27,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 
 /**
- * Convenient base class for {@link org.springframework.context.ApplicationContext}
- * implementations, drawing configuration from XML documents containing bean definitions
- * understood by an {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
- *
- * <p>Subclasses just have to implement the {@link #getConfigResources} and/or
- * the {@link #getConfigLocations} method. Furthermore, they might override
- * the {@link #getResourceByPath} hook to interpret relative paths in an
- * environment-specific fashion, and/or {@link #getResourcePatternResolver}
- * for extended pattern resolution.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see #getConfigResources
- * @see #getConfigLocations
+ * 抽象Xml应用上下文
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  */
 public abstract class AbstractXmlApplicationContext extends AbstractRefreshableConfigApplicationContext {
@@ -64,7 +51,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 
 	/**
-	 * Set whether to use XML validation. Default is {@code true}.
+	 * 设置是否使用XML验证。默认值是{@code true}。
 	 */
 	public void setValidating(boolean validating) {
 		this.validating = validating;
@@ -81,46 +68,37 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
+		//设置环境 ConfigurableEnvironment
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
+		// 设置资源加载器
 		beanDefinitionReader.setResourceLoader(this);
+		// 设置用于解析的SAX实体解析器。 ResourceEntityResolver
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
 
 		// 允许子类提供自定义的读取器初始化，
 		// 然后继续实际加载bean定义。
 		initBeanDefinitionReader(beanDefinitionReader);
+		// 使用XmlBeanDefinitionReader 加载BeanDefinition
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
 	/**
 	 * 设置 XmlBeanDefinitionReader 是否验证
-	 * Initialize the bean definition reader used for loading the bean
-	 * definitions of this context. Default implementation is empty.
-	 * <p>Can be overridden in subclasses, e.g. for turning off XML validation
-	 * or using a different XmlBeanDefinitionParser implementation.
-	 * @param reader the bean definition reader used by this context
-	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader#setDocumentReaderClass
 	 */
 	protected void initBeanDefinitionReader(XmlBeanDefinitionReader reader) {
 		reader.setValidating(this.validating);
 	}
 
 	/**
-	 * Load the bean definitions with the given XmlBeanDefinitionReader.
-	 * <p>The lifecycle of the bean factory is handled by the {@link #refreshBeanFactory}
-	 * method; hence this method is just supposed to load and/or register bean definitions.
-	 * @param reader the XmlBeanDefinitionReader to use
-	 * @throws BeansException in case of bean registration errors
-	 * @throws IOException if the required XML document isn't found
-	 * @see #refreshBeanFactory
-	 * @see #getConfigLocations
-	 * @see #getResources
-	 * @see #getResourcePatternResolver
+	 * 使用给定的 XmlBeanDefinitionReader 加载 BeanDefinition
+	 * @see XmlBeanDefinitionReader#loadBeanDefinitions(String location)
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
 		Resource[] configResources = getConfigResources();
 		if (configResources != null) {
 			reader.loadBeanDefinitions(configResources);
 		}
+		//如果配置资源路径不为空, 就使用XmlBeanDefinitionReader解析
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
 			reader.loadBeanDefinitions(configLocations);

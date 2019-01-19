@@ -147,9 +147,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	BeanExpressionResolver getBeanExpressionResolver();
 
 	/**
-	 * Specify a Spring 3.0 ConversionService to use for converting
-	 * property values, as an alternative to JavaBeans PropertyEditors.
-	 * @since 3.0
+	 * 指定用于转换属性值的Spring 3.0 ConversionService，作为javabean propertyeditor的替代方案。
 	 */
 	void setConversionService(@Nullable ConversionService conversionService);
 
@@ -161,12 +159,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	ConversionService getConversionService();
 
 	/**
-	 * Add a PropertyEditorRegistrar to be applied to all bean creation processes.
-	 * <p>Such a registrar creates new PropertyEditor instances and registers them
-	 * on the given registry, fresh for each bean creation attempt. This avoids
-	 * the need for synchronization on custom editors; hence, it is generally
-	 * preferable to use this method instead of {@link #registerCustomEditor}.
-	 * @param registrar the PropertyEditorRegistrar to register
+	 * 添加要应用于所有bean创建流程的PropertyEditorRegistrar。
 	 */
 	void addPropertyEditorRegistrar(PropertyEditorRegistrar registrar);
 

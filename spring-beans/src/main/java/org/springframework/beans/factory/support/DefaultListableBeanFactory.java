@@ -165,17 +165,17 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/** Map of singleton-only bean names, keyed by dependency type. */
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
-	/** List of bean definition names, in registration order. */
+	/** 注册BeanDefinition的名称集合 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
-	/** List of names of manually registered singletons, in registration order. */
+	/** 按注册顺序手动注册的单例的名称列表 */
 	private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
 
-	/** Cached array of bean definition names in case of frozen configuration. */
+	/** 冻结所有BeanDefinition */
 	@Nullable
 	private volatile String[] frozenBeanDefinitionNames;
 
-	/** Whether bean definition metadata may be cached for all beans. */
+	/** 是否可以为所有bean缓存bean定义元数据 */
 	private volatile boolean configurationFrozen = false;
 
 
@@ -1004,6 +1004,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return isAllowBeanDefinitionOverriding();
 	}
 
+	/**
+	 * 注册单列
+	 */
 	@Override
 	public void registerSingleton(String beanName, Object singletonObject) throws IllegalStateException {
 		super.registerSingleton(beanName, singletonObject);

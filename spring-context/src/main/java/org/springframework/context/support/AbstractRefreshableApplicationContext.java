@@ -215,6 +215,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 	/**
 	 * 将 BeanDefinitions 加载到 BeanFactory
+	 * @see AbstractXmlApplicationContext#loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
 	 */
 	protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
 			throws BeansException, IOException;

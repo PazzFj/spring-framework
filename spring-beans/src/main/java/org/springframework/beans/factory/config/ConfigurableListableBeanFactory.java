@@ -50,15 +50,8 @@ public interface ConfigurableListableBeanFactory
 	void ignoreDependencyType(Class<?> type);
 
 	/**
-	 * Ignore the given dependency interface for autowiring.
-	 * <p>This will typically be used by application contexts to register
-	 * dependencies that are resolved in other ways, like BeanFactory through
-	 * BeanFactoryAware or ApplicationContext through ApplicationContextAware.
-	 * <p>By default, only the BeanFactoryAware interface is ignored.
-	 * For further types to ignore, invoke this method for each type.
-	 * @param ifc the dependency interface to ignore
+	 * 忽略用于自动连接的给定依赖项接口。
 	 * @see org.springframework.beans.factory.BeanFactoryAware
-	 * @see org.springframework.context.ApplicationContextAware
 	 */
 	void ignoreDependencyInterface(Class<?> ifc);
 
@@ -135,9 +128,7 @@ public interface ConfigurableListableBeanFactory
 	void clearMetadataCache();
 
 	/**
-	 * Freeze all bean definitions, signalling that the registered bean definitions
-	 * will not be modified or post-processed any further.
-	 * <p>This allows the factory to aggressively cache bean definition metadata.
+	 * 冻结所有bean定义，表明注册的bean定义将不再被修改或后处理。
 	 */
 	void freezeConfiguration();
 
@@ -149,12 +140,10 @@ public interface ConfigurableListableBeanFactory
 	boolean isConfigurationFrozen();
 
 	/**
-	 * Ensure that all non-lazy-init singletons are instantiated, also considering
-	 * {@link org.springframework.beans.factory.FactoryBean FactoryBeans}.
-	 * Typically invoked at the end of factory setup, if desired.
-	 * @throws BeansException if one of the singleton beans could not be created.
-	 * Note: This may have left the factory with some beans already initialized!
-	 * Call {@link #destroySingletons()} for full cleanup in this case.
+	 * 确保所有非延迟初始化的单例都被实例化
+	 * @throws BeansException 如果无法创建一个单例bean。
+	 * Note: 这可能使工厂中已经初始化了一些bean !
+	 * Call {@link #destroySingletons()} 对于本例中的完全清理。
 	 * @see #destroySingletons()
 	 */
 	void preInstantiateSingletons() throws BeansException;

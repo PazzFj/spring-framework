@@ -287,36 +287,12 @@ public interface BeanFactory {
 	boolean isPrototype(String name) throws NoSuchBeanDefinitionException;
 
 	/**
-	 * Check whether the bean with the given name matches the specified type.
-	 * More specifically, check whether a {@link #getBean} call for the given name
-	 * would return an object that is assignable to the specified target type.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to query
-	 * @param typeToMatch the type to match against (as a {@code ResolvableType})
-	 * @return {@code true} if the bean type matches,
-	 * {@code false} if it doesn't match or cannot be determined yet
-	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
-	 * @since 4.2
-	 * @see #getBean
-	 * @see #getType
+	 * 检查具有给定名称的bean是否与指定类型匹配。
 	 */
 	boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException;
 
 	/**
-	 * Check whether the bean with the given name matches the specified type.
-	 * More specifically, check whether a {@link #getBean} call for the given name
-	 * would return an object that is assignable to the specified target type.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to query
-	 * @param typeToMatch the type to match against (as a {@code Class})
-	 * @return {@code true} if the bean type matches,
-	 * {@code false} if it doesn't match or cannot be determined yet
-	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
-	 * @since 2.0.1
-	 * @see #getBean
-	 * @see #getType
+	 * 检查具有给定名称的bean是否与指定类型匹配。
 	 */
 	boolean isTypeMatch(String name, Class<?> typeToMatch) throws NoSuchBeanDefinitionException;
 
