@@ -68,6 +68,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 
 /**
+ * BeanDefinition解析代理类，用于解析XML bean定义。用于主解析器和任何扩展
+ *
  * Stateful delegate class used to parse XML bean definitions.
  * Intended for use by both the main parser and any extension
  * {@link BeanDefinitionParser BeanDefinitionParsers} or
@@ -297,6 +299,9 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
+	 * 初始化默认的延迟-初始化、自动连接、依赖项检查设置、init-方法、侧击-方法和合并设置。
+	 * 支持嵌套的“bean”元素用例，如果没有在本地显式设置默认值，则返回到给定的父元素。
+	 *
 	 * Initialize the default lazy-init, autowire, dependency check settings,
 	 * init-method, destroy-method and merge settings. Support nested 'beans'
 	 * element use cases by falling back to the given parent in case the
@@ -305,11 +310,15 @@ public class BeanDefinitionParserDelegate {
 	 * @see #getDefaults()
 	 */
 	public void initDefaults(Element root, @Nullable BeanDefinitionParserDelegate parent) {
+		//填充默认
 		populateDefaults(this.defaults, (parent != null ? parent.defaults : null), root);
 		this.readerContext.fireDefaultsRegistered(this.defaults);
 	}
 
 	/**
+	 * 用默认的延迟-init、自动连接、依赖项检查设置、init-method、侧击-method和合并设置填充给定的DocumentDefaultsDefinition实例。
+	 * 支持嵌套的“bean”元素用例，如果没有在本地显式设置默认值，则返回到{@code parentDefaults}。
+	 *
 	 * Populate the given DocumentDefaultsDefinition instance with the default lazy-init,
 	 * autowire, dependency check settings, init-method, destroy-method and merge settings.
 	 * Support nested 'beans' element use cases by falling back to {@code parentDefaults}

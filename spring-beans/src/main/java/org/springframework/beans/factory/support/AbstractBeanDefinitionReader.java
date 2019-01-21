@@ -51,7 +51,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	// 用于BeanDefinition登记
+	// 用于BeanDefinition登记  ==>>  DefaultListableBeanFactory
 	private final BeanDefinitionRegistry registry;
 
 	@Nullable
@@ -66,7 +66,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 
 
 	/**
-	 *
+	 * 初始化的时候需要一个BeanFactory ==>>  DefaultListableBeanFactory
 	 */
 	protected AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");

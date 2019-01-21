@@ -77,6 +77,8 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// 允许子类提供自定义的读取器初始化，
 		// 然后继续实际加载bean定义。
+		// 例子：
+		// beanDefinitionReader.setValidating(this.validating);
 		initBeanDefinitionReader(beanDefinitionReader);
 		// 使用XmlBeanDefinitionReader 加载BeanDefinition
 		loadBeanDefinitions(beanDefinitionReader);

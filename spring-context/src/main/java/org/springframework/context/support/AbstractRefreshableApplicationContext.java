@@ -65,38 +65,28 @@ import org.springframework.lang.Nullable;
 public abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
 
 	@Nullable
-	private Boolean allowBeanDefinitionOverriding;
+	private Boolean allowBeanDefinitionOverriding; //允许BeanDefinition覆盖
 
 	@Nullable
-	private Boolean allowCircularReferences;
+	private Boolean allowCircularReferences; //允许循环引用
 
-	/** Bean factory for this context. */
+	/** 此上下文的BeanFactory */
 	@Nullable
 	private DefaultListableBeanFactory beanFactory;
 
-	/** Synchronization monitor for the internal BeanFactory. */
+	/** 内部Bean工厂的同步监视器 */
 	private final Object beanFactoryMonitor = new Object();
 
-
-	/**
-	 * Create a new AbstractRefreshableApplicationContext with no parent.
-	 */
 	public AbstractRefreshableApplicationContext() {
 	}
 
-	/**
-	 * Create a new AbstractRefreshableApplicationContext with the given parent context.
-	 * @param parent the parent context
-	 */
 	public AbstractRefreshableApplicationContext(@Nullable ApplicationContext parent) {
 		super(parent);
 	}
 
 
 	/**
-	 * Set whether it should be allowed to override bean definitions by registering
-	 * a different definition with the same name, automatically replacing the former.
-	 * If not, an exception will be thrown. Default is "true".
+	 * 设置是否应该允许它通过注册具有相同名称的不同定义来覆盖bean定义，如果不允许，则自动替换前者，将引发异常。默认设置是“true”。
 	 * @see org.springframework.beans.factory.support.DefaultListableBeanFactory#setAllowBeanDefinitionOverriding
 	 */
 	public void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding) {
@@ -104,10 +94,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
-	 * Set whether to allow circular references between beans - and automatically
-	 * try to resolve them.
-	 * <p>Default is "true". Turn this off to throw an exception when encountering
-	 * a circular reference, disallowing them completely.
+	 * 设置是否允许在bean之间循环引用——并自动尝试解析它们。默认设置是“true”。
 	 * @see org.springframework.beans.factory.support.DefaultListableBeanFactory#setAllowCircularReferences
 	 */
 	public void setAllowCircularReferences(boolean allowCircularReferences) {
