@@ -1049,6 +1049,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
+	 * 验证此bean定义
 	 * Validate this bean definition.
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
@@ -1060,6 +1061,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		}
 
 		if (hasBeanClass()) {
+			// 准备方法重写
 			prepareMethodOverrides();
 		}
 	}

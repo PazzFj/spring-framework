@@ -85,8 +85,9 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 
 	/**
-	 * 此实现根据“spring-beans” XSD(或DTD)解析bean定义
 	 * 注册BeanDefinition
+	 *
+	 * 此实现根据“spring-beans” XSD(或DTD)解析bean定义
 	 */
 	@Override
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
@@ -95,6 +96,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
+	 * 返回此解析器处理的XML资源的描述符
+	 *
 	 * Return the descriptor for the XML resource that this parser works on.
 	 */
 	protected final XmlReaderContext getReaderContext() {
@@ -284,6 +287,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
+	 * 处理给定的别名元素，向注册中心注册别名
+	 *
 	 * Process the given alias element, registering the alias with the registry.
 	 */
 	protected void processAliasRegistration(Element ele) {
@@ -301,58 +306,50 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		if (valid) {
 			try {
 				getReaderContext().getRegistry().registerAlias(name, alias);
-			}
-			catch (Exception ex) {
-				getReaderContext().error("Failed to register alias '" + alias +
-						"' for bean with name '" + name + "'", ele, ex);
+			} catch (Exception ex) {
+				getReaderContext().error("Failed to register alias '" + alias + "' for bean with name '" + name + "'", ele, ex);
 			}
 			getReaderContext().fireAliasRegistered(name, alias, extractSource(ele));
 		}
 	}
 
 	/**
+	 * 处理给定的bean元素，解析bean定义并将其注册到注册中心
+	 *
 	 * Process the given bean element, parsing the bean definition
 	 * and registering it with the registry.
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+		// 创建BeanDefinition持有者
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
+			// 装饰BeanDefinition持有者
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
-				// Register the final decorated instance.
+				// 注册最后修饰的实例
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
+			} catch (BeanDefinitionStoreException ex) {
+				getReaderContext().error("Failed to register bean definition with name '" + bdHolder.getBeanName() + "'", ele, ex);
 			}
-			catch (BeanDefinitionStoreException ex) {
-				getReaderContext().error("Failed to register bean definition with name '" +
-						bdHolder.getBeanName() + "'", ele, ex);
-			}
-			// Send registration event.
+			// 发送注册事件
 			getReaderContext().fireComponentRegistered(new BeanComponentDefinition(bdHolder));
 		}
 	}
 
 
 	/**
-	 * Allow the XML to be extensible by processing any custom element types first,
-	 * before we start to process the bean definitions. This method is a natural
-	 * extension point for any other custom pre-processing of the XML.
-	 * <p>The default implementation is empty. Subclasses can override this method to
-	 * convert custom elements into standard Spring bean definitions, for example.
-	 * Implementors have access to the parser's bean definition reader and the
-	 * underlying XML resource, through the corresponding accessors.
+	 * 在开始处理bean定义之前，允许通过先处理任何自定义元素类型来扩展XML。此方法是任何其他自定义XML预处理的自然扩展点。
+	 * <p>默认实现为空。例如，子类可以重写这个方法来将自定义元素转换为标准Spring bean定义。
+	 * 实现者可以通过相应的访问器访问解析器的bean定义阅读器和底层XML资源。
 	 * @see #getReaderContext()
 	 */
 	protected void preProcessXml(Element root) {
 	}
 
 	/**
-	 * Allow the XML to be extensible by processing any custom element types last,
-	 * after we finished processing the bean definitions. This method is a natural
-	 * extension point for any other custom post-processing of the XML.
-	 * <p>The default implementation is empty. Subclasses can override this method to
-	 * convert custom elements into standard Spring bean definitions, for example.
-	 * Implementors have access to the parser's bean definition reader and the
-	 * underlying XML resource, through the corresponding accessors.
+	 * 在处理完bean定义之后，允许通过处理任何自定义元素类型来扩展XML。此方法是任何其他自定义XML后处理的自然扩展点。
+	 * <p>默认实现为空。例如，子类可以重写这个方法来将自定义元素转换为标准Spring bean定义。
+	 * 实现者可以通过相应的访问器访问解析器的bean定义阅读器和底层XML资源。
 	 * @see #getReaderContext()
 	 */
 	protected void postProcessXml(Element root) {

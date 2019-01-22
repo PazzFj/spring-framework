@@ -157,6 +157,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
 	/** Map of bean definition objects, keyed by bean name. */
+	// BeanDefinition注册中心, key 为 BeanId/BeanName
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
 	/** Map of singleton and non-singleton bean names, keyed by dependency type. */
@@ -853,6 +854,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	// Implementation of BeanDefinitionRegistry interface
 	//---------------------------------------------------------------------
 
+	/**
+	 * 注册BeanDefinition到注册中心
+	 * @param beanName 	beanId
+	 * @param beanDefinition AbstractBeanDefinition ==>> GenericBeanDefinition
+	 * @throws BeanDefinitionStoreException
+	 */
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
@@ -871,6 +878,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
+		//BeanDefinition 是否注册
 		if (existingDefinition != null) {
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
@@ -900,32 +908,33 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
-			if (hasBeanCreationStarted()) {
+			if (hasBeanCreationStarted()) {	//如果alreadyCreated集合不为空
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
-					this.beanDefinitionMap.put(beanName, beanDefinition);
+					this.beanDefinitionMap.put(beanName, beanDefinition); //BeanDefinition注册中心
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
-					updatedDefinitions.add(beanName);
-					this.beanDefinitionNames = updatedDefinitions;
-					if (this.manualSingletonNames.contains(beanName)) {
+					updatedDefinitions.add(beanName);	//BeanDefinitionName注册中心
+					this.beanDefinitionNames = updatedDefinitions;	//BeanDefinitionName注册中心
+					if (this.manualSingletonNames.contains(beanName)) {		//单例Name
 						Set<String> updatedSingletons = new LinkedHashSet<>(this.manualSingletonNames);
-						updatedSingletons.remove(beanName);
+						updatedSingletons.remove(beanName);	//清除Name
 						this.manualSingletonNames = updatedSingletons;
 					}
 				}
 			}
 			else {
 				// Still in startup registration phase
-				this.beanDefinitionMap.put(beanName, beanDefinition);
-				this.beanDefinitionNames.add(beanName);
-				this.manualSingletonNames.remove(beanName);
+				this.beanDefinitionMap.put(beanName, beanDefinition); //注册BeanDefinition
+				this.beanDefinitionNames.add(beanName);		//注册BeanDefinitionName
+				this.manualSingletonNames.remove(beanName);		//清除掉单例的BeanName
 			}
-			this.frozenBeanDefinitionNames = null;
+			this.frozenBeanDefinitionNames = null;		//清空冻结的BeanDefinitionName
 		}
 
+		// 已存在BeanDefinition 或者 注册单例Bean了
 		if (existingDefinition != null || containsSingleton(beanName)) {
-			resetBeanDefinition(beanName);
+			resetBeanDefinition(beanName);	//重置BeanDefinition
 		}
 	}
 
@@ -986,6 +995,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		// Reset all bean definitions that have the given bean as parent (recursively).
+		// 重置所有将给定bean作为父bean的bean定义(递归地)
 		for (String bdName : this.beanDefinitionNames) {
 			if (!beanName.equals(bdName)) {
 				BeanDefinition bd = this.beanDefinitionMap.get(bdName);
@@ -1005,7 +1015,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 * 注册单列
+	 * 注册单例
 	 */
 	@Override
 	public void registerSingleton(String beanName, Object singletonObject) throws IllegalStateException {

@@ -44,6 +44,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/** Map from alias to canonical name. */
+	// 从别名映射到规范名称
 	private final Map<String, String> aliasMap = new ConcurrentHashMap<>(16);
 
 
@@ -57,21 +58,19 @@ public class SimpleAliasRegistry implements AliasRegistry {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Alias definition '" + alias + "' ignored since it points to same name");
 				}
-			}
-			else {
+			} else {
 				String registeredName = this.aliasMap.get(alias);
 				if (registeredName != null) {
 					if (registeredName.equals(name)) {
 						// An existing alias - no need to re-register
+						// 现有别名-不需要重新注册
 						return;
 					}
 					if (!allowAliasOverriding()) {
-						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" +
-								name + "': It is already registered for name '" + registeredName + "'.");
+						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" + name + "': It is already registered for name '" + registeredName + "'.");
 					}
 					if (logger.isDebugEnabled()) {
-						logger.debug("Overriding alias '" + alias + "' definition for registered name '" +
-								registeredName + "' with new target name '" + name + "'");
+						logger.debug("Overriding alias '" + alias + "' definition for registered name '" + registeredName + "' with new target name '" + name + "'");
 					}
 				}
 				checkForAliasCircle(name, alias);
