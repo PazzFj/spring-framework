@@ -910,8 +910,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * Get the value of a property element. May be a list etc.
-	 * Also used for constructor arguments, "propertyName" being null in this case.
+	 * 解析获取元素<property>中的value值
 	 */
 	@Nullable
 	public Object parsePropertyValue(Element ele, BeanDefinition bd, @Nullable String propertyName) {

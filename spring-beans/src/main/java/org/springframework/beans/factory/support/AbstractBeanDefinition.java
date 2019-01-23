@@ -138,7 +138,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 
 	@Nullable
-	private volatile Object beanClass;
+	private volatile Object beanClass;  //bean对应的class属性的值,这时候是String
 
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
