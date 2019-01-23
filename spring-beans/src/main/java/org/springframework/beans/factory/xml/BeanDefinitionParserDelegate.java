@@ -233,12 +233,11 @@ public class BeanDefinitionParserDelegate {
 
 	private final DocumentDefaultsDefinition defaults = new DocumentDefaultsDefinition();
 
-	private final ParseState parseState = new ParseState();
+	private final ParseState parseState = new ParseState(); //后续
 
 	/**
-	 * Stores all used bean names so we can enforce uniqueness on a per
-	 * beans-element basis. Duplicate bean ids/names may not exist within the
-	 * same level of beans element nesting, but may be duplicated across levels.
+	 * 存储所有使用的bean名称，因此我们可以在每个bean元素的基础上强制唯一性。
+	 * 相同级别的bean元素嵌套中可能不存在重复的bean id /名称，但是可以跨级别复制
 	 */
 	private final Set<String> usedNames = new HashSet<>();
 
@@ -437,6 +436,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		if (containingBean == null) {
+			// 把id和alias储存
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
@@ -485,6 +485,7 @@ public class BeanDefinitionParserDelegate {
 			foundName = beanName;
 		}
 		if (foundName == null) {
+			// 查找最开始的匹配
 			foundName = CollectionUtils.findFirstMatch(this.usedNames, aliases);
 		}
 		if (foundName != null) {
@@ -520,16 +521,17 @@ public class BeanDefinitionParserDelegate {
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
+			//设置描述
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
-
+			//解析Meta元素<meta>
 			parseMetaElements(ele, bd);
 			//解析给定bean元素的查找覆盖子元素
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			//解析给定bean元素的替换方法子元素
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
-			//解析给定bean元素的构造函数-arg子元素
+			//解析给定bean元素的构造函数-arg子元素<constructor>
 			parseConstructorArgElements(ele, bd);
-			//解析给定bean元素的属性子元素
+			//解析给定bean元素的子元素<property>
 			parsePropertyElements(ele, bd);
 			//解析给定bean元素的限定子元素
 			parseQualifierElements(ele, bd);
@@ -639,7 +641,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 为给定的类名和父类名创建bean定义
+	 * 创建BeanDefinition
 	 *
 	 * Create a bean definition for the given class name and parent name.
 	 * @param className the name of the bean class
@@ -837,7 +839,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * Parse a property element.
+	 * 解析<property> 元素
 	 */
 	public void parsePropertyElement(Element ele, BeanDefinition bd) {
 		String propertyName = ele.getAttribute(NAME_ATTRIBUTE);
@@ -851,8 +853,11 @@ public class BeanDefinitionParserDelegate {
 				error("Multiple 'property' definitions for property '" + propertyName + "'", ele);
 				return;
 			}
-			Object val = parsePropertyValue(ele, bd, propertyName);
+			//解析Property的value字段
+			Object val = parsePropertyValue(ele, bd, propertyName);   // 封装成==>>TypedStringValue
+			//取到property元素的value值, 进行封装
 			PropertyValue pv = new PropertyValue(propertyName, val);
+			//在解析该下面<meta>元素
 			parseMetaElements(ele, pv);
 			pv.setSource(extractSource(ele));
 			bd.getPropertyValues().addPropertyValue(pv);
@@ -931,8 +936,8 @@ public class BeanDefinitionParserDelegate {
 			}
 		}
 
-		boolean hasRefAttribute = ele.hasAttribute(REF_ATTRIBUTE);
-		boolean hasValueAttribute = ele.hasAttribute(VALUE_ATTRIBUTE);
+		boolean hasRefAttribute = ele.hasAttribute(REF_ATTRIBUTE);  //是否存在ref属性
+		boolean hasValueAttribute = ele.hasAttribute(VALUE_ATTRIBUTE); //是否存在value属性
 		if ((hasRefAttribute && hasValueAttribute) ||
 				((hasRefAttribute || hasValueAttribute) && subElement != null)) {
 			error(elementName +

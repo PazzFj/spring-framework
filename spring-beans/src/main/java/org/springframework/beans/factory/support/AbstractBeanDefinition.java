@@ -191,7 +191,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	private boolean enforceInitMethod = true;
 
 	private boolean enforceDestroyMethod = true;
-
+	//是否合成的标识
 	private boolean synthetic = false;
 
 	private int role = BeanDefinition.ROLE_APPLICATION;
