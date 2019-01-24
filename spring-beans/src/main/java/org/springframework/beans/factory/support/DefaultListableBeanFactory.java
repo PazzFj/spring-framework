@@ -839,6 +839,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
+				// beanClass 是否为Class
 				((AbstractBeanDefinition) beanDefinition).validate();
 			}
 			catch (BeanDefinitionValidationException ex) {
@@ -878,7 +879,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
-			if (hasBeanCreationStarted()) {	//如果alreadyCreated集合不为空
+			// 判断 alreadyCreated集合为不为空
+			// 1.保存BeanDefinition
+			// 2.保存beanDefinitionName
+			// 3.把beanName从manualSingletonNames清除
+			// 4.清空frozenBeanDefinitionNames数组
+			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
 					this.beanDefinitionMap.put(beanName, beanDefinition); //BeanDefinition注册中心
@@ -902,7 +908,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			this.frozenBeanDefinitionNames = null;		//清空冻结的BeanDefinitionName
 		}
 
-		// 已存在BeanDefinition 或者 注册单例Bean了
+		// 已存在BeanDefinition 或者 包含了该单列beanName
 		if (existingDefinition != null || containsSingleton(beanName)) {
 			resetBeanDefinition(beanName);	//重置BeanDefinition
 		}

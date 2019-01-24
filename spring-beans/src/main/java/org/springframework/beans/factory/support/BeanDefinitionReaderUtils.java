@@ -69,6 +69,7 @@ public abstract class BeanDefinitionReaderUtils {
 
 	/**
 	 * 为给定的bean定义生成一个bean名称，在给定的bean工厂中是惟一的
+	 * 生成格式如： ClassName#001001
 	 */
 	public static String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry, boolean isInnerBean)
 			throws BeanDefinitionStoreException {

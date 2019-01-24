@@ -867,7 +867,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
-	 * Return if there are method overrides defined for this bean.
+	 * 如果为此bean定义了方法重写，则返回
 	 * @since 5.0.2
 	 */
 	public boolean hasMethodOverrides() {
@@ -1054,6 +1054,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	public void validate() throws BeanDefinitionValidationException {
+		//如果方法重写
 		if (hasMethodOverrides() && getFactoryMethodName() != null) {
 			throw new BeanDefinitionValidationException(
 					"Cannot combine static factory method with method overrides: " +

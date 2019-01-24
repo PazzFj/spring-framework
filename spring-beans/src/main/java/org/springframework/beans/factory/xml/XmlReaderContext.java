@@ -46,6 +46,9 @@ public class XmlReaderContext extends ReaderContext {
 
 	private final XmlBeanDefinitionReader reader;
 
+	/**
+	 * 命名空间管理解析器  <xmlns:context="http://www.springframework.org/schema/context">
+	 */
 	private final NamespaceHandlerResolver namespaceHandlerResolver;
 
 

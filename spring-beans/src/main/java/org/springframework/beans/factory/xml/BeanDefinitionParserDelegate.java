@@ -440,7 +440,7 @@ public class BeanDefinitionParserDelegate {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
-		//解析并创建BeanDefinition
+		//创建AbstractBeanDefinition
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -1362,7 +1362,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 解析自定义元素
+	 * 解析自定义元素 如<context:component-scan base-package="com."/>
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele) {
