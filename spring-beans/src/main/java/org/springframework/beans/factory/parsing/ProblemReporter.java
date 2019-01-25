@@ -17,13 +17,7 @@
 package org.springframework.beans.factory.parsing;
 
 /**
- * SPI interface allowing tools and other external processes to handle errors
- * and warnings reported during bean definition parsing.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 2.0
- * @see Problem
+ * SPI接口，允许工具和其他外部进程处理bean定义解析期间报告的错误和警告
  */
 public interface ProblemReporter {
 

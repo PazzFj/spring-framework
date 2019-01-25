@@ -159,15 +159,7 @@ public abstract class PropertiesLoaderUtils {
 	}
 
 	/**
-	 * Load all properties from the specified class path resource
-	 * (in ISO-8859-1 encoding), using the given class loader.
-	 * <p>Merges properties if more than one resource of the same name
-	 * found in the class path.
-	 * @param resourceName the name of the class path resource
-	 * @param classLoader the ClassLoader to use for loading
-	 * (or {@code null} to use the default class loader)
-	 * @return the populated Properties instance
-	 * @throws IOException if loading failed
+	 * 加载所有属性 "resources/META-INF/spring.handlers"
 	 */
 	public static Properties loadAllProperties(String resourceName, @Nullable ClassLoader classLoader) throws IOException {
 		Assert.notNull(resourceName, "Resource name must not be null");

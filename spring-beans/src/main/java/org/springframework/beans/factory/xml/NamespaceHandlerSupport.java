@@ -64,8 +64,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 
 
 	/**
-	 * Parses the supplied {@link Element} by delegating to the {@link BeanDefinitionParser} that is
-	 * registered for that {@link Element}.
+	 * 通过委托给为该{@link Element}注册的{@link BeanDefinitionParser}来解析提供的{@link Element}。
 	 */
 	@Override
 	@Nullable
@@ -75,8 +74,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	}
 
 	/**
-	 * Locates the {@link BeanDefinitionParser} from the register implementations using
-	 * the local name of the supplied {@link Element}.
+	 * 使用提供的{@link Element}的本地名称从寄存器实现中定位{@link BeanDefinitionParser}
 	 */
 	@Nullable
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {

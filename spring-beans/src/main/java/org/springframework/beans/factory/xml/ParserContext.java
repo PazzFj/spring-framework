@@ -28,15 +28,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.lang.Nullable;
 
 /**
- * Context that gets passed along a bean definition parsing process,
- * encapsulating all relevant configuration as well as state.
- * Nested inside an {@link XmlReaderContext}.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 2.0
- * @see XmlReaderContext
- * @see BeanDefinitionParserDelegate
+ * 在bean定义解析过程中传递的上下文，它封装所有相关配置和状态。嵌套在{@link XmlReaderContext}中
  */
 public final class ParserContext {
 

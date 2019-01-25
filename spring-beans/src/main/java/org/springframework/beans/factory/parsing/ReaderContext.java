@@ -21,29 +21,21 @@ import org.springframework.lang.Nullable;
 
 /**
  * 在bean定义读取过程中传递的上下文，它封装所有相关的配置和状态
- *
- * Context that gets passed along a bean definition reading process,
- * encapsulating all relevant configuration as well as state.
  */
 public class ReaderContext {
 
+	//资源
 	private final Resource resource;
-
+	//问题记录者
 	private final ProblemReporter problemReporter;
-
+	//读取事件监听器
 	private final ReaderEventListener eventListener;
-
+	//资源提取器
 	private final SourceExtractor sourceExtractor;
 
 
 	/**
-	 * 构造一个新ReaderContext
-	 *
-	 * Construct a new {@code ReaderContext}.
-	 * @param resource the XML bean definition resource
-	 * @param problemReporter the problem reporter in use
-	 * @param eventListener the event listener in use
-	 * @param sourceExtractor the source extractor in use
+	 * 构造一个ReaderContext
 	 */
 	public ReaderContext(Resource resource, ProblemReporter problemReporter,
 			ReaderEventListener eventListener, SourceExtractor sourceExtractor) {
@@ -190,18 +182,14 @@ public class ReaderContext {
 	// Source extraction
 
 	/**
-	 * Return the source extractor in use.
+	 * 返回正在使用的资源提取器
 	 */
 	public SourceExtractor getSourceExtractor() {
 		return this.sourceExtractor;
 	}
 
 	/**
-	 * Call the source extractor for the given source object.
-	 * @param sourceCandidate the original source object
-	 * @return the source object to store, or {@code null} for none.
-	 * @see #getSourceExtractor()
-	 * @see SourceExtractor#extractSource
+	 * 为给定的源对象调用源提取器
 	 */
 	@Nullable
 	public Object extractSource(Object sourceCandidate) {
