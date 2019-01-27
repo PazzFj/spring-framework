@@ -69,20 +69,6 @@ import org.springframework.util.xml.DomUtils;
 
 /**
  * BeanDefinition解析代理类，用于解析XML bean定义。用于主解析器和任何扩展
- *
- * Stateful delegate class used to parse XML bean definitions.
- * Intended for use by both the main parser and any extension
- * {@link BeanDefinitionParser BeanDefinitionParsers} or
- * {@link BeanDefinitionDecorator BeanDefinitionDecorators}.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @author Rod Johnson
- * @author Mark Fisher
- * @author Gary Russell
- * @since 2.0
- * @see ParserContext
- * @see DefaultBeanDefinitionDocumentReader
  */
 public class BeanDefinitionParserDelegate {
 
@@ -229,7 +215,7 @@ public class BeanDefinitionParserDelegate {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final XmlReaderContext readerContext;
+	private final XmlReaderContext readerContext;  //xml读取上下文
 
 	private final DocumentDefaultsDefinition defaults = new DocumentDefaultsDefinition();
 
@@ -243,55 +229,37 @@ public class BeanDefinitionParserDelegate {
 
 
 	/**
-	 * Create a new BeanDefinitionParserDelegate associated with the supplied
-	 * {@link XmlReaderContext}.
+	 * 初始化BeanDefinitionParserDelegate
 	 */
 	public BeanDefinitionParserDelegate(XmlReaderContext readerContext) {
 		Assert.notNull(readerContext, "XmlReaderContext must not be null");
 		this.readerContext = readerContext;
 	}
 
-
-	/**
-	 * Get the {@link XmlReaderContext} associated with this helper instance.
-	 */
 	public final XmlReaderContext getReaderContext() {
 		return this.readerContext;
 	}
 
-	/**
-	 * Invoke the {@link org.springframework.beans.factory.parsing.SourceExtractor}
-	 * to pull the source metadata from the supplied {@link Element}.
-	 */
 	@Nullable
 	protected Object extractSource(Element ele) {
 		return this.readerContext.extractSource(ele);
 	}
 
-	/**
-	 * Report an error with the given message for the given source element.
-	 */
 	protected void error(String message, Node source) {
 		this.readerContext.error(message, source, this.parseState.snapshot());
 	}
 
-	/**
-	 * Report an error with the given message for the given source element.
-	 */
 	protected void error(String message, Element source) {
 		this.readerContext.error(message, source, this.parseState.snapshot());
 	}
 
-	/**
-	 * Report an error with the given message for the given source element.
-	 */
 	protected void error(String message, Element source, Throwable cause) {
 		this.readerContext.error(message, source, this.parseState.snapshot(), cause);
 	}
 
 
 	/**
-	 * Initialize the default settings assuming a {@code null} parent delegate.
+	 * 初始化默认设置
 	 */
 	public void initDefaults(Element root) {
 		initDefaults(root, null);
@@ -300,31 +268,18 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * 初始化默认的延迟-初始化、自动连接、依赖项检查设置、init-方法、侧击-方法和合并设置。
 	 * 支持嵌套的“bean”元素用例，如果没有在本地显式设置默认值，则返回到给定的父元素。
-	 *
-	 * Initialize the default lazy-init, autowire, dependency check settings,
-	 * init-method, destroy-method and merge settings. Support nested 'beans'
-	 * element use cases by falling back to the given parent in case the
-	 * defaults are not explicitly set locally.
-	 * @see #populateDefaults(DocumentDefaultsDefinition, DocumentDefaultsDefinition, org.w3c.dom.Element)
-	 * @see #getDefaults()
 	 */
 	public void initDefaults(Element root, @Nullable BeanDefinitionParserDelegate parent) {
-		//填充默认
+		//填充默认值
 		populateDefaults(this.defaults, (parent != null ? parent.defaults : null), root);
 		this.readerContext.fireDefaultsRegistered(this.defaults);
 	}
 
 	/**
-	 * 用默认的延迟-init、自动连接、依赖项检查设置、init-method、侧击-method和合并设置填充给定的DocumentDefaultsDefinition实例。
-	 * 支持嵌套的“bean”元素用例，如果没有在本地显式设置默认值，则返回到{@code parentDefaults}。
-	 *
-	 * Populate the given DocumentDefaultsDefinition instance with the default lazy-init,
-	 * autowire, dependency check settings, init-method, destroy-method and merge settings.
-	 * Support nested 'beans' element use cases by falling back to {@code parentDefaults}
-	 * in case the defaults are not explicitly set locally.
-	 * @param defaults the defaults to populate
-	 * @param parentDefaults the parent BeanDefinitionParserDelegate (if any) defaults to fall back to
-	 * @param root the root element of the current bean definition document (or nested beans element)
+	 * 填充默认值有：
+	 * default-lazy-init 	\ 	default-merge
+	 * default-autowire  	\   default-autowire-candidates
+	 * default-init-method  \ 	default-destroy-method
 	 */
 	protected void populateDefaults(DocumentDefaultsDefinition defaults, @Nullable DocumentDefaultsDefinition parentDefaults, Element root) {
 		String lazyInit = root.getAttribute(DEFAULT_LAZY_INIT_ATTRIBUTE);
@@ -373,7 +328,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * Return the defaults definition object.
+	 * 返回默认定义对象
 	 */
 	public DocumentDefaultsDefinition getDefaults() {
 		return this.defaults;
@@ -1370,19 +1325,15 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 解析自定义元素 Element
+	 * 解析自定义元素 <context:component-scan base-package="com">
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
-		String namespaceUri = getNamespaceURI(ele);  //得到命名空间, 例如: http://www.springframework.org/schema/context
+		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
 		}
-		//通过XmlReaderContext获取到NamespaceHandlerResolver(命名空间管理解析器)解析 http://www.springframework.org/schema/context
-		//例：
-		// <context:> ===>> ContextNamespaceHandler
-		// <aop:>  ===>> AopNamespaceHandler
-		// <mvc:>  ===>> MvcNamespaceHandler
+		//获取命名空间对象 -> ContextNamespaceHandler(实现类) -> NamespaceHandlerSupport(抽象类) -> NameSpaceHandler(接口)
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);

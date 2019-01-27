@@ -34,16 +34,11 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;
 
 /**
- * Extension of {@link org.springframework.beans.factory.parsing.ReaderContext},
- * specific to use with an {@link XmlBeanDefinitionReader}. Provides access to the
- * {@link NamespaceHandlerResolver} configured in the {@link XmlBeanDefinitionReader}.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 2.0
+ * xml读取上下文, 封装了BeanDefinitionReader读取器、命名空间管理器
  */
 public class XmlReaderContext extends ReaderContext {
 
+	// BeanDefinition读取器
 	private final XmlBeanDefinitionReader reader;
 
 	/**
@@ -53,15 +48,7 @@ public class XmlReaderContext extends ReaderContext {
 
 
 	/**
-	 * 构造一个新XmlReaderContext
-	 *
-	 * Construct a new {@code XmlReaderContext}.
-	 * @param resource the XML bean definition resource
-	 * @param problemReporter the problem reporter in use
-	 * @param eventListener the event listener in use
-	 * @param sourceExtractor the source extractor in use
-	 * @param reader the XML bean definition reader in use
-	 * @param namespaceHandlerResolver the XML namespace resolver
+	 * 构造 XmlReaderContext
 	 */
 	public XmlReaderContext(
 			Resource resource, ProblemReporter problemReporter,
@@ -75,26 +62,21 @@ public class XmlReaderContext extends ReaderContext {
 
 
 	/**
-	 * Return the XML bean definition reader in use.
+	 *返回正在使用的XML bean定义读取器
 	 */
 	public final XmlBeanDefinitionReader getReader() {
 		return this.reader;
 	}
 
 	/**
-	 * Return the bean definition registry to use.
-	 * @see XmlBeanDefinitionReader#XmlBeanDefinitionReader(BeanDefinitionRegistry)
+	 * 返回要使用的bean定义注册
 	 */
 	public final BeanDefinitionRegistry getRegistry() {
 		return this.reader.getRegistry();
 	}
 
 	/**
-	 * Return the resource loader to use, if any.
-	 * <p>This will be non-null in regular scenarios,
-	 * also allowing access to the resource class loader.
-	 * @see XmlBeanDefinitionReader#setResourceLoader
-	 * @see ResourceLoader#getClassLoader()
+	 * 返回要使用的资源加载器
 	 */
 	@Nullable
 	public final ResourceLoader getResourceLoader() {
@@ -102,10 +84,7 @@ public class XmlReaderContext extends ReaderContext {
 	}
 
 	/**
-	 * Return the bean class loader to use, if any.
-	 * <p>Note that this will be null in regular scenarios,
-	 * as an indication to lazily resolve bean classes.
-	 * @see XmlBeanDefinitionReader#setBeanClassLoader
+	 * 返回要使用的bean类装入器
 	 */
 	@Nullable
 	public final ClassLoader getBeanClassLoader() {
@@ -113,16 +92,14 @@ public class XmlReaderContext extends ReaderContext {
 	}
 
 	/**
-	 * Return the environment to use.
-	 * @see XmlBeanDefinitionReader#setEnvironment
+	 * 返回要使用的环境
 	 */
 	public final Environment getEnvironment() {
 		return this.reader.getEnvironment();
 	}
 
 	/**
-	 * Return the namespace resolver.
-	 * @see XmlBeanDefinitionReader#setNamespaceHandlerResolver
+	 * 返回名称空间解析器
 	 */
 	public final NamespaceHandlerResolver getNamespaceHandlerResolver() {
 		return this.namespaceHandlerResolver;
@@ -132,20 +109,14 @@ public class XmlReaderContext extends ReaderContext {
 	// Convenience methods to delegate to
 
 	/**
-	 * Call the bean name generator for the given bean definition.
-	 * @see XmlBeanDefinitionReader#getBeanNameGenerator()
-	 * @see org.springframework.beans.factory.support.BeanNameGenerator#generateBeanName
+	 * 为给定的bean定义调用bean名称生成器
 	 */
 	public String generateBeanName(BeanDefinition beanDefinition) {
 		return this.reader.getBeanNameGenerator().generateBeanName(beanDefinition, getRegistry());
 	}
 
 	/**
-	 * Call the bean name generator for the given bean definition
-	 * and register the bean definition under the generated name.
-	 * @see XmlBeanDefinitionReader#getBeanNameGenerator()
-	 * @see org.springframework.beans.factory.support.BeanNameGenerator#generateBeanName
-	 * @see BeanDefinitionRegistry#registerBeanDefinition
+	 * 为给定的bean定义调用bean名称生成器，并在生成的名称下注册bean定义
 	 */
 	public String registerWithGeneratedName(BeanDefinition beanDefinition) {
 		String generatedName = generateBeanName(beanDefinition);
@@ -154,8 +125,7 @@ public class XmlReaderContext extends ReaderContext {
 	}
 
 	/**
-	 * Read an XML document from the given String.
-	 * @see #getReader()
+	 * 从给定的字符串读取XML文档
 	 */
 	public Document readDocumentFromString(String documentContent) {
 		InputSource is = new InputSource(new StringReader(documentContent));
