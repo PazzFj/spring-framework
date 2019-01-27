@@ -252,7 +252,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 		doScan(basePackages);
 
-		// Register annotation config processors, if necessary.
+		// 必要时，注册注释配置处理器
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}
@@ -261,18 +261,29 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
-	 * Perform a scan within the specified base packages,
-	 * returning the registered bean definitions.
-	 * <p>This method does <i>not</i> register an annotation config processor
-	 * but rather leaves this up to the caller.
-	 * @param basePackages the packages to check for annotated classes
-	 * @return set of beans registered if any for tooling registration purposes (never {@code null})
+	 * 扫描该路径获取所有的BeanDefinitionHolder
+	 * 1、遍历路径
+	 * 2、获取路径下所有的BeanDefinition
+	 * 3、遍历BeanDefinition集合
+	 * 4、设置BeanDefinition的Scope作用域
+	 * 5、生成BeanDefinition的名称
+	 * 6、判断BeanDefinition属于那种BeanDefinition  然后做对应的处理器
+	 * 		 二种情况：
+	 * 		 	AbstractBeanDefinition  待续
+	 * 		 	AnnotatedBeanDefinition  待续
+	 *
+	 * 7、遍历BeanDefinition集合
+	 * 8、把BeanDefinition转BeanDefinitionHolder
+	 * 9、注册到注册中心 DefaultListableBeanFactory
+	 *
 	 */
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 获取 BeanDefinition 集合
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+			// 遍历BeanDefinition 把BeanDefinition封装成一个BeanDefinitionHolder 然后在注册到DefaultListableBeanFactory
 			for (BeanDefinition candidate : candidates) {
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
@@ -285,9 +296,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 				}
 				if (checkCandidate(beanName, candidate)) {
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
-					definitionHolder =
-							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+					definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					// 注册BeanDefinition (BeanDefinitionHolder, DefaultListableBeanFactory)
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}

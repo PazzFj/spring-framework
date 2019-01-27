@@ -304,15 +304,14 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 
 	/**
-	 * Scan the class path for candidate components.
-	 * @param basePackage the package to check for annotated classes
-	 * @return a corresponding Set of autodetected bean definitions
+	 * 扫描类路径以查找候选组件
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			// 扫描组件
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -413,6 +412,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	/**
+	 * 扫描组件得到BeanDefinition
+	 */
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
@@ -421,21 +423,30 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
+			// 扫描到的路径下的每一个Class文件对应一个Resource
 			for (Resource resource : resources) {
 				if (traceEnabled) {
 					logger.trace("Scanning " + resource);
 				}
+				// 文件是否可以读取
 				if (resource.isReadable()) {
 					try {
+						// 读取器
+						// 1、getMetadataReaderFactory()  ==>> CachingMetadataReaderFactory
+						// 2、getMetadataReader()   ===>>  获取数据读取然后解析成BeanDefinition
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// 是否是组件
 						if (isCandidateComponent(metadataReader)) {
+							// 创建BeanDefinition ==>>  ScannedGenericBeanDefinition (扫描生成的BeanDefinition)
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+							// 是否是组件
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
 								}
+								// 添加
 								candidates.add(sbd);
 							}
 							else {
@@ -482,10 +493,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
-	 * Determine whether the given class does not match any exclude filter
-	 * and does match at least one include filter.
-	 * @param metadataReader the ASM ClassReader for the class
-	 * @return whether the class qualifies as a candidate component
+	 * 确定给定的类是否匹配任何排除筛选器，是否匹配至少一个包含筛选器
 	 */
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
 		for (TypeFilter tf : this.excludeFilters) {

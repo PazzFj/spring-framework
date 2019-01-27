@@ -107,14 +107,19 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 
 
 	/**
-	 * Locate the {@link NamespaceHandler} for the supplied namespace URI
-	 * from the configured mappings.
-	 * @param namespaceUri the relevant namespace URI
-	 * @return the located {@link NamespaceHandler}, or {@code null} if none found
+	 * 从配置的映射中找到提供的名称空间URI的{@link NamespaceHandler}。
+	 * 1、http://www.springframework.org/schema/context 映射 org.springframework.context.config.ContextNamespaceHandler
+	 * @param namespaceUri http://www.springframework.org/schema/context
 	 */
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
+		//得到所有的Handler
+		//1、一开始在META-INF/spring.handlers中定义的是字符串
+		//2、如果是字符串就利用类加载器初始化成对象
+		//3、并调用init方法注册命名空间对应的属性的对象
+		//如: <context:component-scan base-package="com.pazz.dao"> ====>> context 则是 ContextNamespaceHandler
+		//如: <aop:aspectj-autoproxy > ====>> aop 则是 AopNamespaceHandler
 		Map<String, Object> handlerMappings = getHandlerMappings();
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
 		if (handlerOrClassName == null) {
@@ -132,7 +137,12 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 							"] does not implement the [" + NamespaceHandler.class.getName() + "] interface");
 				}
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+				//调用init方法, 注册对应的BeanDefinitionParser 如：<context:component-scan>  对应的 ComponentScanBeanDefinitionParser
+				// 注册属性例如<context:?????> 所有的
+				// 注册属性例如<mvc:?????>
+				// 注册属性例如<aop:?????>
 				namespaceHandler.init();
+				//在把当前已经实例化的NamespaceHandler 保存到map中, 下次拿的时候直接拿对象,而不是字符串
 				handlerMappings.put(namespaceUri, namespaceHandler);
 				return namespaceHandler;
 			}
@@ -148,7 +158,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	}
 
 	/**
-	 * Load the specified NamespaceHandler mappings lazily.
+	 * 延迟加载指定的NamespaceHandler map
 	 */
 	private Map<String, Object> getHandlerMappings() {
 		Map<String, Object> handlerMappings = this.handlerMappings;
@@ -160,8 +170,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						logger.trace("Loading NamespaceHandler mappings from [" + this.handlerMappingsLocation + "]");
 					}
 					try {
-						Properties mappings =
-								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
+						Properties mappings = PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isTraceEnabled()) {
 							logger.trace("Loaded NamespaceHandler mappings: " + mappings);
 						}
@@ -170,8 +179,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						this.handlerMappings = handlerMappings;
 					}
 					catch (IOException ex) {
-						throw new IllegalStateException(
-								"Unable to load NamespaceHandler mappings from location [" + this.handlerMappingsLocation + "]", ex);
+						throw new IllegalStateException("Unable to load NamespaceHandler mappings from location [" + this.handlerMappingsLocation + "]", ex);
 					}
 				}
 			}

@@ -1370,8 +1370,7 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 解析自定义元素
-	 * @param containingBd 包含的BeanDefinition
+	 * 解析自定义元素 Element
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
@@ -1380,7 +1379,10 @@ public class BeanDefinitionParserDelegate {
 			return null;
 		}
 		//通过XmlReaderContext获取到NamespaceHandlerResolver(命名空间管理解析器)解析 http://www.springframework.org/schema/context
-		//如果是<context>元素就会解析的就是ContextNamespaceHandler对象
+		//例：
+		// <context:> ===>> ContextNamespaceHandler
+		// <aop:>  ===>> AopNamespaceHandler
+		// <mvc:>  ===>> MvcNamespaceHandler
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);

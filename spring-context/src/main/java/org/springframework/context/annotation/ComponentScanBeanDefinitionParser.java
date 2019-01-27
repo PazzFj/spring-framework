@@ -80,26 +80,31 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		//得到扫描的路径
 		String basePackage = element.getAttribute(BASE_PACKAGE_ATTRIBUTE);
+		//解析占位符
 		basePackage = parserContext.getReaderContext().getEnvironment().resolvePlaceholders(basePackage);
 		String[] basePackages = StringUtils.tokenizeToStringArray(basePackage,
 				ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 
-		// Actually scan for bean definitions and register them.
+		//创建配置扫描器
 		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
+		//获取所有 BeanDefinitionHolder 并注册到注册中心
 		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);
+		//注册组件
 		registerComponents(parserContext.getReaderContext(), beanDefinitions, element);
 
 		return null;
 	}
 
+	//配置扫描
 	protected ClassPathBeanDefinitionScanner configureScanner(ParserContext parserContext, Element element) {
 		boolean useDefaultFilters = true;
 		if (element.hasAttribute(USE_DEFAULT_FILTERS_ATTRIBUTE)) {
 			useDefaultFilters = Boolean.valueOf(element.getAttribute(USE_DEFAULT_FILTERS_ATTRIBUTE));
 		}
 
-		// Delegate bean definition registration to scanner class.
+		// 将bean定义注册委托给scanner类
 		ClassPathBeanDefinitionScanner scanner = createScanner(parserContext.getReaderContext(), useDefaultFilters);
 		scanner.setBeanDefinitionDefaults(parserContext.getDelegate().getBeanDefinitionDefaults());
 		scanner.setAutowireCandidatePatterns(parserContext.getDelegate().getAutowireCandidatePatterns());
@@ -132,29 +137,35 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 				readerContext.getEnvironment(), readerContext.getResourceLoader());
 	}
 
-	protected void registerComponents(
-			XmlReaderContext readerContext, Set<BeanDefinitionHolder> beanDefinitions, Element element) {
-
+	/**
+	 * 注册组件
+	 */
+	protected void registerComponents(XmlReaderContext readerContext, Set<BeanDefinitionHolder> beanDefinitions, Element element) {
+		//提取资源
 		Object source = readerContext.extractSource(element);
+		//组合组件定义
 		CompositeComponentDefinition compositeDef = new CompositeComponentDefinition(element.getTagName(), source);
 
 		for (BeanDefinitionHolder beanDefHolder : beanDefinitions) {
+			//添加嵌套的组件 BeanComponentDefinition
 			compositeDef.addNestedComponent(new BeanComponentDefinition(beanDefHolder));
 		}
 
-		// Register annotation config processors, if necessary.
+		// 必要时，注册注解配置处理器 (默认为true)
 		boolean annotationConfig = true;
+
 		if (element.hasAttribute(ANNOTATION_CONFIG_ATTRIBUTE)) {
 			annotationConfig = Boolean.valueOf(element.getAttribute(ANNOTATION_CONFIG_ATTRIBUTE));
 		}
 		if (annotationConfig) {
-			Set<BeanDefinitionHolder> processorDefinitions =
-					AnnotationConfigUtils.registerAnnotationConfigProcessors(readerContext.getRegistry(), source);
+			// 添加注解配置处理器
+			Set<BeanDefinitionHolder> processorDefinitions = AnnotationConfigUtils.registerAnnotationConfigProcessors(readerContext.getRegistry(), source);
 			for (BeanDefinitionHolder processorDefinition : processorDefinitions) {
 				compositeDef.addNestedComponent(new BeanComponentDefinition(processorDefinition));
 			}
 		}
 
+		//注册到事件监听器
 		readerContext.fireComponentRegistered(compositeDef);
 	}
 
