@@ -396,10 +396,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
-	 * Return the class of the wrapped bean, if already resolved.
-	 * @return the bean class, or {@code null} if none defined
-	 * @throws IllegalStateException if the bean definition does not define a bean class,
-	 * or a specified bean class name has not been resolved into an actual Class
+	 * 获取BeanClass
 	 */
 	public Class<?> getBeanClass() throws IllegalStateException {
 		Object beanClassObject = this.beanClass;
@@ -828,7 +825,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
-	 * Return property values for this bean (never {@code null}).
+	 * 返回此bean的属性值
 	 */
 	@Override
 	public MutablePropertyValues getPropertyValues() {
@@ -839,7 +836,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
-	 * Return if there are property values values defined for this bean.
+	 * 如果存在为此bean定义的属性值，则返回
 	 * @since 5.0.2
 	 */
 	@Override
