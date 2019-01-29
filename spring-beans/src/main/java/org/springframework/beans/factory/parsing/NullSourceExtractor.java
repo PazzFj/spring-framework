@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
 public class NullSourceExtractor implements SourceExtractor {
 
 	/**
-	 * This implementation simply returns {@code null} for any input.
+	 * 这个实现只是为任何输入返回{@code null}
 	 */
 	@Override
 	@Nullable

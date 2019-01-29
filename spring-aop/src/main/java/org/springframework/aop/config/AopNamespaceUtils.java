@@ -62,41 +62,46 @@ public abstract class AopNamespaceUtils {
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
-	public static void registerAspectJAutoProxyCreatorIfNecessary(
-			ParserContext parserContext, Element sourceElement) {
-
+	public static void registerAspectJAutoProxyCreatorIfNecessary(ParserContext parserContext, Element sourceElement) {
 		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAutoProxyCreatorIfNecessary(
 				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
-	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(
-			ParserContext parserContext, Element sourceElement) {
-
-		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(
-				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+	// 注册切面注解自动代理创建
+	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(ParserContext parserContext, Element sourceElement) {
+		// 注册或更新 AutoProxyCreator 定义 beanName 为 org.Springframework.aop.config.internalAutoProxyCreator的BeanDefinition
+		// 如果internalAutoProxyCreator的BeanDefinition已经存在，而根据优先级更新BeanDefinition
+		// 在这里我们注册的是AnnotationAwareAspectJAutoProxyCreator
+		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		// 对于 proxy-target-class 以及 expose-proxy 属性的处理
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
+		// 注册组件并通知，便于监听器作进一步处理
+		// 其中 beanDefinition 的 className 为 AnnotationAwareAspectJAutoProxyCreator
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
+	//使用class代理, 如果需要
 	private static void useClassProxyingIfNecessary(BeanDefinitionRegistry registry, @Nullable Element sourceElement) {
 		if (sourceElement != null) {
+			// 设置代理属性值proxy-target-class
 			boolean proxyTargetClass = Boolean.parseBoolean(sourceElement.getAttribute(PROXY_TARGET_CLASS_ATTRIBUTE));
-			if (proxyTargetClass) {
+			if (proxyTargetClass) { //默认false
 				AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);
 			}
+			// 设置代理属性值expose-proxy
 			boolean exposeProxy = Boolean.parseBoolean(sourceElement.getAttribute(EXPOSE_PROXY_ATTRIBUTE));
-			if (exposeProxy) {
+			if (exposeProxy) { //默认false
 				AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);
 			}
 		}
 	}
 
+	//注册组件如果需要
 	private static void registerComponentIfNecessary(@Nullable BeanDefinition beanDefinition, ParserContext parserContext) {
 		if (beanDefinition != null) {
-			parserContext.registerComponent(
-					new BeanComponentDefinition(beanDefinition, AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME));
+			parserContext.registerComponent(new BeanComponentDefinition(beanDefinition, AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME));
 		}
 	}
 
