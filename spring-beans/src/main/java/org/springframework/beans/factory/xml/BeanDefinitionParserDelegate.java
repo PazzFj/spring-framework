@@ -372,6 +372,8 @@ public class BeanDefinitionParserDelegate {
 	 * 1、获取Element中的id以及name属性
 	 * 2、使用name作为别名, 并保存
 	 * 3、解析Element创建BeanDefinition
+	 * 4、配置属性
+	 * 5、根据BeanDefinition创建BeanDefinitionHolder
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	@Nullable
@@ -398,7 +400,10 @@ public class BeanDefinitionParserDelegate {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
-		//创建BeanDefinition ==>>  AbstractBeanDefinition
+		//创建BeanDefinition => AbstractBeanDefinition => GenericBeanDefinition
+		//1、BeanDefinitionReaderUtils.createBeanDefinition(parentName, className, this.readerContext.getBeanClassLoader());
+		//2、设置属性值
+		//3、根据别名跟BeanDefinition以及beanName创建BeanDefinitionHolder
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -461,6 +466,7 @@ public class BeanDefinitionParserDelegate {
 	 * 3、创建BeanDefinition根据 class中的值与parent值  (此处创建的BeanDefinition为实现类GenericBeanDefinition)
 	 * 4、解析属性 如: scope \ singleton \ abstract \  lazy-init  \  autowire  \  depends-on  \  autowire-candidate \ primary...   description
 	 * 5、解析子标签 <meta>
+	 * 6、获取值给AbstractBeanDefinition
 	 *
 	 * Parse the bean definition itself, without regard to name or aliases. May return
 	 * {@code null} if problems occurred during the parsing of the bean definition.
@@ -488,7 +494,7 @@ public class BeanDefinitionParserDelegate {
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			//设置描述
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
-			//解析Meta元素<meta>
+			//解析Meta元素<meta>   BeanMetadataAttributeAccessor   bean的元数据属性储存器
 			parseMetaElements(ele, bd);
 			//解析给定bean元素的查找覆盖子元素
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
@@ -1352,12 +1358,16 @@ public class BeanDefinitionParserDelegate {
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 
+	/**
+	 * 装饰BeanDefinitionHolder
+	 */
 	public BeanDefinitionHolder decorateBeanDefinitionIfRequired(Element ele, BeanDefinitionHolder definitionHolder) {
 		return decorateBeanDefinitionIfRequired(ele, definitionHolder, null);
 	}
 
 	/**
 	 * 装饰BeanDefinitionHolder
+	 * 此时BeanDefinition为GenericBeanDefinition
 	 */
 	public BeanDefinitionHolder decorateBeanDefinitionIfRequired(Element ele, BeanDefinitionHolder definitionHolder, @Nullable BeanDefinition containingBd) {
 		BeanDefinitionHolder finalDefinition = definitionHolder;
@@ -1380,15 +1390,13 @@ public class BeanDefinitionParserDelegate {
 		return finalDefinition;
 	}
 
-	public BeanDefinitionHolder decorateIfRequired(
-			Node node, BeanDefinitionHolder originalDef, @Nullable BeanDefinition containingBd) {
+	public BeanDefinitionHolder decorateIfRequired(Node node, BeanDefinitionHolder originalDef, @Nullable BeanDefinition containingBd) {
 
 		String namespaceUri = getNamespaceURI(node);
 		if (namespaceUri != null && !isDefaultNamespace(namespaceUri)) {
 			NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 			if (handler != null) {
-				BeanDefinitionHolder decorated =
-						handler.decorate(node, originalDef, new ParserContext(this.readerContext, this, containingBd));
+				BeanDefinitionHolder decorated = handler.decorate(node, originalDef, new ParserContext(this.readerContext, this, containingBd));
 				if (decorated != null) {
 					return decorated;
 				}
