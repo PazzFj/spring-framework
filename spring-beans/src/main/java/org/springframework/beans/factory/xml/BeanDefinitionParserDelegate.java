@@ -368,7 +368,10 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 创建持有者BeanDefinitionHolder, 就是封装BeanDefinition
+	 * 解析Element 创建BeanDefinition 并封装BeanDefinition 为BeanDefinitionHolder
+	 * 1、获取Element中的id以及name属性
+	 * 2、使用name作为别名, 并保存
+	 * 3、解析Element创建BeanDefinition
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	@Nullable
@@ -395,7 +398,7 @@ public class BeanDefinitionParserDelegate {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
-		//创建AbstractBeanDefinition
+		//创建BeanDefinition ==>>  AbstractBeanDefinition
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -452,7 +455,13 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 解析,创建BeanDefinition ==>> AbstractBeanDefinition
+	 * 创建BeanDefinition
+	 * 1、设置状态(未分析)
+	 * 2、获取Element中的class属性值
+	 * 3、创建BeanDefinition根据 class中的值与parent值  (此处创建的BeanDefinition为实现类GenericBeanDefinition)
+	 * 4、解析属性 如: scope \ singleton \ abstract \  lazy-init  \  autowire  \  depends-on  \  autowire-candidate \ primary...   description
+	 * 5、解析子标签 <meta>
+	 *
 	 * Parse the bean definition itself, without regard to name or aliases. May return
 	 * {@code null} if problems occurred during the parsing of the bean definition.
 	 */
@@ -473,8 +482,9 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
+			//创建BeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
-
+			//解析属性
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			//设置描述
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));

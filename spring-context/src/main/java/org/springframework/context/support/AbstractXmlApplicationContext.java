@@ -36,7 +36,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 
 	/**
-	 * Create a new AbstractXmlApplicationContext with no parent.
+	 * 创建一个 AbstractXmlApplicationContext 对象没有父类上下文.
 	 */
 	public AbstractXmlApplicationContext() {
 	}
@@ -68,7 +68,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
-		//设置环境 ConfigurableEnvironment
+		// 使用此上下文的资源加载环境配置bean定义阅读器 this.getEnvironment()父类方法
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
 		// 设置资源加载器
 		beanDefinitionReader.setResourceLoader(this);
