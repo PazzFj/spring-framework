@@ -359,7 +359,12 @@ public class BeanDefinitionParserDelegate {
 
 
 	/**
-	 * 创建BeanDefinitionHolder
+	 * 解析Element 创建BeanDefinition 并把BeanDefinition封装成BeanDefinitionHolder
+	 * 1、获取Element中的id以及name属性
+	 * 2、使用name作为别名
+	 * 3、检测别名是否唯一, 并保存
+	 * 3、解析Element创建BeanDefinition并赋值属性  (GenericBeanDefinition)
+	 * 5、根据别名集合跟BeanDefinition以及beanName创建 BeanDefinitionHolder
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	@Nullable
@@ -368,12 +373,12 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 * 解析Element 创建BeanDefinition 并封装BeanDefinition 为BeanDefinitionHolder
+	 * 解析Element 创建BeanDefinition 并把BeanDefinition封装成BeanDefinitionHolder
 	 * 1、获取Element中的id以及name属性
-	 * 2、使用name作为别名, 并保存
-	 * 3、解析Element创建BeanDefinition
-	 * 4、配置属性
-	 * 5、根据BeanDefinition创建BeanDefinitionHolder
+	 * 2、使用name作为别名
+	 * 3、检测别名是否唯一, 并保存
+	 * 3、解析Element创建BeanDefinition并赋值属性  (GenericBeanDefinition)
+	 * 5、根据别名集合跟BeanDefinition以及beanName创建 BeanDefinitionHolder
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	@Nullable
@@ -401,8 +406,8 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		//创建BeanDefinition => AbstractBeanDefinition => GenericBeanDefinition
-		//1、BeanDefinitionReaderUtils.createBeanDefinition(parentName, className, this.readerContext.getBeanClassLoader());
-		//2、设置属性值
+		//1、创建GenericBeanDefinition  == BeanDefinitionReaderUtils.createBeanDefinition(parentName, className, this.readerContext.getBeanClassLoader());
+		//2、设置属性
 		//3、根据别名跟BeanDefinition以及beanName创建BeanDefinitionHolder
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
@@ -463,10 +468,11 @@ public class BeanDefinitionParserDelegate {
 	 * 创建BeanDefinition
 	 * 1、设置状态(未分析)
 	 * 2、获取Element中的class属性值
-	 * 3、创建BeanDefinition根据 class中的值与parent值  (此处创建的BeanDefinition为实现类GenericBeanDefinition)
+	 * 3、创建BeanDefinition 根据 class中的值与parent值创建  (此处创建的BeanDefinition为实现类GenericBeanDefinition)
 	 * 4、解析属性 如: scope \ singleton \ abstract \  lazy-init  \  autowire  \  depends-on  \  autowire-candidate \ primary...   description
-	 * 5、解析子标签 <meta>
-	 * 6、获取值给AbstractBeanDefinition
+	 * 5、解析子标签 <meta>  lookup-method   replaced-method   constructor-arg  property   qualifier
+	 * 6、设置Resource 设置Source
+	 * 6、返回AbstractBeanDefinition
 	 *
 	 * Parse the bean definition itself, without regard to name or aliases. May return
 	 * {@code null} if problems occurred during the parsing of the bean definition.
