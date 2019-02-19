@@ -139,7 +139,13 @@ public class DefaultResourceLoader implements ResourceLoader {
 		this.resourceCaches.clear();
 	}
 
-
+	/**
+	 * 如果路径为classpath:
+	 * 会创建ClassPathResource对象      Resource
+	 * 否则抛异常调用getResourceByPath方法创建ClassPathContextResource对象的  Resource
+	 * @param location the resource location
+	 * @return
+	 */
 	@Override
 	public Resource getResource(String location) {
 		Assert.notNull(location, "Location must not be null");

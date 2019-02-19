@@ -216,13 +216,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 	/**
-	 * Create a new PathMatchingResourcePatternResolver.
-	 * <p>ClassLoader access will happen via the thread context class loader.
-	 * @param resourceLoader the ResourceLoader to load root directories and
-	 * actual resources with
+	 * 创建一个 ResourceLoader
 	 */
 	public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
 		Assert.notNull(resourceLoader, "ResourceLoader must not be null");
+		// 设置Spring的资源加载器
 		this.resourceLoader = resourceLoader;
 	}
 
@@ -274,6 +272,22 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		return getResourceLoader().getResource(location);
 	}
 
+	/**
+	 * 解析路径转换成Resource
+	 * 1、classpath*:路径
+	 * 		1.1 把路径转换成Url 再把Url转换成UrlResource
+	 * 2、classpath:路径
+	 * 			获取ResourceLoader就是当前ApplicationContext
+	 * 	  		AbstractApplicationContext 继承 DefaultResourceLoader
+	 * 	  	    调用DefaultResourceLoader 中的getResource()方法
+	 * 	  	getResource()二种情况:
+	 * 			2.1 如果为classpath:****.xml的话
+	 * 					创建ClassPathResource对象
+	 * 	    	2.2 如果不包含  但创建Url发生异常
+	 * 	    			创建ClassPathContextResource对象
+	 * 	    	2.3 如果不包含  但创建没发生异常
+	 * 	    			创建FileUrlResource对象, 获取UrlResource对象
+	 */
 	@Override
 	public Resource[] getResources(String locationPattern) throws IOException {
 		Assert.notNull(locationPattern, "Location pattern must not be null");
@@ -285,6 +299,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 			}
 			else {
 				// all class path resources with the given name
+				// Url转换成UrlResource对象
 				return findAllClassPathResources(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()));
 			}
 		}
@@ -326,6 +341,8 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 	/**
+	 * classpath*:路径得文件解析为UrlResource
+	 *
 	 * Find all class location resources with the given path via the ClassLoader.
 	 * Called by {@link #findAllClassPathResources(String)}.
 	 * @param path the absolute path within the classpath (never a leading slash)
@@ -338,6 +355,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		Enumeration<URL> resourceUrls = (cl != null ? cl.getResources(path) : ClassLoader.getSystemResources(path));
 		while (resourceUrls.hasMoreElements()) {
 			URL url = resourceUrls.nextElement();
+			//Url转换成UrlResource对象
 			result.add(convertClassLoaderURL(url));
 		}
 		if ("".equals(path)) {
