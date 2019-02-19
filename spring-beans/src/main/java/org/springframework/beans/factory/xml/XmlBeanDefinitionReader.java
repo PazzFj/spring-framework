@@ -301,8 +301,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		}
 		// 1、把资源对象Resource加入Set集合
 		if (!currentResources.add(encodedResource)) {
-			throw new BeanDefinitionStoreException(
-					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
+			throw new BeanDefinitionStoreException("Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
 		try {
 			// 2、获取输入流
