@@ -358,8 +358,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * 实际从指定的XML文件加载bean定义
-	 * @param inputSource the SAX InputSource to read from
-	 * @param resource the resource descriptor for the XML file
+	 * @param inputSource
+	 * @param resource ClassPathResource  或者 ClassPathContextResource  或者  UrlResource
 	 * @see #doLoadDocument
 	 * @see #registerBeanDefinitions
 	 */

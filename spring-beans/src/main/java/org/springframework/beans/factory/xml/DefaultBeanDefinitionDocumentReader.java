@@ -91,6 +91,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 */
 	@Override
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
+		// XmlReaderContext
 		this.readerContext = readerContext;
 		doRegisterBeanDefinitions(doc.getDocumentElement());
 	}
@@ -251,8 +252,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				}
 			}
 			catch (BeanDefinitionStoreException ex) {
-				getReaderContext().error(
-						"Failed to import bean definitions from URL location [" + location + "]", ele, ex);
+				getReaderContext().error("Failed to import bean definitions from URL location [" + location + "]", ele, ex);
 			}
 		}
 		else {
@@ -277,8 +277,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				getReaderContext().error("Failed to resolve current resource location", ele, ex);
 			}
 			catch (BeanDefinitionStoreException ex) {
-				getReaderContext().error(
-						"Failed to import bean definitions from relative location [" + location + "]", ele, ex);
+				getReaderContext().error("Failed to import bean definitions from relative location [" + location + "]", ele, ex);
 			}
 		}
 		Resource[] actResArray = actualResources.toArray(new Resource[0]);
@@ -287,8 +286,6 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	/**
 	 * 处理给定的别名元素，向注册中心注册别名
-	 *
-	 * Process the given alias element, registering the alias with the registry.
 	 */
 	protected void processAliasRegistration(Element ele) {
 		String name = ele.getAttribute(NAME_ATTRIBUTE);
@@ -314,9 +311,6 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	/**
 	 * 处理给定的bean元素，解析bean定义并将其注册到注册中心
-	 *
-	 * Process the given bean element, parsing the bean definition
-	 * and registering it with the registry.
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
 		// BeanDefinitionHolder

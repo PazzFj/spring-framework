@@ -1348,6 +1348,7 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * 解析自定义元素 <context:component-scan base-package="com">
+	 *     1、通过命名空间找到NamespaceHandler 在解析
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
