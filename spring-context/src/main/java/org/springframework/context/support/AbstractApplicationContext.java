@@ -1235,6 +1235,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of MessageSource interface
+	// 实现消息来源接口
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1278,6 +1279,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of ResourcePatternResolver interface
+	// 实现资源模式分解器
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1288,6 +1290,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of Lifecycle interface
+	// 实现生命周期接口方法
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1313,20 +1316,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	//---------------------------------------------------------------------
 
 	/**
-	 * 准备刷新BeanFactory,
+	 * 更新BeanFactory
 	 * @see AbstractRefreshableApplicationContext#refreshBeanFactory()
 	 */
 	protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 
 	/**
-	 * Subclasses must implement this method to release their internal bean factory.
-	 * This method gets invoked by {@link #close()} after all other shutdown work.
-	 * <p>Should never throw an exception but rather log shutdown failures.
+	 * 关闭BeanFactory
 	 */
 	protected abstract void closeBeanFactory();
 
 	/**
-	 * 返回当下ApplicationContext中的 BeanFactory , 其实就 DefaultListableBeanFactory
+	 * 获取BeanFactory
+	 * BeanFactory ==>> ListableBeanFactory ==>> ConfigurableListableBeanFactory ==>> DefaultListableBeanFactory
 	 * @see #refreshBeanFactory()
 	 * @see #closeBeanFactory()
 	 */

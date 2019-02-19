@@ -59,7 +59,13 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 
 	/**
-	 * 创建 XmlBeanDefinitionReader 并加载 BeanDefinitions
+	 * 加载BeanDefinition
+	 * 1、创建XmlBeanDefinitionReader xml读取器
+	 * 2、配置环境
+	 * 3、配置资源加载器
+	 * 4、配置是实体解析器
+	 * 5、设置xmlBeanDefinitionReader校验
+	 * 6、使用XmlBeanDefinitionReader 加载Resource[]
 	 */
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
