@@ -1051,15 +1051,13 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	public void validate() throws BeanDefinitionValidationException {
-		//如果方法重写
+		//方法重写不为空&&工厂方法名称不为空在
 		if (hasMethodOverrides() && getFactoryMethodName() != null) {
-			throw new BeanDefinitionValidationException(
-					"Cannot combine static factory method with method overrides: " +
-					"the static factory method must create the instance");
+			throw new BeanDefinitionValidationException("the static factory method must create the instance");
 		}
-
+		//当前beanClass是否为Class  如果为Class
 		if (hasBeanClass()) {
-			// 准备方法重写
+			// 对定义的方法重写
 			prepareMethodOverrides();
 		}
 	}

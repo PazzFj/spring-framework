@@ -111,7 +111,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Nullable
 	private String serializationId;
 
-	/** Whether to allow re-registration of a different definition with the same name. */
+	/** 允许BeanDefinition覆盖  默认为true */
 	private boolean allowBeanDefinitionOverriding = true;
 
 	/** Whether to allow eager class loading even for lazy-init beans. */
@@ -137,13 +137,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/** Map of singleton-only bean names, keyed by dependency type. */
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
-	/** 注册BeanDefinition的名称集合 */
+	/** 注册BeanDefinition的bean名称集合 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
-	/** 按注册顺序手动注册的单例的名称列表 */
+	/** 注册单例的bean名称列表 */
 	private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
 
-	/** 冻结所有BeanDefinition */
+	/** 冻结BeanDefinition名称的数组 */
 	@Nullable
 	private volatile String[] frozenBeanDefinitionNames;
 
@@ -844,47 +844,42 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
-				// beanClass 是否为Class
+				// beanClass为Class时重写方法
 				((AbstractBeanDefinition) beanDefinition).validate();
 			}
 			catch (BeanDefinitionValidationException ex) {
-				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
-						"Validation of bean definition failed", ex);
+				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName, "Validation of bean definition failed", ex);
 			}
 		}
-
+		//获取beanName的BeanDefinition
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
-		//BeanDefinition 是否注册
 		if (existingDefinition != null) {
+			//如果不允许BeanDefinition覆盖抛出异常 (默认true)
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
+			//BeanDefinition级别  0\1\2三种  BeanDefinition.ROLE_APPLICATION   BeanDefinition.ROLE_SUPPORT   BeanDefinition.ROLE_INFRASTRUCTURE
 			else if (existingDefinition.getRole() < beanDefinition.getRole()) {
 				// e.g. was ROLE_APPLICATION, now overriding with ROLE_SUPPORT or ROLE_INFRASTRUCTURE
 				if (logger.isInfoEnabled()) {
-					logger.info("Overriding user-defined bean definition for bean '" + beanName +
-							"' with a framework-generated bean definition: replacing [" +
-							existingDefinition + "] with [" + beanDefinition + "]");
+					logger.info("Overriding user-defined bean definition for bean '");
 				}
 			}
 			else if (!beanDefinition.equals(existingDefinition)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Overriding bean definition for bean '" + beanName +
-							"' with a different definition: replacing [" + existingDefinition +
-							"] with [" + beanDefinition + "]");
+					logger.debug("Overriding bean definition for bean '");
 				}
 			}
 			else {
 				if (logger.isTraceEnabled()) {
-					logger.trace("Overriding bean definition for bean '" + beanName +
-							"' with an equivalent definition: replacing [" + existingDefinition +
-							"] with [" + beanDefinition + "]");
+					logger.trace("Overriding bean definition for bean '");
 				}
 			}
+			//允许覆盖BeanDefinition
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
-			// 判断 alreadyCreated集合为不为空
+			// 判断 创建的Bean的beanName集合不为空
 			// 1.保存BeanDefinition
 			// 2.保存beanDefinitionName
 			// 3.把beanName从manualSingletonNames清除
@@ -905,17 +900,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 			else {
-				// Still in startup registration phase
-				this.beanDefinitionMap.put(beanName, beanDefinition); //注册BeanDefinition
-				this.beanDefinitionNames.add(beanName);		//注册BeanDefinitionName
-				this.manualSingletonNames.remove(beanName);		//清除掉单例的BeanName
+				//注册BeanDefinition
+				this.beanDefinitionMap.put(beanName, beanDefinition);
+				//注册BeanDefinitionName
+				this.beanDefinitionNames.add(beanName);
+				//清除掉单例的BeanName
+				this.manualSingletonNames.remove(beanName);
 			}
-			this.frozenBeanDefinitionNames = null;		//清空冻结的BeanDefinitionName
+			//清空需冻结的BeanDefinitionName
+			this.frozenBeanDefinitionNames = null;
 		}
 
-		// 已存在BeanDefinition 或者 包含了该单列beanName
+		// 已存在BeanDefinition 或者 包含了该单例beanName
 		if (existingDefinition != null || containsSingleton(beanName)) {
-			resetBeanDefinition(beanName);	//重置BeanDefinition
+			//重置BeanDefinition
+			resetBeanDefinition(beanName);
 		}
 	}
 
