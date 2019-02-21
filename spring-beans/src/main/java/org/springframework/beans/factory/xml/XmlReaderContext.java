@@ -116,7 +116,7 @@ public class XmlReaderContext extends ReaderContext {
 	}
 
 	/**
-	 * 为给定的bean定义调用bean名称生成器，并在生成的名称下注册bean定义
+	 * 生成beanName, 并注册BeanDefinition到中心
 	 */
 	public String registerWithGeneratedName(BeanDefinition beanDefinition) {
 		String generatedName = generateBeanName(beanDefinition);
