@@ -79,7 +79,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 	private int autoGrowCollectionLimit = Integer.MAX_VALUE;
 
 	@Nullable
-	Object wrappedObject;
+	Object wrappedObject;  //对象实例
 
 	private String nestedPath = "";
 
