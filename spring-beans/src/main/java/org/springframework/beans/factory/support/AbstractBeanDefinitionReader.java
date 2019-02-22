@@ -175,7 +175,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 			throw new BeanDefinitionStoreException("Cannot load bean definitions from location [" + location + "]: no ResourceLoader available");
 		}
 
-		//当前ResouceLoader 就是 ClassPathXmlApplicationContext
+		//当前ResourceLoader 就是 ClassPathXmlApplicationContext
 		if (resourceLoader instanceof ResourcePatternResolver) {
 			// Resource pattern matching available.
 			try {
