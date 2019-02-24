@@ -226,6 +226,24 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * 返回指定bean的一个实例，该实例可以是共享的，也可以是独立的
+	 * 获取bean:
+	 * 		1、从 SimpleAliasRegistry 中的 aliasMap 缓存中获取name对应得beanName ID
+	 * 		2、通过beanId 从 DefaultSingletonBeanRegistry 中的 singletonObjects 缓存中获取bean
+	 * 			2.1、存在的情况: 判断是否为FactoryBean
+	 * 				不是：不做任何处理直接返回
+	 * 				是：FactoryBeanRegistrySupport 类中的 factoryBeanObjectCache 缓存中获取
+	 *
+	 * 			2.2、不存在的情况:
+	 * 				2.2.1、是否在创建
+	 * 				2.2.2、获取父BeanFactory 如果parentBeanFactory不为空从fu工厂获取
+	 * 				2.2.3、标记bean正在创建
+	 * 				2.2.4、通过beanName获取BeanDefinition  （RootBeanDefinition）
+	 * 				2.2.5、通过BeanDefinition是否为单例 (DefaultSingletonBeanRegistry#getObject()方法)
+	 *						public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory)
+	 *					ObjectFactory 参数会调用 (AbstractAutowireCapableBeanFactory#creatBean()方法)
+	 *						protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+	 *					通过BeanDefinition创建对象 以及做注册一系列操作然后返回bean
+	 *
 	 */
 	@SuppressWarnings("unchecked")
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
@@ -1546,9 +1564,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
-	 * Mark the specified bean as already created (or about to be created).
-	 * <p>This allows the bean factory to optimize its caching for repeated
-	 * creation of the specified bean.
+	 * 将指定的bean标记为已创建(或即将创建)
+	 * <p>这允许bean工厂优化其缓存以重复创建指定的bean
 	 * @param beanName the name of the bean
 	 */
 	protected void markBeanAsCreated(String beanName) {
