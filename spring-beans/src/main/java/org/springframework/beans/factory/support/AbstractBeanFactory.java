@@ -140,7 +140,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** 自定义PropertyEditor以应用于此工厂的bean */
 	private final Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<>(4);
 
-	/** 要使用的自定义类型转换器，覆盖默认的PropertyEditor机制 */
+	/** 类型转换器，覆盖默认的PropertyEditor机制 */
 	@Nullable
 	private TypeConverter typeConverter;
 
@@ -150,10 +150,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** BeanPostProcessors集合 */
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
 
-	/** 指示是否已注册任何InstantiationAwareBeanPostProcessor */
+	/** 指示是否已注册任何InstantiationAwareBeanPostProcessor   (默认false) */
 	private volatile boolean hasInstantiationAwareBeanPostProcessors;
 
-	/** Indicates whether any DestructionAwareBeanPostProcessors have been registered. */
+	/** 指示是否已注册了任何DestructionAwareBeanPostProcessor   (默认false) */
 	private volatile boolean hasDestructionAwareBeanPostProcessors;
 
 	/** Map from scope identifier String to corresponding Scope. */
@@ -170,7 +170,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** 已经创建的bean的名称集合 */
 	private final Set<String> alreadyCreated = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
-	/** Names of beans that are currently in creation. */
+	/** 原型bean当前在创建 (一开始存放beanName, 然后是Set<String> beanName集合)*/
 	private final ThreadLocal<Object> prototypesCurrentlyInCreation = new NamedThreadLocal<>("Prototype beans currently in creation");
 
 
@@ -298,6 +298,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
+				// 标记bean正在创建  Set<String> alreadyCreated  缓存
 				markBeanAsCreated(beanName);
 			}
 
@@ -381,9 +382,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 		}
 
-		// Check if required type matches the type of the actual bean instance.
+		// 检查class类型参数不为空
 		if (requiredType != null && !requiredType.isInstance(bean)) {
 			try {
+				// 获取类型转换器
 				T convertedBean = getTypeConverter().convertIfNecessary(bean, requiredType);
 				if (convertedBean == null) {
 					throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
