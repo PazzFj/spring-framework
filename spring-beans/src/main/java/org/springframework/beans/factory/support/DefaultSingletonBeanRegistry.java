@@ -151,6 +151,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 	}
 
+	/**
+	 * 根据beanName 从缓存中获取对象
+	 */
 	@Override
 	@Nullable
 	public Object getSingleton(String beanName) {
@@ -161,7 +164,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * 返回在给定名称下注册的(原始)单例对象
 	 * <p>检查已经实例化的单例，并允许对当前创建的单例进行早期引用(解析循环引用)
 	 * @param allowEarlyReference 是否应该创建早期引用
-	 * @return the registered singleton object, or {@code null} if none found
+	 * @return 注册的单例对象，如果没有找到则为null
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
