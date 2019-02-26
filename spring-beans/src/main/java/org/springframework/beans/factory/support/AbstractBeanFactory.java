@@ -270,7 +270,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				// 标记beanName正在创建===>> Set<String> alreadyCreated 缓存
+				// 标记beanName正在创建===>> 加入Set<String> alreadyCreated 缓存
 				markBeanAsCreated(beanName);
 			}
 
@@ -280,7 +280,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// 检查BeanDefinition是否为抽象
 				checkMergedBeanDefinition(mbd, beanName, args);
 
-				// 保证当前bean所依赖的bean的初始化
+				// 获取BeanDefinition的DependsOn依赖
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -292,14 +292,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {
-							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
-									"'" + beanName + "' depends on missing bean '" + dep + "'", ex);
+							throw new BeanCreationException(mbd.getResourceDescription(), beanName, "dependsOn error", ex);
 						}
 					}
 				}
 
-				// Create bean instance.
+				// BeanDefinition 是否单例
 				if (mbd.isSingleton()) {
+					// getSingleton(String, ObjectFactory<?>)
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);
