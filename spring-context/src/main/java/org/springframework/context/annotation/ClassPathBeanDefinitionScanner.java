@@ -38,19 +38,14 @@ import org.springframework.util.PatternMatchUtils;
 /**
  * 一个bean定义扫描器，它检测类路径上的bean候选者，用给定的注册表({@code BeanFactory}或{@code ApplicationContext})注册相应的bean定义
  *
- * <p>通过可配置类型筛选器检测候选类。默认的过滤器包括用Spring注释的类
+ * <p>通过可配置类型筛选器检测候选类。默认的过滤器包括用Spring注解的类
  * {@link org.springframework.stereotype.Component @Component},
  * {@link org.springframework.stereotype.Repository @Repository},
  * {@link org.springframework.stereotype.Service @Service}, or
  * {@link org.springframework.stereotype.Controller @Controller} stereotype.
  *
- * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
- * JSR-330's {@link javax.inject.Named} annotations, if available.
+ * 还支持Java EE 6的{@link javax.annotation.ManagedBean}和JSR-330的{@link javax.inject.Named}注解(如果可用)
  *
- * @author Mark Fisher
- * @author Juergen Hoeller
- * @author Chris Beams
- * @since 2.5
  * @see AnnotationConfigApplicationContext#scan
  * @see org.springframework.stereotype.Component
  * @see org.springframework.stereotype.Repository
