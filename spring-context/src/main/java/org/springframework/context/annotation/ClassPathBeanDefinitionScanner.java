@@ -244,7 +244,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 		doScan(basePackages);
 
-		// 必要时，注册注释配置处理器
+		// 必要时，注册注解配置处理器
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}
@@ -277,9 +277,13 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			// 遍历BeanDefinition 把BeanDefinition封装成一个BeanDefinitionHolder 然后在注册到DefaultListableBeanFactory
 			for (BeanDefinition candidate : candidates) {
+				// 作用域解析器, 解析Bean定义获取Scope
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				// bean名称生成器, 生成Bean名称
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+
+				// 创建的是 ScannedGenericBeanDefinition继承GenericBeanDefinition extends AbstractBeanDefinition
 				if (candidate instanceof AbstractBeanDefinition) {
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}

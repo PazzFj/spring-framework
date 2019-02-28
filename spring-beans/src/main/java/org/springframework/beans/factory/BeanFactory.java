@@ -33,73 +33,73 @@ public interface BeanFactory {
 
 
 	/**
-	 *
+	 * 获取给定的名称对应的bean对象
 	 */
 	Object getBean(String name) throws BeansException;
 
 	/**
-	 *
+	 * 获取给定的名称对应的bean对象
 	 */
 	<T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
 	/**
-	 *
+	 * 获取给定的名称对应的bean对象
 	 */
 	Object getBean(String name, Object... args) throws BeansException;
 
 	/**
-	 *
+	 * 获取给定的Class对应的bean对象
 	 */
 	<T> T getBean(Class<T> requiredType) throws BeansException;
 
 	/**
-	 *
+	 * 获取给定的Class对应的bean对象
 	 */
 	<T> T getBean(Class<T> requiredType, Object... args) throws BeansException;
 
 	/**
-	 *
+	 * 获取Bean提供器
 	 */
 	<T> ObjectProvider<T> getBeanProvider(Class<T> requiredType);
 
 	/**
-	 *
+	 * 获取Bean提供器
 	 */
 	<T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType);
 
 	/**
-	 *
+	 * 检查给点名称的bean是否存在
 	 */
 	boolean containsBean(String name);
 
 	/**
-	 *
+	 * 检查给点名称的bean是否单例
 	 */
 	boolean isSingleton(String name) throws NoSuchBeanDefinitionException;
 
 	/**
-	 *
+	 * 检查给点名称的bean是否原型
 	 */
 	boolean isPrototype(String name) throws NoSuchBeanDefinitionException;
 
 	/**
-	 * 检查具有给定名称的bean是否与指定类型匹配。
+	 * 检查具有给定名称的bean是否与指定类型匹配
 	 */
 	boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException;
 
 	/**
-	 * 检查具有给定名称的bean是否与指定类型匹配。
+	 * 检查具有给定名称的bean是否与指定类型匹配
 	 */
 	boolean isTypeMatch(String name, Class<?> typeToMatch) throws NoSuchBeanDefinitionException;
 
 	/**
-	 *
+	 * 获取给定名称的bean 的类型
 	 */
 	@Nullable
 	Class<?> getType(String name) throws NoSuchBeanDefinitionException;
 
 	/**
-	 *
+	 * 获取给定名称的bean的所有别名, 返回一个别名数组
 	 */
 	String[] getAliases(String name);
 
