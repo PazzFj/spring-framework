@@ -119,6 +119,7 @@ public abstract class AopConfigUtils {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		// 是否存在该 BeanDefinition 如果存就升级该BeanDefinition 的 beanClassName
 		// 如果不存在就创建 RootBeanDefinition
+		// 如果存在internalAutoProxyCreator 名称的Bean定义, 获取该Bean定义
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
