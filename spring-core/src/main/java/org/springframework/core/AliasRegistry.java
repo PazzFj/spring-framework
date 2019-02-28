@@ -22,22 +22,22 @@ package org.springframework.core;
 public interface AliasRegistry {
 
 	/**
-	 * 给定名称，为其注册别名
+	 * 注册别名, key为别名, value为beanId
 	 */
 	void registerAlias(String name, String alias);
 
 	/**
-	 * 从这个注册表中删除指定的别名
+	 * 清除该别名
 	 */
 	void removeAlias(String alias);
 
 	/**
-	 * 确定此给定名称是否定义为别名
+	 * 确定是否别名
 	 */
 	boolean isAlias(String name);
 
 	/**
-	 * 如果已定义，则返回给定名称的别名
+	 * 返回bean对应的所有别名数组
 	 */
 	String[] getAliases(String name);
 
