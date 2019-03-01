@@ -45,8 +45,12 @@ import org.springframework.lang.Nullable;
 public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 
 	/**
-	 * Stores the {@link BeanDefinitionParser} implementations keyed by the
-	 * local name of the {@link Element Elements} they handle.
+	 * 存储由它们处理的{@link Element Elements}的本地名称键值的{@link BeanDefinitionParser}实现
+	 * 每个NamespaceHandler 都会对应着几个Bean定义解析器, <如:aop 标签>
+	 *     <aop:config />
+	 *     <aop:aspectj-autoproxy />
+	 *     <aop:scoped-proxy />
+	 *     就会对应 ConfigBeanDefinitionParser   AspectJAutoProxyBeanDefinitionParser...
 	 */
 	private final Map<String, BeanDefinitionParser> parsers = new HashMap<>();
 

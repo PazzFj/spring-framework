@@ -28,8 +28,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Generic auto proxy creator that builds AOP proxies for specific beans
- * based on detected Advisors for each bean.
+ * 通用自动代理创建者，它基于为每个bean检测到的建议器为特定bean构建AOP代理
  *
  * <p>Subclasses must implement the abstract {@link #findCandidateAdvisors()}
  * method to return a list of Advisors applying to any object. Subclasses can

@@ -28,8 +28,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * {@link AspectJAwareAdvisorAutoProxyCreator} subclass that processes all AspectJ
- * annotation aspects in the current application context, as well as Spring Advisors.
+ * {@link AspectJAwareAdvisorAutoProxyCreator}子类，它处理当前应用程序上下文中所有AspectJ注解方面以及Spring advisor
  *
  * <p>Any AspectJ annotated classes will automatically be recognized, and their
  * advice applied if Spring AOP's proxy-based model is capable of applying it.
@@ -53,10 +52,10 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	private List<Pattern> includePatterns;
 
 	@Nullable
-	private AspectJAdvisorFactory aspectJAdvisorFactory;
+	private AspectJAdvisorFactory aspectJAdvisorFactory;	//factory
 
 	@Nullable
-	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;
+	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;   // builder
 
 
 	/**
@@ -81,8 +80,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		if (this.aspectJAdvisorFactory == null) {
 			this.aspectJAdvisorFactory = new ReflectiveAspectJAdvisorFactory(beanFactory);
 		}
-		this.aspectJAdvisorsBuilder =
-				new BeanFactoryAspectJAdvisorsBuilderAdapter(beanFactory, this.aspectJAdvisorFactory);
+		this.aspectJAdvisorsBuilder = new BeanFactoryAspectJAdvisorsBuilderAdapter(beanFactory, this.aspectJAdvisorFactory);
 	}
 
 
@@ -97,6 +95,9 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		return advisors;
 	}
 
+	/**
+	 * 是否基础设施类
+	 */
 	@Override
 	protected boolean isInfrastructureClass(Class<?> beanClass) {
 		// Previously we setProxyTargetClass(true) in the constructor, but that has too
@@ -112,10 +113,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	}
 
 	/**
-	 * Check whether the given aspect bean is eligible for auto-proxying.
-	 * <p>If no &lt;aop:include&gt; elements were used then "includePatterns" will be
-	 * {@code null} and all beans are included. If "includePatterns" is non-null,
-	 * then one of the patterns must match.
+	 * 检查给定的方面bean是否有资格进行自动代理
 	 */
 	protected boolean isEligibleAspectBean(String beanName) {
 		if (this.includePatterns == null) {
@@ -138,9 +136,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	 */
 	private class BeanFactoryAspectJAdvisorsBuilderAdapter extends BeanFactoryAspectJAdvisorsBuilder {
 
-		public BeanFactoryAspectJAdvisorsBuilderAdapter(
-				ListableBeanFactory beanFactory, AspectJAdvisorFactory advisorFactory) {
-
+		public BeanFactoryAspectJAdvisorsBuilderAdapter(ListableBeanFactory beanFactory, AspectJAdvisorFactory advisorFactory) {
 			super(beanFactory, advisorFactory);
 		}
 
