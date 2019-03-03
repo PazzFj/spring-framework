@@ -46,8 +46,14 @@ import org.springframework.aop.SpringProxy;
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
+	/**
+	 * 默认使用Jdk动态代理
+	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+		// config.isOptimize()           (默认false)
+		// config.isProxyTargetClass()   (默认false)
+		// hasNoUserSuppliedProxyInterfaces(config)     (是否有接口)
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {
@@ -64,9 +70,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 	}
 
 	/**
-	 * Determine whether the supplied {@link AdvisedSupport} has only the
-	 * {@link org.springframework.aop.SpringProxy} interface specified
-	 * (or no proxy interfaces specified at all).
+	 * 确定提供的{@link AdvisedSupport}是否只有{@link org.springframework.aop.SpringProxy}接口(或者根本没有指定任何代理接口)
 	 */
 	private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
 		Class<?>[] ifcs = config.getProxiedInterfaces();

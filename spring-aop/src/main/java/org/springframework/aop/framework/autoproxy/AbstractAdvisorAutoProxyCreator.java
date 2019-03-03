@@ -29,25 +29,13 @@ import org.springframework.util.Assert;
 
 /**
  * 通用自动代理创建者，它基于为每个bean检测到的建议器为特定bean构建AOP代理
- *
- * <p>Subclasses must implement the abstract {@link #findCandidateAdvisors()}
- * method to return a list of Advisors applying to any object. Subclasses can
- * also override the inherited {@link #shouldSkip} method to exclude certain
- * objects from auto-proxying.
- *
- * <p>Advisors or advices requiring ordering should implement the
- * {@link org.springframework.core.Ordered} interface. This class sorts
- * Advisors by Ordered order value. Advisors that don't implement the
- * Ordered interface will be considered as unordered; they will appear
- * at the end of the advisor chain in undefined order.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see #findCandidateAdvisors
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
+	/**
+	 * bean工厂
+	 */
 	@Nullable
 	private BeanFactoryAdvisorRetrievalHelper advisorRetrievalHelper;
 
@@ -56,8 +44,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	public void setBeanFactory(BeanFactory beanFactory) {
 		super.setBeanFactory(beanFactory);
 		if (!(beanFactory instanceof ConfigurableListableBeanFactory)) {
-			throw new IllegalArgumentException(
-					"AdvisorAutoProxyCreator requires a ConfigurableListableBeanFactory: " + beanFactory);
+			throw new IllegalArgumentException("AdvisorAutoProxyCreator requires a ConfigurableListableBeanFactory: " + beanFactory);
 		}
 		initBeanFactory((ConfigurableListableBeanFactory) beanFactory);
 	}
@@ -67,11 +54,12 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	}
 
 
+	/**
+	 * 返回是否要代理给定的bean，要应用的附加建议(例如AOP联盟拦截器)和顾问
+	 */
 	@Override
 	@Nullable
-	protected Object[] getAdvicesAndAdvisorsForBean(
-			Class<?> beanClass, String beanName, @Nullable TargetSource targetSource) {
-
+	protected Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName, @Nullable TargetSource targetSource) {
 		List<Advisor> advisors = findEligibleAdvisors(beanClass, beanName);
 		if (advisors.isEmpty()) {
 			return DO_NOT_PROXY;
@@ -80,28 +68,28 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	}
 
 	/**
-	 * Find all eligible Advisors for auto-proxying this class.
-	 * @param beanClass the clazz to find advisors for
-	 * @param beanName the name of the currently proxied bean
-	 * @return the empty List, not {@code null},
-	 * if there are no pointcuts or interceptors
-	 * @see #findCandidateAdvisors
-	 * @see #sortAdvisors
-	 * @see #extendAdvisors
+	 * 找到所有合适的顾问自动代理这个类
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
+		// 获取所有的Advisor.class的bean集合
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
+		// 过滤beanClass是否跟当前顾问是否匹配
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
+		// 标记(Advisor)
+		// Advisor是否属于InstantiationModelAwarePointcutAdvisor
+		// Advisor的Advice是否属于AbstractAspectJAdvice
+		// Advisor是否属于PointcutAdvisor 并且 PointcutAdvisor的Pointcut是否属于AspectJExpressionPointcut
+		// 以上三种符合一种就添加特殊的 Advisor  (DefaultPointcutAdvisor)
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
+			// 将Advisor排序...    (TODO 这里的排序不知道为什么...)
 			eligibleAdvisors = sortAdvisors(eligibleAdvisors);
 		}
 		return eligibleAdvisors;
 	}
 
 	/**
-	 * Find all candidate Advisors to use in auto-proxying.
-	 * @return the List of candidate Advisors
+	 * 找到所有Advisor.class使用在自动代理bean
 	 */
 	protected List<Advisor> findCandidateAdvisors() {
 		Assert.state(this.advisorRetrievalHelper != null, "No BeanFactoryAdvisorRetrievalHelper available");
@@ -109,44 +97,29 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	}
 
 	/**
-	 * Search the given candidate Advisors to find all Advisors that
-	 * can apply to the specified bean.
-	 * @param candidateAdvisors the candidate Advisors
-	 * @param beanClass the target's bean class
-	 * @param beanName the target's bean name
-	 * @return the List of applicable Advisors
-	 * @see ProxyCreationContext#getCurrentProxiedBeanName()
+	 * 搜索给定的候选顾问以查找所有可以应用于指定bean的顾问
 	 */
-	protected List<Advisor> findAdvisorsThatCanApply(
-			List<Advisor> candidateAdvisors, Class<?> beanClass, String beanName) {
-
-		ProxyCreationContext.setCurrentProxiedBeanName(beanName);
+	protected List<Advisor> findAdvisorsThatCanApply(List<Advisor> candidateAdvisors, Class<?> beanClass, String beanName) {
+		ProxyCreationContext.setCurrentProxiedBeanName(beanName);  //设置代理创建上下文中的属性的名称为beanName
 		try {
+			// 过滤掉不是 IntroductionAdvisor、Pointcut 的顾问并且当前beanClass是否跟当前顾问是否匹配
 			return AopUtils.findAdvisorsThatCanApply(candidateAdvisors, beanClass);
 		}
 		finally {
+			// 设置代理创建上下文中的属性的名称为null
 			ProxyCreationContext.setCurrentProxiedBeanName(null);
 		}
 	}
 
 	/**
-	 * Return whether the Advisor bean with the given name is eligible
-	 * for proxying in the first place.
-	 * @param beanName the name of the Advisor bean
-	 * @return whether the bean is eligible
+	 * 首先返回具有给定名称的Advisor bean是否有资格进行代理
 	 */
 	protected boolean isEligibleAdvisorBean(String beanName) {
 		return true;
 	}
 
 	/**
-	 * Sort advisors based on ordering. Subclasses may choose to override this
-	 * method to customize the sorting strategy.
-	 * @param advisors the source List of Advisors
-	 * @return the sorted List of Advisors
-	 * @see org.springframework.core.Ordered
-	 * @see org.springframework.core.annotation.Order
-	 * @see org.springframework.core.annotation.AnnotationAwareOrderComparator
+	 * 根据排序对顾问进行排序。子类可以选择覆盖此方法来定制排序策略
 	 */
 	protected List<Advisor> sortAdvisors(List<Advisor> advisors) {
 		AnnotationAwareOrderComparator.sort(advisors);

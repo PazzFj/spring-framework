@@ -36,7 +36,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	private final List<AdvisedSupportListener> listeners = new LinkedList<>();
 
-	/** Set to true when the first AOP proxy has been created. */
+	/** 在创建第一个AOP代理时设置为true */
 	private boolean active = false;
 
 
@@ -95,8 +95,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 
 	/**
-	 * Subclasses should call this to get a new AOP proxy. They should <b>not</b>
-	 * create an AOP proxy with {@code this} as an argument.
+	 * 子类应该调用它来获得一个新的AOP代理。它们应该<b>，而不是</b>，用{@code this}作为参数创建AOP代理
 	 */
 	protected final synchronized AopProxy createAopProxy() {
 		if (!this.active) {

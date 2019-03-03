@@ -23,21 +23,12 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.interceptor.ExposeInvocationInterceptor;
 
 /**
- * Utility methods for working with AspectJ proxies.
- *
- * @author Rod Johnson
- * @author Ramnivas Laddad
- * @since 2.0
+ * 使用AspectJ代理的实用程序方法
  */
 public abstract class AspectJProxyUtils {
 
 	/**
-	 * Add special advisors if necessary to work with a proxy chain that contains AspectJ advisors.
-	 * This will expose the current Spring AOP invocation (necessary for some AspectJ pointcut matching)
-	 * and make available the current AspectJ JoinPoint. The call will have no effect if there are no
-	 * AspectJ advisors in the advisor chain.
-	 * @param advisors the advisors available
-	 * @return {@code true} if any special {@link Advisor Advisors} were added, otherwise {@code false}
+	 * 如果需要使用包含AspectJ advisor的代理链，可以添加特殊的advisor
 	 */
 	public static boolean makeAdvisorChainAspectJCapableIfNecessary(List<Advisor> advisors) {
 		// Don't add advisors to an empty list; may indicate that proxying is just not required
@@ -59,7 +50,7 @@ public abstract class AspectJProxyUtils {
 	}
 
 	/**
-	 * Determine whether the given Advisor contains an AspectJ advice.
+	 * 确定给定的Advisor工具是否包含AspectJ通知
 	 * @param advisor the Advisor to check
 	 */
 	private static boolean isAspectJAdvice(Advisor advisor) {

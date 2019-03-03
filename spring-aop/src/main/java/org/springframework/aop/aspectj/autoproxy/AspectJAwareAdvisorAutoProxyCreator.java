@@ -40,6 +40,7 @@ import org.springframework.util.ClassUtils;
 @SuppressWarnings("serial")
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 
+	// 顾问比较
 	private static final Comparator<Advisor> DEFAULT_PRECEDENCE_COMPARATOR = new AspectJPrecedenceComparator();
 
 
@@ -79,16 +80,23 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 	 */
 	@Override
 	protected void extendAdvisors(List<Advisor> candidateAdvisors) {
+		// 标记(Advisor)
+		// Advisor是否属于InstantiationModelAwarePointcutAdvisor
+		// Advisor的Advice是否属于AbstractAspectJAdvice
+		// Advisor是否属于PointcutAdvisor 并且 PointcutAdvisor的Pointcut是否属于AspectJExpressionPointcut
+		// 以上三种符合一种就添加特殊的 Advisor  (DefaultPointcutAdvisor)
 		AspectJProxyUtils.makeAdvisorChainAspectJCapableIfNecessary(candidateAdvisors);
 	}
 
+	/**
+	 * 应该跳过
+	 */
 	@Override
 	protected boolean shouldSkip(Class<?> beanClass, String beanName) {
-		// TODO: Consider optimization by caching the list of the aspect names
+		// TODO: 考虑通过缓存方面名称列表进行优化
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		for (Advisor advisor : candidateAdvisors) {
-			if (advisor instanceof AspectJPointcutAdvisor &&
-					((AspectJPointcutAdvisor) advisor).getAspectName().equals(beanName)) {
+			if (advisor instanceof AspectJPointcutAdvisor && ((AspectJPointcutAdvisor) advisor).getAspectName().equals(beanName)) {
 				return true;
 			}
 		}

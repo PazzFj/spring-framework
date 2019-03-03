@@ -24,8 +24,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 /**
- * Utilities for auto-proxy aware components.
- * Mainly for internal use within the framework.
+ * 支持自动代理的组件的实用程序。主要用于框架内部使用
  *
  * @author Juergen Hoeller
  * @since 2.0.3
@@ -57,16 +56,12 @@ public abstract class AutoProxyUtils {
 
 
 	/**
-	 * Determine whether the given bean should be proxied with its target
-	 * class rather than its interfaces. Checks the
-	 * {@link #PRESERVE_TARGET_CLASS_ATTRIBUTE "preserveTargetClass" attribute}
-	 * of the corresponding bean definition.
+	 * 确定是否应该用目标类而不是接口代理给定的bean。检查对应bean定义的{@link #PRESERVE_TARGET_CLASS_ATTRIBUTE "preserveTargetClass"属性}
 	 * @param beanFactory the containing ConfigurableListableBeanFactory
 	 * @param beanName the name of the bean
 	 * @return whether the given bean should be proxied with its target class
 	 */
-	public static boolean shouldProxyTargetClass(
-			ConfigurableListableBeanFactory beanFactory, @Nullable String beanName) {
+	public static boolean shouldProxyTargetClass(ConfigurableListableBeanFactory beanFactory, @Nullable String beanName) {
 
 		if (beanName != null && beanFactory.containsBeanDefinition(beanName)) {
 			BeanDefinition bd = beanFactory.getBeanDefinition(beanName);

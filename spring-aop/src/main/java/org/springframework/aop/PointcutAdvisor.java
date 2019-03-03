@@ -17,15 +17,14 @@
 package org.springframework.aop;
 
 /**
- * Superinterface for all Advisors that are driven by a pointcut.
- * This covers nearly all advisors except introduction advisors,
- * for which method-level matching doesn't apply.
+ * 所有由切入点驱动的建议器的超接口。这几乎涵盖了除介绍顾问之外的所有顾问，方法级匹配不适用于介绍顾问
  *
  * @author Rod Johnson
  */
 public interface PointcutAdvisor extends Advisor {
 
 	/**
+	 * 获取驱动这个advisor工具的切入点
 	 * Get the Pointcut that drives this advisor.
 	 */
 	Pointcut getPointcut();

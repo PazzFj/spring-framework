@@ -19,33 +19,31 @@ package org.springframework.aop;
 import org.aopalliance.aop.Advice;
 
 /**
- * Base interface holding AOP <b>advice</b> (action to take at a joinpoint)
- * and a filter determining the applicability of the advice (such as
- * a pointcut). <i>This interface is not for use by Spring users, but to
- * allow for commonality in support for different types of advice.</i>
+ * 顾问：在通知的基础之上，在细化我们的aop切面！
  *
- * <p>Spring AOP is based around <b>around advice</b> delivered via method
- * <b>interception</b>, compliant with the AOP Alliance interception API.
- * The Advisor interface allows support for different types of advice,
- * such as <b>before</b> and <b>after</b> advice, which need not be
- * implemented using interception.
+ * 通知和顾问都是切面的实现方式！
+ * 通知是顾问的一个属性！
  *
- * @author Rod Johnson
- * @author Juergen Hoeller
+ * 顾问会通过我们的设置，将不同的通知，在不通过的时间点，把切面
+ * 织入到不同的切入点！
+ *
+ * PointCutAdvisor接口！
+ * 比较常用的两个实现类：
+ * NameMatchMethodPointcutAdvisor :根据切入点（主业务方法）名称织入切面！
+ * RegexpMethodPointcutAdvisor :根据自定义的正则表达式织入切面！
+ *
  */
 public interface Advisor {
 
 	/**
-	 * Common placeholder for an empty {@code Advice} to be returned from
-	 * {@link #getAdvice()} if no proper advice has been configured (yet).
+	 * 如果没有配置正确的通知(还没有)，则从{@link #getAdvice()}返回空的{@code Advice}的通用占位符
 	 * @since 5.0
 	 */
 	Advice EMPTY_ADVICE = new Advice() {};
 
 
 	/**
-	 * Return the advice part of this aspect. An advice may be an
-	 * interceptor, a before advice, a throws advice, etc.
+	 * 返回这方面的建议部分。一个通知可以是一个拦截器，一个before通知，一个throw通知，等等
 	 * @return the advice that should apply if the pointcut matches
 	 * @see org.aopalliance.intercept.MethodInterceptor
 	 * @see BeforeAdvice
@@ -55,14 +53,8 @@ public interface Advisor {
 	Advice getAdvice();
 
 	/**
-	 * Return whether this advice is associated with a particular instance
-	 * (for example, creating a mixin) or shared with all instances of
-	 * the advised class obtained from the same Spring bean factory.
-	 * <p><b>Note that this method is not currently used by the framework.</b>
-	 * Typical Advisor implementations always return {@code true}.
-	 * Use singleton/prototype bean definitions or appropriate programmatic
-	 * proxy creation to ensure that Advisors have the correct lifecycle model.
-	 * @return whether this advice is associated with a particular target instance
+	 * 返回此通知是与特定实例关联(例如，创建mixin)，还是与从相同Spring bean工厂获得的建议类的所有实例共享
+	 * @return 此通知是否与特定目标实例关联
 	 */
 	boolean isPerInstance();
 

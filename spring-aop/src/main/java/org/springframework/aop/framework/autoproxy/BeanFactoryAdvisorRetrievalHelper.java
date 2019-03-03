@@ -31,11 +31,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Helper for retrieving standard Spring Advisors from a BeanFactory,
- * for use with auto-proxying.
- *
- * @author Juergen Hoeller
- * @since 2.0.2
+ * 用于从bean工厂检索标准Spring advisor的助手，用于自动代理
  * @see AbstractAdvisorAutoProxyCreator
  */
 public class BeanFactoryAdvisorRetrievalHelper {
@@ -49,8 +45,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 
 	/**
-	 * Create a new BeanFactoryAdvisorRetrievalHelper for the given BeanFactory.
-	 * @param beanFactory the ListableBeanFactory to scan
+	 * 为给定的BeanFactory 创建一个新的 BeanFactoryAdvisorRetrievalHelper
 	 */
 	public BeanFactoryAdvisorRetrievalHelper(ConfigurableListableBeanFactory beanFactory) {
 		Assert.notNull(beanFactory, "ListableBeanFactory must not be null");
@@ -59,19 +54,16 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 
 	/**
-	 * Find all eligible Advisor beans in the current bean factory,
-	 * ignoring FactoryBeans and excluding beans that are currently in creation.
-	 * @return the list of {@link org.springframework.aop.Advisor} beans
-	 * @see #isEligibleBean
+	 * 在当前bean工厂中找到所有符合条件的Advisor bean，忽略factoryBean并排除当前正在创建的bean
+	 * 主要是通过BeanFactory获取所有Advisor.class的bean名称
+	 * 得到所有的bean名称集合。在通过bean工厂根据name获取Advisor的bean集合
 	 */
 	public List<Advisor> findAdvisorBeans() {
-		// Determine list of advisor bean names, if not cached already.
+		// 确定advisor bean名称的列表(如果还没有缓存的话)
 		String[] advisorNames = this.cachedAdvisorBeanNames;
 		if (advisorNames == null) {
-			// Do not initialize FactoryBeans here: We need to leave all regular beans
-			// uninitialized to let the auto-proxy creator apply to them!
-			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
-					this.beanFactory, Advisor.class, true, false);
+			// 不要在这里初始化factoryBean:我们需要不初始化所有常规bean，以便让自动代理创建者应用于它们
+			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this.beanFactory, Advisor.class, true, false);
 			this.cachedAdvisorBeanNames = advisorNames;
 		}
 		if (advisorNames.length == 0) {
@@ -114,10 +106,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 	}
 
 	/**
-	 * Determine whether the aspect bean with the given name is eligible.
-	 * <p>The default implementation always returns {@code true}.
-	 * @param beanName the name of the aspect bean
-	 * @return whether the bean is eligible
+	 * 确定具有给定名称的方面bean是否合格
 	 */
 	protected boolean isEligibleBean(String beanName) {
 		return true;

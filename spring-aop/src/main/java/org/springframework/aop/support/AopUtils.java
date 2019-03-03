@@ -42,18 +42,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * Utility methods for AOP support code.
+ * AOP支持代码的实用方法
  *
- * <p>Mainly for internal use within Spring's AOP support.
- *
- * <p>See {@link org.springframework.aop.framework.AopProxyUtils} for a
- * collection of framework-specific AOP utility methods which depend
- * on internals of Spring's AOP framework implementation.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @see org.springframework.aop.framework.AopProxyUtils
+ * <p>主要用于Spring AOP支持中的内部使用
  */
 public abstract class AopUtils {
 
@@ -216,7 +207,7 @@ public abstract class AopUtils {
 	 * out a pointcut for a class.
 	 * @param pc the static or dynamic pointcut to check
 	 * @param targetClass the class to test
-	 * @param hasIntroductions whether or not the advisor chain
+	 * @param hasIntroductions 无论Advisor(顾问)是否锁住
 	 * for this bean includes any introductions
 	 * @return whether the pointcut can apply on any method
 	 */
@@ -258,26 +249,14 @@ public abstract class AopUtils {
 	}
 
 	/**
-	 * Can the given advisor apply at all on the given class?
-	 * This is an important test as it can be used to optimize
-	 * out a advisor for a class.
-	 * @param advisor the advisor to check
-	 * @param targetClass class we're testing
-	 * @return whether the pointcut can apply on any method
+	 * 目标class是否能能应用Advisor
 	 */
 	public static boolean canApply(Advisor advisor, Class<?> targetClass) {
 		return canApply(advisor, targetClass, false);
 	}
 
 	/**
-	 * Can the given advisor apply at all on the given class?
-	 * <p>This is an important test as it can be used to optimize out a advisor for a class.
-	 * This version also takes into account introductions (for IntroductionAwareMethodMatchers).
-	 * @param advisor the advisor to check
-	 * @param targetClass class we're testing
-	 * @param hasIntroductions whether or not the advisor chain for this bean includes
-	 * any introductions
-	 * @return whether the pointcut can apply on any method
+	 * 目标class是否能能应用Advisor
 	 */
 	public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean hasIntroductions) {
 		if (advisor instanceof IntroductionAdvisor) {
@@ -307,6 +286,7 @@ public abstract class AopUtils {
 		}
 		List<Advisor> eligibleAdvisors = new ArrayList<>();
 		for (Advisor candidate : candidateAdvisors) {
+			// 判断当前顾问 Advisor 是否属于IntroductionAdvisor(引用顾问) 并且class是否能应用Advisor
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
 				eligibleAdvisors.add(candidate);
 			}
