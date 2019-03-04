@@ -114,7 +114,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 
 
 	/**
-	 * Inner class to just introduce an AOP framework dependency when actually in proxy mode.
+	 * 内部类，以便在实际处于代理模式时引入AOP框架依赖项
 	 */
 	private static class AopAutoProxyConfigurer {
 
@@ -126,8 +126,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 				Object eleSource = parserContext.extractSource(element);
 
 				// Create the TransactionAttributeSource definition.
-				RootBeanDefinition sourceDef = new RootBeanDefinition(
-						"org.springframework.transaction.annotation.AnnotationTransactionAttributeSource");
+				RootBeanDefinition sourceDef = new RootBeanDefinition("org.springframework.transaction.annotation.AnnotationTransactionAttributeSource");
 				sourceDef.setSource(eleSource);
 				sourceDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 				String sourceName = parserContext.getReaderContext().registerWithGeneratedName(sourceDef);
