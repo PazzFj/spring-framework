@@ -19,8 +19,7 @@ package org.springframework.core.type;
 import java.util.Set;
 
 /**
- * Interface that defines abstract access to the annotations of a specific
- * class, in a form that does not require that class to be loaded yet.
+ * 接口，该接口定义对特定类的注解的抽象访问，其形式不需要加载该类
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -34,57 +33,33 @@ import java.util.Set;
 public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata {
 
 	/**
-	 * Get the fully qualified class names of all annotation types that
-	 * are <em>present</em> on the underlying class.
-	 * @return the annotation type names
+	 * 获取所有注解类型
 	 */
 	Set<String> getAnnotationTypes();
 
 	/**
-	 * Get the fully qualified class names of all meta-annotation types that
-	 * are <em>present</em> on the given annotation type on the underlying class.
-	 * @param annotationName the fully qualified class name of the meta-annotation
-	 * type to look for
-	 * @return the meta-annotation type names, or an empty set if none found
+	 * 获取所有<em>的元注释类型的完全限定类名，这些元注释类型在基础类的给定注释类型上呈现</em>
+	 * @return 元注释类型名称，如果没有找到，则为空集
 	 */
 	Set<String> getMetaAnnotationTypes(String annotationName);
 
 	/**
-	 * Determine whether an annotation of the given type is <em>present</em> on
-	 * the underlying class.
-	 * @param annotationName the fully qualified class name of the annotation
-	 * type to look for
-	 * @return {@code true} if a matching annotation is present
+	 * 是否注解
 	 */
 	boolean hasAnnotation(String annotationName);
 
 	/**
-	 * Determine whether the underlying class has an annotation that is itself
-	 * annotated with the meta-annotation of the given type.
-	 * @param metaAnnotationName the fully qualified class name of the
-	 * meta-annotation type to look for
-	 * @return {@code true} if a matching meta-annotation is present
+	 *
 	 */
 	boolean hasMetaAnnotation(String metaAnnotationName);
 
 	/**
-	 * Determine whether the underlying class has any methods that are
-	 * annotated (or meta-annotated) with the given annotation type.
-	 * @param annotationName the fully qualified class name of the annotation
-	 * type to look for
+	 *
 	 */
 	boolean hasAnnotatedMethods(String annotationName);
 
 	/**
-	 * Retrieve the method metadata for all methods that are annotated
-	 * (or meta-annotated) with the given annotation type.
-	 * <p>For any returned method, {@link MethodMetadata#isAnnotated} will
-	 * return {@code true} for the given annotation type.
-	 * @param annotationName the fully qualified class name of the annotation
-	 * type to look for
-	 * @return a set of {@link MethodMetadata} for methods that have a matching
-	 * annotation. The return value will be an empty set if no methods match
-	 * the annotation type.
+	 *
 	 */
 	Set<MethodMetadata> getAnnotatedMethods(String annotationName);
 

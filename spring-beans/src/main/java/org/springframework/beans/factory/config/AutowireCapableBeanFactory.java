@@ -306,7 +306,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * instance, invoking their {@code postProcessAfterInitialization} methods.
 	 * The returned bean instance may be a wrapper around the original.
 	 * @param existingBean the new bean instance
-	 * (only passed to {@link BeanPostProcessor BeanPostProcessors};
+	 * (only passed to {@link 	BeanPostProcessor BeanPostProcessors};
 	 * can follow the {@link #ORIGINAL_INSTANCE_SUFFIX} convention in order to
 	 * enforce the given instance to be returned, i.e. no proxies etc)
 	 * @return the bean instance to use, either the original or a wrapped one

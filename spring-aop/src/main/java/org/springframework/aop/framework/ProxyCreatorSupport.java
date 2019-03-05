@@ -89,6 +89,8 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * 子类应该调用它来获得一个新的AOP代理。它们应该用{@code this}作为参数创建AOP代理
+	 * 先获取AopProxyFactory   Aop代理工厂
+	 * 通过工厂创建AopProxy  Aop代理
 	 */
 	protected final synchronized AopProxy createAopProxy() {
 		if (!this.active) {

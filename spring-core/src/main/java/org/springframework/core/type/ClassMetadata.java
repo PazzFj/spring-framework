@@ -19,53 +19,42 @@ package org.springframework.core.type;
 import org.springframework.lang.Nullable;
 
 /**
- * Interface that defines abstract metadata of a specific class,
- * in a form that does not require that class to be loaded yet.
- *
- * @author Juergen Hoeller
- * @since 2.5
- * @see StandardClassMetadata
- * @see org.springframework.core.type.classreading.MetadataReader#getClassMetadata()
- * @see AnnotationMetadata
+ * 接口，该接口以不需要加载该类的形式定义特定类的抽象元数据
  */
 public interface ClassMetadata {
 
 	/**
-	 * Return the name of the underlying class.
+	 * 获取类名
 	 */
 	String getClassName();
 
 	/**
-	 * Return whether the underlying class represents an interface.
+	 * 是否接口
 	 */
 	boolean isInterface();
 
 	/**
-	 * Return whether the underlying class represents an annotation.
-	 * @since 4.1
+	 * 是否注解
 	 */
 	boolean isAnnotation();
 
 	/**
-	 * Return whether the underlying class is marked as abstract.
+	 * 是否抽象类
 	 */
 	boolean isAbstract();
 
 	/**
-	 * Return whether the underlying class represents a concrete class,
-	 * i.e. neither an interface nor an abstract class.
+	 * 是否具体类
 	 */
 	boolean isConcrete();
 
 	/**
-	 * Return whether the underlying class is marked as 'final'.
+	 * 是否final标记类
 	 */
 	boolean isFinal();
 
 	/**
-	 * Determine whether the underlying class is independent, i.e. whether
-	 * it is a top-level class or a nested class (static inner class) that
-	 * can be constructed independently from an enclosing class.
+	 * 确定基础类是否独立，即它是顶级类还是可以独立于封闭类构造的嵌套类(静态内部类)
 	 */
 	boolean isIndependent();
 
@@ -86,20 +75,18 @@ public interface ClassMetadata {
 	String getEnclosingClassName();
 
 	/**
-	 * Return whether the underlying class has a super class.
+	 * 是否有超类
 	 */
 	boolean hasSuperClass();
 
 	/**
-	 * Return the name of the super class of the underlying class,
-	 * or {@code null} if there is no super class defined.
+	 * 超类的类名
 	 */
 	@Nullable
 	String getSuperClassName();
 
 	/**
-	 * Return the names of all interfaces that the underlying class
-	 * implements, or an empty array if there are none.
+	 * 接口数组
 	 */
 	String[] getInterfaceNames();
 
