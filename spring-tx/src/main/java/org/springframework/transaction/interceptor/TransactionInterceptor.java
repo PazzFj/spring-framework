@@ -31,8 +31,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
- * AOP Alliance MethodInterceptor for declarative transaction
- * management using the common Spring transaction infrastructure
+ * 使用公共Spring事务基础设施进行声明性事务管理的AOP Alliance MethodInterceptor
  * ({@link org.springframework.transaction.PlatformTransactionManager}).
  *
  * <p>Derives from the {@link TransactionAspectSupport} class which
@@ -52,8 +51,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
 
 	/**
-	 * Create a new TransactionInterceptor.
-	 * <p>Transaction manager and transaction attributes still need to be set.
+	 * 创建一个新的TransactionInterceptor
+	 * <p>仍然需要设置事务管理器和事务属性
 	 * @see #setTransactionManager
 	 * @see #setTransactionAttributes(java.util.Properties)
 	 * @see #setTransactionAttributeSource(TransactionAttributeSource)
@@ -62,11 +61,7 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	}
 
 	/**
-	 * Create a new TransactionInterceptor.
-	 * @param ptm the default transaction manager to perform the actual transaction management
-	 * @param attributes the transaction attributes in properties format
-	 * @see #setTransactionManager
-	 * @see #setTransactionAttributes(java.util.Properties)
+	 *
 	 */
 	public TransactionInterceptor(PlatformTransactionManager ptm, Properties attributes) {
 		setTransactionManager(ptm);
@@ -74,11 +69,7 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	}
 
 	/**
-	 * Create a new TransactionInterceptor.
-	 * @param ptm the default transaction manager to perform the actual transaction management
-	 * @param tas the attribute source to be used to find transaction attributes
-	 * @see #setTransactionManager
-	 * @see #setTransactionAttributeSource(TransactionAttributeSource)
+	 *
 	 */
 	public TransactionInterceptor(PlatformTransactionManager ptm, TransactionAttributeSource tas) {
 		setTransactionManager(ptm);
@@ -89,9 +80,9 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		// Work out the target class: may be {@code null}.
-		// The TransactionAttributeSource should be passed the target class
-		// as well as the method, which may be from an interface.
+		// invocation ======>>>>  ReflectiveMethodInvocation
+
+		//返回代理的对象的class
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 
 		// Adapt to TransactionAspectSupport's invokeWithinTransaction...
@@ -100,11 +91,11 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 
 
 	//---------------------------------------------------------------------
-	// Serialization support
+	// 序列化支持
 	//---------------------------------------------------------------------
 
 	private void writeObject(ObjectOutputStream oos) throws IOException {
-		// Rely on default serialization, although this class itself doesn't carry state anyway...
+		// 依赖于默认的序列化，尽管这个类本身并不携带状态…
 		oos.defaultWriteObject();
 
 		// Deserialize superclass fields.
@@ -115,7 +106,7 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-		// Rely on default serialization, although this class itself doesn't carry state anyway...
+		// 依赖于默认的序列化，尽管这个类本身并不携带状态…
 		ois.defaultReadObject();
 
 		// Serialize all relevant superclass fields.

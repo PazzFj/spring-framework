@@ -19,29 +19,12 @@ package org.springframework.transaction;
 import org.springframework.lang.Nullable;
 
 /**
- * This is the central interface in Spring's transaction infrastructure.
- * Applications can use this directly, but it is not primarily meant as API:
- * Typically, applications will work with either TransactionTemplate or
- * declarative transaction demarcation through AOP.
+ * 平台事务管理器
+ * 这是Spring事务基础结构中的中心接口。应用程序可以直接使用它，但它并不主要意味着API:通常，应用程序将通过AOP使用TransactionTemplate或声明性事务界定
  *
- * <p>For implementors, it is recommended to derive from the provided
- * {@link org.springframework.transaction.support.AbstractPlatformTransactionManager}
- * class, which pre-implements the defined propagation behavior and takes care
- * of transaction synchronization handling. Subclasses have to implement
- * template methods for specific states of the underlying transaction,
- * for example: begin, suspend, resume, commit.
- *
- * <p>The default implementations of this strategy interface are
+ * <p>此策略接口的默认实现为
  * {@link org.springframework.transaction.jta.JtaTransactionManager} and
  * {@link org.springframework.jdbc.datasource.DataSourceTransactionManager},
- * which can serve as an implementation guide for other transaction strategies.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 16.05.2003
- * @see org.springframework.transaction.support.TransactionTemplate
- * @see org.springframework.transaction.interceptor.TransactionInterceptor
- * @see org.springframework.transaction.interceptor.TransactionProxyFactoryBean
  */
 public interface PlatformTransactionManager {
 

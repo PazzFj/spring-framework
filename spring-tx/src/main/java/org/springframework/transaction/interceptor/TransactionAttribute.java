@@ -20,9 +20,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.TransactionDefinition;
 
 /**
- * This interface adds a {@code rollbackOn} specification to {@link TransactionDefinition}.
- * As custom {@code rollbackOn} is only possible with AOP, this class resides
- * in the AOP transaction package.
+ * 这个接口将{@code rollbackOn}规范添加到{@link TransactionDefinition}。
+ * 由于自定义{@code rollbackOn}只能用AOP实现，所以该类驻留在AOP事务包中
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

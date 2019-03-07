@@ -492,31 +492,31 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void initStrategies(ApplicationContext context) {
 
-		// 初始化 MultipartResolver
+		// 初始化 MultipartResolver 一个多部分文件上传解析策略接口
 		initMultipartResolver(context);
 
-		// 初始化 LocaleResolver
+		// 初始化 LocaleResolver 用于基于web的区域设置解析策略
 		initLocaleResolver(context);
 
-		// 初始化 ThemeResolver
+		// 初始化 ThemeResolver 用于基于web的主题解析策略
 		initThemeResolver(context);
 
-		// 初始化 HandlerMappings
+		// 初始化 HandlerMappings 接口由定义请求和处理程序对象之间的映射的对象实现
 		initHandlerMappings(context);
 
-		// 初始化 HandlerAdapters
+		// 初始化 HandlerAdapters MVC框架SPI，允许核心MVC工作流的参数化
 		initHandlerAdapters(context);
 
-		// 初始化 HandlerExceptionResolvers
+		// 初始化 HandlerExceptionResolvers 这些对象可以解决处理程序映射或执行期间抛出的异常
 		initHandlerExceptionResolvers(context);
 
-		// 初始化 RequestToViewNameTranslator
+		// 初始化 RequestToViewNameTranslator 当没有显式提供视图名时，将转换为逻辑视图名
 		initRequestToViewNameTranslator(context);
 
-		// 初始化 ViewResolvers
+		// 初始化 ViewResolvers 接口由可以按名称解析视图的对象实现
 		initViewResolvers(context);
 
-		// 初始化 FlashMapManager
+		// 初始化 FlashMapManager 用于检索和保存FlashMap实例的策略接口
 		initFlashMapManager(context);
 	}
 
@@ -861,8 +861,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
-	 * for the actual dispatching.
+	 * 公开DispatcherServlet-specific 请求属性，并将其委托给{@link #doDispatch}用于实际的分派
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
