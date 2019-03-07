@@ -1,18 +1,3 @@
-/*
- * Copyright 2002-2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.springframework.transaction.interceptor;
 
@@ -21,56 +6,34 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.StringUtils;
 
 /**
- * Spring's common transaction attribute implementation.
- * Rolls back on runtime, but not checked, exceptions by default.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 16.03.2003
+ * Spring的公共事务属性实现。默认情况下回滚运行时异常，但未检查异常
  */
 @SuppressWarnings("serial")
 public class DefaultTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
 
 	@Nullable
-	private String qualifier;
+	private String qualifier;   //修饰符
 
 	@Nullable
-	private String descriptor;
+	private String descriptor;  //描述符
 
 
 	/**
-	 * Create a new DefaultTransactionAttribute, with default settings.
-	 * Can be modified through bean property setters.
-	 * @see #setPropagationBehavior
-	 * @see #setIsolationLevel
-	 * @see #setTimeout
-	 * @see #setReadOnly
-	 * @see #setName
+	 * 使用默认设置创建一个新的DefaultTransactionAttribute
 	 */
 	public DefaultTransactionAttribute() {
 		super();
 	}
 
 	/**
-	 * Copy constructor. Definition can be modified through bean property setters.
-	 * @see #setPropagationBehavior
-	 * @see #setIsolationLevel
-	 * @see #setTimeout
-	 * @see #setReadOnly
-	 * @see #setName
+	 * 拷贝构造函数
 	 */
 	public DefaultTransactionAttribute(TransactionAttribute other) {
 		super(other);
 	}
 
 	/**
-	 * Create a new DefaultTransactionAttribute with the given
-	 * propagation behavior. Can be modified through bean property setters.
-	 * @param propagationBehavior one of the propagation constants in the
-	 * TransactionDefinition interface
-	 * @see #setIsolationLevel
-	 * @see #setTimeout
-	 * @see #setReadOnly
+	 *
 	 */
 	public DefaultTransactionAttribute(int propagationBehavior) {
 		super(propagationBehavior);
@@ -78,10 +41,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 
 
 	/**
-	 * Associate a qualifier value with this transaction attribute.
-	 * <p>This may be used for choosing a corresponding transaction manager
-	 * to process this specific transaction.
-	 * @since 3.0
+	 * 将限定符值与此事务属性关联
 	 */
 	public void setQualifier(@Nullable String qualifier) {
 		this.qualifier = qualifier;
@@ -107,8 +67,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 	}
 
 	/**
-	 * Return a descriptor for this transaction attribute,
-	 * or {@code null} if none.
+	 * 返回此事务属性的描述符，如果没有，则返回{@code null}
 	 * @since 4.3.4
 	 */
 	@Nullable

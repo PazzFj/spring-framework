@@ -23,26 +23,19 @@ import org.springframework.transaction.TransactionDefinition;
  * 这个接口将{@code rollbackOn}规范添加到{@link TransactionDefinition}。
  * 由于自定义{@code rollbackOn}只能用AOP实现，所以该类驻留在AOP事务包中
  *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 16.03.2003
  * @see DefaultTransactionAttribute
  * @see RuleBasedTransactionAttribute
  */
 public interface TransactionAttribute extends TransactionDefinition {
 
 	/**
-	 * Return a qualifier value associated with this transaction attribute.
-	 * <p>This may be used for choosing a corresponding transaction manager
-	 * to process this specific transaction.
+	 * 返回与此事务属性关联的限定符值
 	 */
 	@Nullable
 	String getQualifier();
 
 	/**
-	 * Should we roll back on the given exception?
-	 * @param ex the exception to evaluate
-	 * @return whether to perform a rollback or not
+	 * 是否回滚到给定的异常
 	 */
 	boolean rollbackOn(Throwable ex);
 
