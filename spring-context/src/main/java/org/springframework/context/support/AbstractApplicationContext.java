@@ -612,7 +612,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Configure the bean factory with context callbacks.
 		// 添加Bean后置处理器
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
-		// 忽视依赖接口
+		// 忽视依赖对象为给定的接口
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class); //环境装配
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
