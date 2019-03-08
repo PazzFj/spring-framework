@@ -147,9 +147,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 
 	/**
-	 * Implementation of {@code InvocationHandler.invoke}.
-	 * <p>Callers will see exactly the exception thrown by the target,
-	 * unless a hook method throws an exception.
+	 * 实现{@code InvocationHandler.invoke}
+	 * <p>调用者将看到目标抛出的异常，除非钩子方法抛出异常
 	 */
 	@Override
 	@Nullable

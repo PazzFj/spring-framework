@@ -39,6 +39,7 @@ public class ProxyConfig implements Serializable {
 	// 优化代理
 	private boolean optimize = false;
 
+	// 不透明的
 	boolean opaque = false;
 
 	// 暴露代理
