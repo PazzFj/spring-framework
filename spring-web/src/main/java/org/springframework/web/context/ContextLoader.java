@@ -167,11 +167,8 @@ public class ContextLoader {
 
 
 	/**
-	 * Initialize Spring's web application context for the given servlet context,
-	 * using the application context provided at construction time, or creating a new one
-	 * according to the "{@link #CONTEXT_CLASS_PARAM contextClass}" and
-	 * "{@link #CONFIG_LOCATION_PARAM contextConfigLocation}" context-params.
-	 * @param servletContext current servlet context
+	 * 初始化Spring的web应用程序上下文
+	 * @param servletContext 当前servlet上下文
 	 * @return the new WebApplicationContext
 	 * @see #ContextLoader(WebApplicationContext)
 	 * @see #CONTEXT_CLASS_PARAM
@@ -179,9 +176,7 @@ public class ContextLoader {
 	 */
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
 		if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
-			throw new IllegalStateException(
-					"Cannot initialize context because there is already a root application context present - " +
-					"check whether you have multiple ContextLoader* definitions in your web.xml!");
+			throw new IllegalStateException("ContextLoader* definitions in your web.xml!");
 		}
 
 		servletContext.log("Initializing Spring root WebApplicationContext");
@@ -192,9 +187,9 @@ public class ContextLoader {
 		long startTime = System.currentTimeMillis();
 
 		try {
-			// Store context in local instance variable, to guarantee that
-			// it is available on ServletContext shutdown.
+			//将上下文存储在本地实例变量中，以确保它在ServletContext关闭时可用
 			if (this.context == null) {
+				// 创建org.springframework.web.context.support.XmlWebApplicationContext
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
