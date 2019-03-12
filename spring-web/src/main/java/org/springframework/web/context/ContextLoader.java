@@ -43,45 +43,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Performs the actual initialization work for the root application context.
- * Called by {@link ContextLoaderListener}.
  *
- * <p>Looks for a {@link #CONTEXT_CLASS_PARAM "contextClass"} parameter at the
- * {@code web.xml} context-param level to specify the context class type, falling
- * back to {@link org.springframework.web.context.support.XmlWebApplicationContext}
- * if not found. With the default ContextLoader implementation, any context class
- * specified needs to implement the {@link ConfigurableWebApplicationContext} interface.
- *
- * <p>Processes a {@link #CONFIG_LOCATION_PARAM "contextConfigLocation"} context-param
- * and passes its value to the context instance, parsing it into potentially multiple
- * file paths which can be separated by any number of commas and spaces, e.g.
- * "WEB-INF/applicationContext1.xml, WEB-INF/applicationContext2.xml".
- * Ant-style path patterns are supported as well, e.g.
- * "WEB-INF/*Context.xml,WEB-INF/spring*.xml" or "WEB-INF/&#42;&#42;/*Context.xml".
- * If not explicitly specified, the context implementation is supposed to use a
- * default location (with XmlWebApplicationContext: "/WEB-INF/applicationContext.xml").
- *
- * <p>Note: In case of multiple config locations, later bean definitions will
- * override ones defined in previously loaded files, at least when using one of
- * Spring's default ApplicationContext implementations. This can be leveraged
- * to deliberately override certain bean definitions via an extra XML file.
- *
- * <p>Above and beyond loading the root application context, this class can optionally
- * load or obtain and hook up a shared parent context to the root application context.
- * See the {@link #loadParentContext(ServletContext)} method for more information.
- *
- * <p>As of Spring 3.1, {@code ContextLoader} supports injecting the root web
- * application context via the {@link #ContextLoader(WebApplicationContext)}
- * constructor, allowing for programmatic configuration in Servlet 3.0+ environments.
- * See {@link org.springframework.web.WebApplicationInitializer} for usage examples.
- *
- * @author Juergen Hoeller
- * @author Colin Sampaleanu
- * @author Sam Brannen
- * @since 17.02.2003
- * @see ContextLoaderListener
- * @see ConfigurableWebApplicationContext
- * @see org.springframework.web.context.support.XmlWebApplicationContext
  */
 public class ContextLoader {
 
@@ -174,55 +136,13 @@ public class ContextLoader {
 
 
 	/**
-	 * Create a new {@code ContextLoader} that will create a web application context
-	 * based on the "contextClass" and "contextConfigLocation" servlet context-params.
-	 * See class-level documentation for details on default values for each.
-	 * <p>This constructor is typically used when declaring the {@code
-	 * ContextLoaderListener} subclass as a {@code <listener>} within {@code web.xml}, as
-	 * a no-arg constructor is required.
-	 * <p>The created application context will be registered into the ServletContext under
-	 * the attribute name {@link WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE}
-	 * and subclasses are free to call the {@link #closeWebApplicationContext} method on
-	 * container shutdown to close the application context.
-	 * @see #ContextLoader(WebApplicationContext)
-	 * @see #initWebApplicationContext(ServletContext)
-	 * @see #closeWebApplicationContext(ServletContext)
+	 *
 	 */
 	public ContextLoader() {
 	}
 
 	/**
-	 * Create a new {@code ContextLoader} with the given application context. This
-	 * constructor is useful in Servlet 3.0+ environments where instance-based
-	 * registration of listeners is possible through the {@link ServletContext#addListener}
-	 * API.
-	 * <p>The context may or may not yet be {@linkplain
-	 * ConfigurableApplicationContext#refresh() refreshed}. If it (a) is an implementation
-	 * of {@link ConfigurableWebApplicationContext} and (b) has <strong>not</strong>
-	 * already been refreshed (the recommended approach), then the following will occur:
-	 * <ul>
-	 * <li>If the given context has not already been assigned an {@linkplain
-	 * ConfigurableApplicationContext#setId id}, one will be assigned to it</li>
-	 * <li>{@code ServletContext} and {@code ServletConfig} objects will be delegated to
-	 * the application context</li>
-	 * <li>{@link #customizeContext} will be called</li>
-	 * <li>Any {@link ApplicationContextInitializer ApplicationContextInitializers} specified through the
-	 * "contextInitializerClasses" init-param will be applied.</li>
-	 * <li>{@link ConfigurableApplicationContext#refresh refresh()} will be called</li>
-	 * </ul>
-	 * If the context has already been refreshed or does not implement
-	 * {@code ConfigurableWebApplicationContext}, none of the above will occur under the
-	 * assumption that the user has performed these actions (or not) per his or her
-	 * specific needs.
-	 * <p>See {@link org.springframework.web.WebApplicationInitializer} for usage examples.
-	 * <p>In any case, the given application context will be registered into the
-	 * ServletContext under the attribute name {@link
-	 * WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE} and subclasses are
-	 * free to call the {@link #closeWebApplicationContext} method on container shutdown
-	 * to close the application context.
-	 * @param context the application context to manage
-	 * @see #initWebApplicationContext(ServletContext)
-	 * @see #closeWebApplicationContext(ServletContext)
+	 *
 	 */
 	public ContextLoader(WebApplicationContext context) {
 		this.context = context;
