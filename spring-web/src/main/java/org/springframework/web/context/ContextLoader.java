@@ -266,8 +266,7 @@ public class ContextLoader {
 				return ClassUtils.forName(contextClassName, ClassUtils.getDefaultClassLoader());
 			}
 			catch (ClassNotFoundException ex) {
-				throw new ApplicationContextException(
-						"Failed to load custom context class [" + contextClassName + "]", ex);
+				throw new ApplicationContextException("Failed to load custom context class [" + contextClassName + "]", ex);
 			}
 		}
 		else {
