@@ -64,19 +64,11 @@ import org.springframework.web.context.request.WebRequest;
  */
 public abstract class WebApplicationContextUtils {
 
-	private static final boolean jsfPresent =
-			ClassUtils.isPresent("javax.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
+	private static final boolean jsfPresent = ClassUtils.isPresent("javax.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
 
 
 	/**
-	 * Find the root {@code WebApplicationContext} for this web app, typically
-	 * loaded via {@link org.springframework.web.context.ContextLoaderListener}.
-	 * <p>Will rethrow an exception that happened on root context startup,
-	 * to differentiate between a failed context startup and no context at all.
-	 * @param sc the ServletContext to find the web application context for
-	 * @return the root WebApplicationContext for this web app
-	 * @throws IllegalStateException if the root WebApplicationContext could not be found
-	 * @see org.springframework.web.context.WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE
+	 *
 	 */
 	public static WebApplicationContext getRequiredWebApplicationContext(ServletContext sc) throws IllegalStateException {
 		WebApplicationContext wac = getWebApplicationContext(sc);
@@ -87,13 +79,8 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 * Find the root {@code WebApplicationContext} for this web app, typically
-	 * loaded via {@link org.springframework.web.context.ContextLoaderListener}.
-	 * <p>Will rethrow an exception that happened on root context startup,
-	 * to differentiate between a failed context startup and no context at all.
-	 * @param sc the ServletContext to find the web application context for
-	 * @return the root WebApplicationContext for this web app, or {@code null} if none
-	 * @see org.springframework.web.context.WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE
+	 * @see org.springframework.web.context.WebApplicationContext   .ROOT
+	 * 通过服务上下文获取应用上下文
 	 */
 	@Nullable
 	public static WebApplicationContext getWebApplicationContext(ServletContext sc) {
@@ -101,10 +88,7 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 * Find a custom {@code WebApplicationContext} for this web app.
-	 * @param sc the ServletContext to find the web application context for
-	 * @param attrName the name of the ServletContext attribute to look for
-	 * @return the desired WebApplicationContext for this web app, or {@code null} if none
+	 *
 	 */
 	@Nullable
 	public static WebApplicationContext getWebApplicationContext(ServletContext sc, String attrName) {
@@ -129,19 +113,7 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 * Find a unique {@code WebApplicationContext} for this web app: either the
-	 * root web app context (preferred) or a unique {@code WebApplicationContext}
-	 * among the registered {@code ServletContext} attributes (typically coming
-	 * from a single {@code DispatcherServlet} in the current web application).
-	 * <p>Note that {@code DispatcherServlet}'s exposure of its context can be
-	 * controlled through its {@code publishContext} property, which is {@code true}
-	 * by default but can be selectively switched to only publish a single context
-	 * despite multiple {@code DispatcherServlet} registrations in the web app.
-	 * @param sc the ServletContext to find the web application context for
-	 * @return the desired WebApplicationContext for this web app, or {@code null} if none
-	 * @since 4.2
-	 * @see #getWebApplicationContext(ServletContext)
-	 * @see ServletContext#getAttributeNames()
+	 *
 	 */
 	@Nullable
 	public static WebApplicationContext findWebApplicationContext(ServletContext sc) {
@@ -153,8 +125,7 @@ public abstract class WebApplicationContextUtils {
 				Object attrValue = sc.getAttribute(attrName);
 				if (attrValue instanceof WebApplicationContext) {
 					if (wac != null) {
-						throw new IllegalStateException("No unique WebApplicationContext found: more than one " +
-								"DispatcherServlet registered with publishContext=true?");
+						throw new IllegalStateException("No unique WebApplicationContext found");
 					}
 					wac = (WebApplicationContext) attrValue;
 				}

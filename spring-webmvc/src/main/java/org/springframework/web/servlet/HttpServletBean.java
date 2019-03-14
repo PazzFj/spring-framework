@@ -139,15 +139,14 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	}
 
 	/**
-	 * Map config parameters onto bean properties of this servlet, and
-	 * invoke subclass initialization.
-	 * @throws ServletException if bean properties are invalid (or required
-	 * properties are missing), or if subclass initialization fails.
+	 * <load-on-startup>1</load-on-startup>
+	 * 加载init()方法
+	 * @see FrameworkServlet#initServletBean()
 	 */
 	@Override
 	public final void init() throws ServletException {
 
-		// Set bean properties from init parameters.
+		// 从初始化参数设置bean属性
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {
 			try {
@@ -158,14 +157,12 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				bw.setPropertyValues(pvs, true);
 			}
 			catch (BeansException ex) {
-				if (logger.isErrorEnabled()) {
-					logger.error("Failed to set bean properties on servlet '" + getServletName() + "'", ex);
-				}
 				throw ex;
 			}
 		}
 
 		// Let subclasses do whatever initialization they like.
+		// 让子类执行它们喜欢的任何初始化
 		initServletBean();
 	}
 
