@@ -24,7 +24,7 @@ import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /**
- *
+ * web应用上下文
  */
 public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationContext {
 

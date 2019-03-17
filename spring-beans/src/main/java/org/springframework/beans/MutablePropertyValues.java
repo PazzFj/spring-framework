@@ -109,8 +109,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * @param propertyValueList a List of PropertyValue objects
 	 */
 	public MutablePropertyValues(@Nullable List<PropertyValue> propertyValueList) {
-		this.propertyValueList =
-				(propertyValueList != null ? propertyValueList : new ArrayList<>());
+		this.propertyValueList = (propertyValueList != null ? propertyValueList : new ArrayList<>());
 	}
 
 

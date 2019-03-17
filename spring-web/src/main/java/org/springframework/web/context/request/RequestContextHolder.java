@@ -24,38 +24,20 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
- * Holder class to expose the web request in the form of a thread-bound
- * {@link RequestAttributes} object. The request will be inherited
- * by any child threads spawned by the current thread if the
- * {@code inheritable} flag is set to {@code true}.
- *
- * <p>Use {@link RequestContextListener} or
- * {@link org.springframework.web.filter.RequestContextFilter} to expose
- * the current web request. Note that
- * {@link org.springframework.web.servlet.DispatcherServlet}
- * already exposes the current request by default.
- *
- * @author Juergen Hoeller
- * @author Rod Johnson
- * @since 2.0
- * @see RequestContextListener
- * @see org.springframework.web.filter.RequestContextFilter
- * @see org.springframework.web.servlet.DispatcherServlet
+ * 以线程绑定的{@link RequestAttributes}对象的形式公开web请求。如果将{@code inheritable}标志设置为{@code true}，则当前线程派生的任何子线程都将继承请求。
  */
 public abstract class RequestContextHolder  {
 
-	private static final boolean jsfPresent =
-			ClassUtils.isPresent("javax.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
+	private static final boolean jsfPresent = ClassUtils.isPresent("javax.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
 
-	private static final ThreadLocal<RequestAttributes> requestAttributesHolder =
-			new NamedThreadLocal<>("Request attributes");
+	private static final ThreadLocal<RequestAttributes> requestAttributesHolder = new NamedThreadLocal<>("Request attributes");
 
-	private static final ThreadLocal<RequestAttributes> inheritableRequestAttributesHolder =
-			new NamedInheritableThreadLocal<>("Request context");
+	// 标记为可继承的
+	private static final ThreadLocal<RequestAttributes> inheritableRequestAttributesHolder = new NamedInheritableThreadLocal<>("Request context");
 
 
 	/**
-	 * Reset the RequestAttributes for the current thread.
+	 * 重置当前线程的请求属性
 	 */
 	public static void resetRequestAttributes() {
 		requestAttributesHolder.remove();
@@ -63,21 +45,14 @@ public abstract class RequestContextHolder  {
 	}
 
 	/**
-	 * Bind the given RequestAttributes to the current thread,
-	 * <i>not</i> exposing it as inheritable for child threads.
-	 * @param attributes the RequestAttributes to expose
-	 * @see #setRequestAttributes(RequestAttributes, boolean)
+	 * 将给定的请求属性绑定到当前线程，而不是将其公开为可继承的子线程
 	 */
 	public static void setRequestAttributes(@Nullable RequestAttributes attributes) {
 		setRequestAttributes(attributes, false);
 	}
 
 	/**
-	 * Bind the given RequestAttributes to the current thread.
-	 * @param attributes the RequestAttributes to expose,
-	 * or {@code null} to reset the thread-bound context
-	 * @param inheritable whether to expose the RequestAttributes as inheritable
-	 * for child threads (using an {@link InheritableThreadLocal})
+	 * 将给定的请求属性绑定到当前线程
 	 */
 	public static void setRequestAttributes(@Nullable RequestAttributes attributes, boolean inheritable) {
 		if (attributes == null) {
@@ -96,9 +71,7 @@ public abstract class RequestContextHolder  {
 	}
 
 	/**
-	 * Return the RequestAttributes currently bound to the thread.
-	 * @return the RequestAttributes currently bound to the thread,
-	 * or {@code null} if none bound
+	 * 返回当前绑定到线程的RequestAttributes
 	 */
 	@Nullable
 	public static RequestAttributes getRequestAttributes() {
@@ -110,16 +83,7 @@ public abstract class RequestContextHolder  {
 	}
 
 	/**
-	 * Return the RequestAttributes currently bound to the thread.
-	 * <p>Exposes the previously bound RequestAttributes instance, if any.
-	 * Falls back to the current JSF FacesContext, if any.
-	 * @return the RequestAttributes currently bound to the thread
-	 * @throws IllegalStateException if no RequestAttributes object
-	 * is bound to the current thread
-	 * @see #setRequestAttributes
-	 * @see ServletRequestAttributes
-	 * @see FacesRequestAttributes
-	 * @see javax.faces.context.FacesContext#getCurrentInstance()
+	 * 返回当前绑定到线程的RequestAttributes
 	 */
 	public static RequestAttributes currentRequestAttributes() throws IllegalStateException {
 		RequestAttributes attributes = getRequestAttributes();
@@ -128,12 +92,7 @@ public abstract class RequestContextHolder  {
 				attributes = FacesRequestAttributesFactory.getFacesRequestAttributes();
 			}
 			if (attributes == null) {
-				throw new IllegalStateException("No thread-bound request found: " +
-						"Are you referring to request attributes outside of an actual web request, " +
-						"or processing a request outside of the originally receiving thread? " +
-						"If you are actually operating within a web request and still receive this message, " +
-						"your code is probably running outside of DispatcherServlet: " +
-						"In this case, use RequestContextListener or RequestContextFilter to expose the current request.");
+				throw new IllegalStateException("No thread-bound request fou");
 			}
 		}
 		return attributes;
@@ -142,6 +101,7 @@ public abstract class RequestContextHolder  {
 
 	/**
 	 * Inner class to avoid hard-coded JSF dependency.
+	 * 内部类，以避免硬编码的JSF依赖
  	 */
 	private static class FacesRequestAttributesFactory {
 

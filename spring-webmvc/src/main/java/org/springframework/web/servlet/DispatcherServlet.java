@@ -213,7 +213,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private boolean throwExceptionIfNoHandlerFound = false;
 
 	/**
-	 *
+	 * 清除包含之后的
 	 */
 	private boolean cleanupAfterInclude = true;
 
@@ -585,8 +585,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		if (this.detectAllViewResolvers) {
 			// Find all ViewResolvers in the ApplicationContext, including ancestor contexts.
-			Map<String, ViewResolver> matchingBeans =
-					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, ViewResolver.class, true, false);
+			Map<String, ViewResolver> matchingBeans = BeanFactoryUtils.beansOfTypeIncludingAncestors(context, ViewResolver.class, true, false);
 			if (!matchingBeans.isEmpty()) {
 				this.viewResolvers = new ArrayList<>(matchingBeans.values());
 				// We keep ViewResolvers in sorted order.
@@ -606,8 +605,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (this.viewResolvers == null) {
 			this.viewResolvers = getDefaultStrategies(context, ViewResolver.class);
 			if (logger.isTraceEnabled()) {
-				logger.trace("No ViewResolvers declared for servlet '" + getServletName() +
-						"': using default strategies from DispatcherServlet.properties");
+				logger.trace("No ViewResolvers declared for servlet");
 			}
 		}
 	}
@@ -681,7 +679,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 *
+	 * 获取默认的策略 根据class
 	 */
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getDefaultStrategies(ApplicationContext context, Class<T> strategyInterface) {
@@ -696,13 +694,9 @@ public class DispatcherServlet extends FrameworkServlet {
 					Object strategy = createDefaultStrategy(context, clazz);
 					strategies.add((T) strategy);
 				} catch (ClassNotFoundException ex) {
-					throw new BeanInitializationException(
-							"Could not find DispatcherServlet's default strategy class [" + className +
-									"] for interface [" + key + "]", ex);
+					throw new BeanInitializationException("Could not find ", ex);
 				} catch (LinkageError err) {
-					throw new BeanInitializationException(
-							"Unresolvable class definition for DispatcherServlet's default strategy class [" +
-									className + "] for interface [" + key + "]", err);
+					throw new BeanInitializationException("Unresolvable class definition ", err);
 				}
 			}
 			return strategies;
@@ -712,7 +706,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * 创建默认策略
+	 * 创建默认策略 根据class
 	 */
 	protected Object createDefaultStrategy(ApplicationContext context, Class<?> clazz) {
 		return context.getAutowireCapableBeanFactory().createBean(clazz);
@@ -726,8 +720,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logRequest(request);
 
-		// Keep a snapshot of the request attributes in case of an include,
-		// to be able to restore the original attributes after the include.
+		// 保存请求属性的快照，以防发生include，以便能够在include之后恢复原始属性
 		Map<String, Object> attributesSnapshot = null;
 		if (WebUtils.isIncludeRequest(request)) {
 			attributesSnapshot = new HashMap<>();
