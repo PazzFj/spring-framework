@@ -722,39 +722,39 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// 保存请求属性的快照，以防发生include，以便能够在include之后恢复原始属性
 		Map<String, Object> attributesSnapshot = null;
-		if (WebUtils.isIncludeRequest(request)) {
+		if (WebUtils.isIncludeRequest(request)) {   //request.getAttribute("javax.servlet.include.request_uri") != null
 			attributesSnapshot = new HashMap<>();
 			Enumeration<?> attrNames = request.getAttributeNames();
 			while (attrNames.hasMoreElements()) {
 				String attrName = (String) attrNames.nextElement();
-				if (this.cleanupAfterInclude || attrName.startsWith(DEFAULT_STRATEGIES_PREFIX)) {
+				if (this.cleanupAfterInclude || attrName.startsWith(DEFAULT_STRATEGIES_PREFIX)) {  // startsWith(org.springframework.web.servlet)
 					attributesSnapshot.put(attrName, request.getAttribute(attrName));
 				}
 			}
 		}
 
-		// Make framework objects available to handlers and view objects.
-		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
-		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
-		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
-		request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());
+		// 使框架对象对处理程序和视图对象可用
+		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());  //org.springframework.web.servlet.DispatcherServlet.CONTEXT
+		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);				  //org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER
+		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);					  //org.springframework.web.servlet.DispatcherServlet.THEME_RESOLVER
+		request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());						  //org.springframework.web.servlet.DispatcherServlet.THEME_SOURCE
 
-		if (this.flashMapManager != null) {
-			FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);
+		if (this.flashMapManager != null) {		//FlashMapManager对象
+			FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);  //retrieve检索或者修复
 			if (inputFlashMap != null) {
-				request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));
+				request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));	//org.springframework.web.servlet.DispatcherServlet.INPUT_FLASH_MAP
 			}
-			request.setAttribute(OUTPUT_FLASH_MAP_ATTRIBUTE, new FlashMap());
-			request.setAttribute(FLASH_MAP_MANAGER_ATTRIBUTE, this.flashMapManager);
+			request.setAttribute(OUTPUT_FLASH_MAP_ATTRIBUTE, new FlashMap());				  //org.springframework.web.servlet.DispatcherServlet.OUTPUT_FLASH_MAP  刷新
+			request.setAttribute(FLASH_MAP_MANAGER_ATTRIBUTE, this.flashMapManager);		  //org.springframework.web.servlet.DispatcherServlet.FLASH_MAP_MANAGER  刷新
 		}
 
 		try {
-			doDispatch(request, response);
+			doDispatch(request, response);   //设置属性做处理
 		} finally {
 			if (!WebAsyncUtils.getAsyncManager(request).isConcurrentHandlingStarted()) {
 				// Restore the original attribute snapshot, in case of an include.
 				if (attributesSnapshot != null) {
-					restoreAttributesAfterInclude(request, attributesSnapshot);
+					restoreAttributesAfterInclude(request, attributesSnapshot);  //恢复,修复 请求request
 				}
 			}
 		}
@@ -792,16 +792,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Process the actual dispatching to the handler.
-	 * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
-	 * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
-	 * to find the first that supports the handler class.
-	 * <p>All HTTP methods are handled by this method. It's up to HandlerAdapters or handlers
-	 * themselves to decide which methods are acceptable.
-	 *
-	 * @param request  current HTTP request
-	 * @param response current HTTP response
-	 * @throws Exception in case of any kind of processing failure
+	 * 处理到处理程序的实际分派
 	 */
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest processedRequest = request;

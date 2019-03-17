@@ -684,7 +684,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
-			//实际做操作
+			//模板模式, 子类去实现
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {
@@ -844,28 +844,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 
-	/**
-	 * Subclasses must implement this method to do the work of request handling,
-	 * receiving a centralized callback for GET, POST, PUT and DELETE.
-	 * <p>The contract is essentially the same as that for the commonly overridden
-	 * {@code doGet} or {@code doPost} methods of HttpServlet.
-	 * <p>This class intercepts calls to ensure that exception handling and
-	 * event publication takes place.
-	 * @param request current HTTP request
-	 * @param response current HTTP response
-	 * @throws Exception in case of any kind of processing failure
-	 * @see javax.servlet.http.HttpServlet#doGet
-	 * @see javax.servlet.http.HttpServlet#doPost
-	 */
-	protected abstract void doService(HttpServletRequest request, HttpServletResponse response)
-			throws Exception;
+	protected abstract void doService(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 
 	/**
-	 * 上下文刷新监听器 实现应用上下文监听器
+	 * ApplicationListener实现
 	 */
 	private class ContextRefreshListener implements ApplicationListener<ContextRefreshedEvent> {
-
 		@Override
 		public void onApplicationEvent(ContextRefreshedEvent event) {
 			FrameworkServlet.this.onApplicationEvent(event);
@@ -874,8 +859,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 
 	/**
-	 * CallableProcessingInterceptor implementation that initializes and resets
-	 * FrameworkServlet's context holders, i.e. LocaleContextHolder and RequestContextHolder.
+	 * CallableProcessingInterceptor实现，它初始化并重置FrameworkServlet的上下文持有者，即LocaleContextHolder和RequestContextHolder
 	 */
 	private class RequestBindingInterceptor implements CallableProcessingInterceptor {
 
