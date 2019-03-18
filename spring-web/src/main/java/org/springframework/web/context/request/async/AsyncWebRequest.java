@@ -64,9 +64,7 @@ public interface AsyncWebRequest extends NativeWebRequest {
 	void startAsync();
 
 	/**
-	 * Whether the request is in async mode following a call to {@link #startAsync()}.
-	 * Returns "false" if asynchronous processing never started, has completed,
-	 * or the request was dispatched for further processing.
+	 * 调用{@link #startAsync()}后，请求是否处于异步模式。如果异步处理从未启动、已完成或请求已被分派进行进一步处理，则返回“false”
 	 */
 	boolean isAsyncStarted();
 

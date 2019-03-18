@@ -524,15 +524,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * 刷新， 一般用于启动
+	 * 刷新, 用于启动 (子类实现)
 	 */
 	protected void onRefresh(ApplicationContext context) {
-		// 对于子类:默认情况下什么也不做
+
 	}
 
 	/**
-	 * Close the WebApplicationContext of this servlet.
-	 * @see org.springframework.context.ConfigurableApplicationContext#close()
+	 *
 	 */
 	@Override
 	public void destroy() {
@@ -545,7 +544,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 
 	/**
-	 * Override the parent class implementation in order to intercept PATCH requests.
+	 * 覆盖父类实现以拦截补丁请求
 	 */
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -561,11 +560,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate GET requests to processRequest/doService.
-	 * <p>Will also be invoked by HttpServlet's default implementation of {@code doHead},
-	 * with a {@code NoBodyResponse} that just captures the content length.
-	 * @see #doService
-	 * @see #doHead
+	 * 委托获取processRequest/doService的请求
 	 */
 	@Override
 	protected final void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -575,8 +570,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate POST requests to {@link #processRequest}.
-	 * @see #doService
+	 * 将POST请求委托给{@link #processRequest}
 	 */
 	@Override
 	protected final void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -586,8 +580,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate PUT requests to {@link #processRequest}.
-	 * @see #doService
+	 * 将PUT请求委托给{@link #processRequest}
 	 */
 	@Override
 	protected final void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -597,8 +590,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate DELETE requests to {@link #processRequest}.
-	 * @see #doService
+	 * 将DELETE请求委托给{@link #processRequest}
 	 */
 	@Override
 	protected final void doDelete(HttpServletRequest request, HttpServletResponse response)
@@ -608,10 +600,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate OPTIONS requests to {@link #processRequest}, if desired.
-	 * <p>Applies HttpServlet's standard OPTIONS processing otherwise,
-	 * and also if there is still no 'Allow' header set after dispatching.
-	 * @see #doService
+	 *
 	 */
 	@Override
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
@@ -638,9 +627,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Delegate TRACE requests to {@link #processRequest}, if desired.
-	 * <p>Applies HttpServlet's standard TRACE processing otherwise.
-	 * @see #doService
+	 *
 	 */
 	@Override
 	protected void doTrace(HttpServletRequest request, HttpServletResponse response)
@@ -666,20 +653,22 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 		Throwable failureCause = null;
 
-		//区域上下文(设置编码..)
+		//返回与当前线程相关联的 LocaleContext
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
+		//根据请求构建 LocaleContext，公开请求的语言环境为当前语言环境
 		LocaleContext localeContext = buildLocaleContext(request);
 
-		// 获取请求属性(以前的)
+		//返回当前绑定到线程的 RequestAttributes
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
+		//根据请求构建ServletRequestAttributes
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 
-		//创建web异步管理器  从request中请求属性=>WebAsyncManager.WEB_ASYNC_MANAGER
+		//获取当前请求的WebAsyncManager, 如果没有找到则创建  (request中请求属性=>WebAsyncManager.WEB_ASYNC_MANAGER)
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
 		//给web异步管理器注册拦截器 RequestBindingInterceptor
 		asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
 
-		//初始化请求上下文持有者
+		//使 LocaleContext 和 requestAttributes 关联
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
@@ -696,13 +685,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 
 		finally {
-			//最终重置请求上下文持有者
+			// 重置 LocaleContext 和 requestAttributes，解除关联
 			resetContextHolders(request, previousLocaleContext, previousAttributes);
 			if (requestAttributes != null) {
 				requestAttributes.requestCompleted();
 			}
 			logResult(request, response, failureCause, asyncManager);
-			//发布应用事件通知
+			//发布 ServletRequestHandlerEvent 事件
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}
