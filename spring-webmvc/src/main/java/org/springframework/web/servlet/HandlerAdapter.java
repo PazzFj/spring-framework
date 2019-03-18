@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 public interface HandlerAdapter {
 
 	/**
-	 * 给定一个处理程序实例，返回这个{@code HandlerAdapter}是否支持它。典型的HandlerAdapters将根据处理程序类型作出决策。HandlerAdapters通常只支持一种处理程序类型
+	 * 根据HandlerAdapter是否支持HandlerExecutionChain是否支持
 	 */
 	boolean supports(Object handler);
 

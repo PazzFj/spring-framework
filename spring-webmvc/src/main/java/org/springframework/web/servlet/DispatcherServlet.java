@@ -208,7 +208,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private boolean detectAllViewResolvers = true;
 
 	/**
-	 *
+	 * 如果没有HandlerExecutionChain, 是否抛出异常
 	 */
 	private boolean throwExceptionIfNoHandlerFound = false;
 
@@ -236,7 +236,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private ThemeResolver themeResolver;
 
 	/**
-	 *
+	 * 管理映射集合
 	 */
 	@Nullable
 	private List<HandlerMapping> handlerMappings;
@@ -796,9 +796,10 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest processedRequest = request;
-		HandlerExecutionChain mappedHandler = null;
-		boolean multipartRequestParsed = false;
+		HandlerExecutionChain mappedHandler = null;   //管理执行链
+		boolean multipartRequestParsed = false;    //文件上传请求解析
 
+		//获取web异步管理器
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
 
 		try {
@@ -806,23 +807,27 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				//检查是否含文件上传功能, 若无则直接request, 若有则返回MultipartHttpServletRequest
 				processedRequest = checkMultipart(request);
+				//含有文件上传功能
 				multipartRequestParsed = (processedRequest != request);
 
-				// Determine handler for the current request.
+				// 确定当前请求的处理程序, 就是通过所有HandlerMapping根据request查找是否存在 ==>> HandlerExecutionChain
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
+					//如果没有持有者, 抛出404错误
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
-				// Determine handler adapter for the current request.
+				// HandlerAdapter根据HandlerExecutionChain中封装的对象返回对应的HandlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
-				// Process last-modified header, if supported by the handler.
+				// 处理请求方法
 				String method = request.getMethod();
-				boolean isGet = "GET".equals(method);
+				boolean isGet = "GET".equals(method); //get请求
 				if (isGet || "HEAD".equals(method)) {
+					// 获取最后修改时间
 					long lastModified = ha.getLastModified(request, mappedHandler.getHandler());
 					if (new ServletWebRequest(request, response).checkNotModified(lastModified) && isGet) {
 						return;
@@ -944,12 +949,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Convert the request into a multipart request, and make multipart resolver available.
-	 * <p>If no multipart resolver is set, simply use the existing request.
-	 *
-	 * @param request current HTTP request
-	 * @return the processed request (multipart wrapper if necessary)
-	 * @see MultipartResolver#resolveMultipart
+	 * 将请求转换为文件上传请求
+	 * <p>如果没有设置文件上传请求，只需使用现有的请求。
 	 */
 	protected HttpServletRequest checkMultipart(HttpServletRequest request) throws MultipartException {
 		if (this.multipartResolver != null && this.multipartResolver.isMultipart(request)) {
@@ -958,15 +959,14 @@ public class DispatcherServlet extends FrameworkServlet {
 					logger.trace("Request already resolved to MultipartHttpServletRequest, e.g. by MultipartFilter");
 				}
 			} else if (hasMultipartException(request)) {
-				logger.debug("Multipart resolution previously failed for current request - " +
-						"skipping re-resolution for undisturbed error rendering");
+				logger.debug("Multipart resolution previously failed for current");
 			} else {
 				try {
+					// 文件上传解析器, 解析request文件上传功能 ==> MultipartHttpServletRequest
 					return this.multipartResolver.resolveMultipart(request);
 				} catch (MultipartException ex) {
 					if (request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) != null) {
 						logger.debug("Multipart resolution failed for error dispatch", ex);
-						// Keep processing error dispatch with regular request handle below
 					} else {
 						throw ex;
 					}
@@ -1008,11 +1008,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Return the HandlerExecutionChain for this request.
-	 * <p>Tries all handler mappings in order.
-	 *
-	 * @param request current HTTP request
-	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
+	 * 返回此请求的HandlerExecutionChain
+	 * <p>按顺序尝试所有处理程序映射
 	 */
 	@Nullable
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
@@ -1028,29 +1025,21 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * No handler found -> set appropriate HTTP response status.
-	 *
-	 * @param request  current HTTP request
-	 * @param response current HTTP response
-	 * @throws Exception if preparing the response failed
+	 * 没有找到处理程序->设置适当的HTTP响应状态
 	 */
 	protected void noHandlerFound(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (pageNotFoundLogger.isWarnEnabled()) {
 			pageNotFoundLogger.warn("No mapping for " + request.getMethod() + " " + getRequestUri(request));
 		}
 		if (this.throwExceptionIfNoHandlerFound) {
-			throw new NoHandlerFoundException(request.getMethod(), getRequestUri(request),
-					new ServletServerHttpRequest(request).getHeaders());
+			throw new NoHandlerFoundException(request.getMethod(), getRequestUri(request), new ServletServerHttpRequest(request).getHeaders());
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 
 	/**
-	 * Return the HandlerAdapter for this handler object.
-	 *
-	 * @param handler the handler object to find an adapter for
-	 * @throws ServletException if no HandlerAdapter can be found for the handler. This is a fatal error.
+	 * 返回此处理程序对象的 HandlerAdapter
 	 */
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (this.handlerAdapters != null) {

@@ -19,23 +19,23 @@ package org.springframework.web.multipart;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 一个多部分文件上传解析策略接口，符合< A href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</ A >。实现通常在应用程序上下文中和独立环境中都是可用的
+ * 一个文件上传解析策略接口，符合< A href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</ A >。实现通常在应用程序上下文中和独立环境中都是可用的
  */
 public interface MultipartResolver {
 
 	/**
-	 * 确定给定的请求是否包含多部分内容
+	 * 请求是否包含文件上传功能
 	 */
 	boolean isMultipart(HttpServletRequest request);
 
 	/**
-	 * 将给定的HTTP请求解析为多部分文件和参数，并将请求包装在{@link org.springframework.web.multipart.MultipartHttpServletRequest}。对象，
+	 * 将给定的HTTP请求解析为文件上传和参数，并将请求包装在{@link org.springframework.web.multipart.MultipartHttpServletRequest}。对象，
 	 * 该对象提供对文件描述符的访问，并使包含的参数可以通过标准的ServletRequest方法进行访问。
 	 */
 	MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException;
 
 	/**
-	 * 清除用于多部分处理的所有资源，如上传文件的存储
+	 * 清除用于文件上传的所有资源，如上传文件的存储
 	 */
 	void cleanupMultipart(MultipartHttpServletRequest request);
 

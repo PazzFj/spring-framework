@@ -674,10 +674,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 
-		//web异步管理  从request中请求属性=>WebAsyncManager.WEB_ASYNC_MANAGER
-		//为空时：create new WebAsyncManager
+		//创建web异步管理器  从request中请求属性=>WebAsyncManager.WEB_ASYNC_MANAGER
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
-		//注册回调拦截器
+		//给web异步管理器注册拦截器 RequestBindingInterceptor
 		asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
 
 		//初始化请求上下文持有者
