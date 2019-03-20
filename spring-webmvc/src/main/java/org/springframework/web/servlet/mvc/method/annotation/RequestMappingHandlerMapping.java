@@ -53,8 +53,9 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
 		implements MatchableHandlerMapping, EmbeddedValueResolverAware {
 
+	//使用后缀模式匹配  默认true
 	private boolean useSuffixPatternMatch = true;
-
+	//使用注册后缀模式匹配  默认false
 	private boolean useRegisteredSuffixPatternMatch = false;
 
 	private boolean useTrailingSlashMatch = true;
