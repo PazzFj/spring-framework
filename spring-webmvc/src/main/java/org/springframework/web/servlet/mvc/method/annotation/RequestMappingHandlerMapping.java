@@ -48,14 +48,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 /**
- * Creates {@link RequestMappingInfo} instances from type and method-level
- * {@link RequestMapping @RequestMapping} annotations in
- * {@link Controller @Controller} classes.
- *
- * @author Arjen Poutsma
- * @author Rossen Stoyanchev
- * @author Sam Brannen
- * @since 3.1
+ * 在{@link Controller @Controller}类中，从类型和方法级{@link RequestMapping @RequestMapping}注释创建{@link RequestMappingInfo}实例
  */
 public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
 		implements MatchableHandlerMapping, EmbeddedValueResolverAware {

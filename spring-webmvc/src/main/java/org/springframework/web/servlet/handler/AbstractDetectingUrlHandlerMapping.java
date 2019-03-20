@@ -23,7 +23,7 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.util.ObjectUtils;
 
 /**
- *
+ * 检测路径 HandlerMapping的抽象类
  */
 public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
@@ -56,11 +56,12 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(applicationContext, Object.class) :
 				applicationContext.getBeanNamesForType(Object.class));
 
-		// Take any bean name that we can determine URLs for.
+		// 遍历容器中所有 bean名称
 		for (String beanName : beanNames) {
+			//获取/开头的bean
 			String[] urls = determineUrlsForHandler(beanName);
 			if (!ObjectUtils.isEmpty(urls)) {
-				// URL paths found: Let's consider it a handler.
+				// 找到URL路径:让我们把它看作一个处理程序
 				registerHandler(urls, beanName);
 			}
 		}

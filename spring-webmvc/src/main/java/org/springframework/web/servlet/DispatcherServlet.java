@@ -677,7 +677,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * 获取默认的策略 根据class
+	 * 从 DispatcherServlet.properties 配置文件中获取 class
 	 */
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getDefaultStrategies(ApplicationContext context, Class<T> strategyInterface) {
@@ -704,7 +704,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * 创建默认策略 根据class
+	 * 根据 class 创建 bean
 	 */
 	protected Object createDefaultStrategy(ApplicationContext context, Class<?> clazz) {
 		return context.getAutowireCapableBeanFactory().createBean(clazz);
