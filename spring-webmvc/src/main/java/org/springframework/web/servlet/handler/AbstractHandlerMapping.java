@@ -389,7 +389,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 
 	/**
-	 * 查找给定请求的处理程序，如果没有找到特定的处理程序，则返回到默认处理程序
+	 * 通过Request请求获取 HandlerExecutionChain
 	 */
 	@Override
 	@Nullable
@@ -428,6 +428,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * 模板模式, 留给子类实现
+	 * 获取处理器 从内部获取
 	 */
 	@Nullable
 	protected abstract Object getHandlerInternal(HttpServletRequest request) throws Exception;

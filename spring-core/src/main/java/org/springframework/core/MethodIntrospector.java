@@ -45,25 +45,19 @@ public final class MethodIntrospector {
 
 
 	/**
-	 * Select methods on the given target type based on the lookup of associated metadata.
-	 * <p>Callers define methods of interest through the {@link MetadataLookup} parameter,
-	 * allowing to collect the associated metadata into the result map.
-	 * @param targetType the target type to search methods on
-	 * @param metadataLookup a {@link MetadataLookup} callback to inspect methods of interest,
-	 * returning non-null metadata to be associated with a given method if there is a match,
-	 * or {@code null} for no match
-	 * @return the selected methods associated with their metadata (in the order of retrieval),
-	 * or an empty map in case of no match
+	 * 根据关联元数据的查找选择给定目标类型上的方法
 	 */
 	public static <T> Map<Method, T> selectMethods(Class<?> targetType, final MetadataLookup<T> metadataLookup) {
 		final Map<Method, T> methodMap = new LinkedHashMap<>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<>();
 		Class<?> specificHandlerType = null;
 
+		//是否代理class, 不是则保存class
 		if (!Proxy.isProxyClass(targetType)) {
 			specificHandlerType = ClassUtils.getUserClass(targetType);
 			handlerTypes.add(specificHandlerType);
 		}
+		//保存该类实现的接口class
 		handlerTypes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetType));
 
 		for (Class<?> currentHandlerType : handlerTypes) {
@@ -140,17 +134,14 @@ public final class MethodIntrospector {
 
 
 	/**
-	 * A callback interface for metadata lookup on a given method.
-	 * @param <T> the type of metadata returned
+	 * 用于在给定方法上查找元数据的回调接口
+	 * @param <T> 返回的元数据类型
 	 */
 	@FunctionalInterface
 	public interface MetadataLookup<T> {
 
 		/**
-		 * Perform a lookup on the given method and return associated metadata, if any.
-		 * @param method the method to inspect
-		 * @return non-null metadata to be associated with a method if there is a match,
-		 * or {@code null} for no match
+		 * 对给定的方法执行查找并返回关联的元数据(如果有的话)
 		 */
 		@Nullable
 		T inspect(Method method);
