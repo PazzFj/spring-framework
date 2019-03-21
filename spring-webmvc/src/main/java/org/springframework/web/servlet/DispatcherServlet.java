@@ -894,7 +894,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * 处理处理程序选择和处理程序调用的结果，该结果要么是要解析为ModelAndView的ModelAndView或异常
+	 * 处理结果，该结果要么是要解析为ModelAndView的ModelAndView或异常
 	 */
 	private void processDispatchResult(HttpServletRequest request, HttpServletResponse response,
 									   @Nullable HandlerExecutionChain mappedHandler, @Nullable ModelAndView mv,

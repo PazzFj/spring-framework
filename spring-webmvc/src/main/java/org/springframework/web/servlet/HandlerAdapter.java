@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 public interface HandlerAdapter {
 
 	/**
-	 * 根据HandlerAdapter是否支持HandlerExecutionChain是否支持
+	 * 根据HandlerAdapter是否支持HandlerMethod
 	 */
 	boolean supports(Object handler);
 

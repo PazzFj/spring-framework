@@ -44,6 +44,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 
 	private boolean lazyInitHandlers = false;
 
+	//别名对应的, bean名称
 	private final Map<String, Object> handlerMap = new LinkedHashMap<>();
 
 
@@ -303,7 +304,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	protected void registerHandler(String urlPath, Object handler) throws BeansException, IllegalStateException {
 		Assert.notNull(urlPath, "URL path must not be null");
 		Assert.notNull(handler, "Handler object must not be null");
-		Object resolvedHandler = handler;
+		Object resolvedHandler = handler;  // beanName
 
 		// 如果通过名称引用单例，则急切地解析处理程序
 		if (!this.lazyInitHandlers && handler instanceof String) {

@@ -84,7 +84,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	private HandlerMethodMappingNamingStrategy<T> namingStrategy;
 
-	//MappingInfo注册中心
+	//Mapping注册中心
 	private final MappingRegistry mappingRegistry = new MappingRegistry();
 
 
@@ -225,6 +225,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * 处理@Controller  @RequestMapping 处理的类class
+	 * 每个Method 对应 RequestMappingInfo
 	 */
 	protected void detectHandlerMethods(Object handler) {
 		Class<?> handlerType = (handler instanceof String ? obtainApplicationContext().getType((String) handler) : handler.getClass());
@@ -338,13 +339,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
-	 * Look up the best-matching handler method for the current request.
-	 * If multiple matches are found, the best match is selected.
-	 * @param lookupPath mapping lookup path within the current servlet mapping
-	 * @param request the current request
-	 * @return the best-matching handler method, or {@code null} if no match
-	 * @see #handleMatch(Object, String, HttpServletRequest)
-	 * @see #handleNoMatch(Set, String, HttpServletRequest)
+	 * 查找当前请求的最佳匹配处理程序方法。
+	 * 如果找到多个匹配项，则选择最佳匹配项
 	 */
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, HttpServletRequest request) throws Exception {
@@ -538,6 +534,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			this.readWriteLock.readLock().unlock();
 		}
 
+		// T mapping 为RequestMappingInfo
 		public void register(T mapping, Object handler, Method method) {
 			this.readWriteLock.writeLock().lock();
 			try {
