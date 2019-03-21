@@ -47,18 +47,10 @@ import org.springframework.util.StringUtils;
  */
 public abstract class TransactionAspectSupport implements BeanFactoryAware, InitializingBean {
 
-	// NOTE: This class must not implement Serializable because it serves as base
-	// class for AspectJ aspects (which are not allowed to implement Serializable)!
+	// 注意:这个类不能实现Serializable，因为它是AspectJ方面的基类(不允许实现Serializable)
 
-
-	/**
-	 * Key to use to store the default transaction manager.
-	 */
 	private static final Object DEFAULT_TRANSACTION_MANAGER_KEY = new Object();
 
-	/**
-	 * Holder支持{@code currentTransactionStatus()}方法，如果方面涉及多个方法，则支持不同的协作通知(例如before和after advice)之间的通信(around advice也是如此)
-	 */
 	private static final ThreadLocal<TransactionInfo> transactionInfoHolder = new NamedThreadLocal<>("Current aspect-driven transaction");
 
 	protected final Log logger = LogFactory.getLog(getClass());
