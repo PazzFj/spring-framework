@@ -61,7 +61,7 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	}
 
 	/**
-	 *
+	 * @see #setTransactionAttributes
 	 */
 	public TransactionInterceptor(PlatformTransactionManager ptm, Properties attributes) {
 		setTransactionManager(ptm);

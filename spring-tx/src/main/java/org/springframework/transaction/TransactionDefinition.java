@@ -96,7 +96,7 @@ public interface TransactionDefinition {
 
 
 	/**
-	 *
+	 * 获取传播行为
 	 */
 	int getPropagationBehavior();
 

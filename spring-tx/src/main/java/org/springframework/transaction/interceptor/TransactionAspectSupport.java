@@ -135,7 +135,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * @see CompositeTransactionAttributeSource
 	 * @see MethodMapTransactionAttributeSource
 	 * @see NameMatchTransactionAttributeSource
-	 * @see org.springframework.transaction.annotation.AnnotationTransactionAttributeSource
 	 */
 	public void setTransactionAttributeSources(TransactionAttributeSource... transactionAttributeSources) {
 		this.transactionAttributeSource = new CompositeTransactionAttributeSource(transactionAttributeSources);

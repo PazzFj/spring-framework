@@ -24,18 +24,18 @@ import org.springframework.transaction.TransactionDefinition;
  * 由于自定义{@code rollbackOn}只能用AOP实现，所以该类驻留在AOP事务包中
  *
  * @see DefaultTransactionAttribute
- * @see RuleBasedTransactionAttribute
  */
 public interface TransactionAttribute extends TransactionDefinition {
 
 	/**
 	 * 返回与此事务属性关联的限定符值
+	 * Qualifier 限定符
 	 */
 	@Nullable
 	String getQualifier();
 
 	/**
-	 * 是否回滚到给定的异常
+	 * 是否回滚到指定的异常
 	 */
 	boolean rollbackOn(Throwable ex);
 
