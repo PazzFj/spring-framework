@@ -30,17 +30,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Utility class for handling registration of AOP auto-proxy creators.
+ * 处理AOP自动代理创建者注册的实用程序类
  *
- * <p>Only a single auto-proxy creator should be registered yet multiple concrete
- * implementations are available. This class provides a simple escalation protocol,
- * allowing a caller to request a particular auto-proxy creator and know that creator,
- * <i>or a more capable variant thereof</i>, will be registered as a post-processor.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @since 2.5
  * @see AopNamespaceUtils
  */
 public abstract class AopConfigUtils {

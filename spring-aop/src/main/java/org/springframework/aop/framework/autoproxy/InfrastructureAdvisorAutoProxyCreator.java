@@ -40,6 +40,9 @@ public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoPr
 		this.beanFactory = beanFactory;
 	}
 
+	/**
+	 * 指定的beanName是否合适Advisor Bean
+	 */
 	@Override
 	protected boolean isEligibleAdvisorBean(String beanName) {
 		return (this.beanFactory != null && this.beanFactory.containsBeanDefinition(beanName) &&

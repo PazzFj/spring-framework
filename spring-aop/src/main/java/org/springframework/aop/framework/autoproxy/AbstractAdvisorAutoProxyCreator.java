@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	/**
-	 * bean工厂
+	 * BeanFactoryAdvisorRetrievalHelperAdapter 内部类,扩展自 BeanFactoryAdvisorRetrievalHelper
 	 */
 	@Nullable
 	private BeanFactoryAdvisorRetrievalHelper advisorRetrievalHelper;

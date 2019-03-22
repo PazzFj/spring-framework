@@ -51,13 +51,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.beans.factory.config.BeanPostProcessor} 用AOP代理包装每个符合条件的bean的实现，
- * 在调用bean本身之前委托给指定的拦截器
- *
- * @see #setInterceptorNames
- * @see #getAdvicesAndAdvisorsForBean
- * @see BeanNameAutoProxyCreator
- * @see DefaultAdvisorAutoProxyCreator
+ * 用AOP代理包装每个符合条件的bean的实现, 在调用bean本身之前委托给指定的拦截器
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
@@ -136,18 +130,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	}
 
 	/**
-	 * Set custom {@code TargetSourceCreators} to be applied in this order.
-	 * If the list is empty, or they all return null, a {@link SingletonTargetSource}
-	 * will be created for each bean.
-	 * <p>Note that TargetSourceCreators will kick in even for target beans
-	 * where no advices or advisors have been found. If a {@code TargetSourceCreator}
-	 * returns a {@link TargetSource} for a specific bean, that bean will be proxied
-	 * in any case.
-	 * <p>{@code TargetSourceCreators} can only be invoked if this post processor is used
-	 * in a {@link BeanFactory} and its {@link BeanFactoryAware} callback is triggered.
-	 * @param targetSourceCreators the list of {@code TargetSourceCreators}.
-	 * Ordering is significant: The {@code TargetSource} returned from the first matching
-	 * {@code TargetSourceCreator} (that is, the first that returns non-null) will be used.
+	 *
 	 */
 	public void setCustomTargetSourceCreators(TargetSourceCreator... targetSourceCreators) {
 		this.customTargetSourceCreators = targetSourceCreators;
@@ -213,7 +196,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	}
 
 	/**
-	 * 实现接口  对象调用构造器之前处理
+	 * 对象调用构造器之前处理
 	 */
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
@@ -311,8 +294,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
-			Object proxy = createProxy(
-					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+			Object proxy = createProxy(bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}

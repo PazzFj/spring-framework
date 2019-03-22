@@ -45,8 +45,7 @@ public class TxNamespaceHandler extends NamespaceHandlerSupport {
 
 
 	static String getTransactionManagerName(Element element) {
-		return (element.hasAttribute(TRANSACTION_MANAGER_ATTRIBUTE) ?
-				element.getAttribute(TRANSACTION_MANAGER_ATTRIBUTE) : DEFAULT_TRANSACTION_MANAGER_BEAN_NAME);
+		return (element.hasAttribute(TRANSACTION_MANAGER_ATTRIBUTE) ? element.getAttribute(TRANSACTION_MANAGER_ATTRIBUTE) : DEFAULT_TRANSACTION_MANAGER_BEAN_NAME);
 	}
 
 

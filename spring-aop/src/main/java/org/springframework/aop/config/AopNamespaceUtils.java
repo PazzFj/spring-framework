@@ -25,19 +25,7 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.lang.Nullable;
 
 /**
- * Utility class for handling registration of auto-proxy creators used internally
- * by the '{@code aop}' namespace tags.
- *
- * <p>Only a single auto-proxy creator should be registered and multiple configuration
- * elements may wish to register different concrete implementations. As such this class
- * delegates to {@link AopConfigUtils} which provides a simple escalation protocol.
- * Callers may request a particular auto-proxy creator and know that creator,
- * <i>or a more capable variant thereof</i>, will be registered as a post-processor.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @since 2.0
+ * 用于处理Aop名称空间标记内部使用的自动代理创建者注册的实用程序类
  * @see AopConfigUtils
  */
 public abstract class AopNamespaceUtils {
@@ -52,24 +40,29 @@ public abstract class AopNamespaceUtils {
 	 */
 	private static final String EXPOSE_PROXY_ATTRIBUTE = "expose-proxy";
 
-
-	public static void registerAutoProxyCreatorIfNecessary(
-			ParserContext parserContext, Element sourceElement) {
-
-		BeanDefinition beanDefinition = AopConfigUtils.registerAutoProxyCreatorIfNecessary(
-				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+	//注册自动代理, 如果需要
+	public static void registerAutoProxyCreatorIfNecessary(ParserContext parserContext, Element sourceElement) {
+		// 公共顾问自动代理
+		// 创建 InfrastructureAdvisorAutoProxyCreator 对象, 在创建对象调用构造器时处理需要处理的bean (创建代理)
+		BeanDefinition beanDefinition = AopConfigUtils.registerAutoProxyCreatorIfNecessary(parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		// 配置BeanDefinition 对应的属性的值, 默认为false及不配置
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
+		// 往事件监听器注册组件 BeanDefinition, 如果不为空
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
+	//注册切面自动代理, 如果需要
 	public static void registerAspectJAutoProxyCreatorIfNecessary(ParserContext parserContext, Element sourceElement) {
-		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAutoProxyCreatorIfNecessary(
-				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		// 切面顾问
+		// 创建 AspectJAwareAdvisorAutoProxyCreator 对象, 在创建对象调用构造器时处理需要处理的bean (创建代理)
+		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAutoProxyCreatorIfNecessary(parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		// 配置BeanDefinition 对应的属性的值, 默认为false及不配置
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
+		// 往事件监听器注册组件 BeanDefinition, 如果不为空
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
-	// 注册切面注解自动代理创建
+	// 注册切面注解自动代理, 如果需要
 	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(ParserContext parserContext, Element sourceElement) {
 		// 注册或更新 AutoProxyCreator 定义 beanName 为 org.Springframework.aop.config.internalAutoProxyCreator的BeanDefinition
 		// 如果内在的internalAutoProxyCreator的BeanDefinition已经存在，而根据优先级更新BeanDefinition
