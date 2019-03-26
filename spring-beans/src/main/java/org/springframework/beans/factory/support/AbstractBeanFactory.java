@@ -170,12 +170,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public Object getBean(String name) throws BeansException {
-		return doGetBean(name, null, null, false);
+		return doGetBean(name, null, null, false); //根据名称获取
 	}
 
 	@Override
 	public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
-		return doGetBean(name, requiredType, null, false);
+		return doGetBean(name, requiredType, null, false);//根据名称和类型获取
 	}
 
 	@Override
@@ -183,18 +183,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		return doGetBean(name, null, args, false);
 	}
 
-	/**
-	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * @param name the name of the bean to retrieve
-	 * @param requiredType the required type of the bean to retrieve
-	 * @param args arguments to use when creating a bean instance using explicit arguments
-	 * (only applied when creating a new instance as opposed to retrieving an existing one)
-	 * @return an instance of the bean
-	 * @throws BeansException if the bean could not be created
-	 */
-	public <T> T getBean(String name, @Nullable Class<T> requiredType, @Nullable Object... args)
-			throws BeansException {
-
+	public <T> T getBean(String name, @Nullable Class<T> requiredType, @Nullable Object... args)throws BeansException {
 		return doGetBean(name, requiredType, args, false);
 	}
 
@@ -223,11 +212,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 		//Bean名称转换
-		final String beanName = transformedBeanName(name);
+		final String beanName = transformedBeanName(name); //Bean名称转换
 		Object bean;
 
 		// 从已注册单例缓存中获取共享对象  (获取的object 已注册、提前注册、工厂Bean三种)
-		Object sharedInstance = getSingleton(beanName);
+		Object sharedInstance = getSingleton(beanName); //
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
@@ -238,7 +227,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 			//获取Bean实例, 不为FactoryBean时不做操作, 为FactoryBean时通过getObject()方法获取
-			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
+			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null); //
 		}
 
 		else {
@@ -253,8 +242,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
 				if (parentBeanFactory instanceof AbstractBeanFactory) {
-					return ((AbstractBeanFactory) parentBeanFactory).doGetBean(
-							nameToLookup, requiredType, args, typeCheckOnly);
+					return ((AbstractBeanFactory) parentBeanFactory).doGetBean(nameToLookup, requiredType, args, typeCheckOnly);
 				}
 				else if (args != null) {
 					// Delegation to parent with explicit args.
