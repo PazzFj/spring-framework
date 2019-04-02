@@ -124,10 +124,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** BeanPostProcessors集合 */
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
 
-	/** 指示是否已注册任何InstantiationAwareBeanPostProcessor   (默认false) */
+	/** 指示是否已注册任何  InstantiationAwareBeanPostProcessor   (默认false) */
 	private volatile boolean hasInstantiationAwareBeanPostProcessors;
 
-	/** 指示是否已注册了任何DestructionAwareBeanPostProcessor   (默认false) */
+	/** 指示是否已注册了任何 DestructionAwareBeanPostProcessor   (默认false) */
 	private volatile boolean hasDestructionAwareBeanPostProcessors;
 
 	/** Map from scope identifier String to corresponding Scope. */

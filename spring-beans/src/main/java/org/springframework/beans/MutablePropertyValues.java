@@ -49,7 +49,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	@Nullable
 	private Set<String> processedProperties;
 
-	private volatile boolean converted = false;
+	private volatile boolean converted = false; //转换标识
 
 
 	/**

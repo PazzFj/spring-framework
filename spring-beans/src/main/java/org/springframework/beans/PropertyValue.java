@@ -23,50 +23,35 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Object to hold information and value for an individual bean property.
- * Using an object here, rather than just storing all properties in
- * a map keyed by property name, allows for more flexibility, and the
- * ability to handle indexed properties etc in an optimized way.
- *
- * <p>Note that the value doesn't need to be the final required type:
- * A {@link BeanWrapper} implementation should handle any necessary conversion,
- * as this object doesn't know anything about the objects it will be applied to.
- *
- * @author Rod Johnson
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 13 May 2001
- * @see PropertyValues
- * @see BeanWrapper
+ * 对象来保存单个bean属性的信息和值
+ * 在这里使用一个对象，而不是仅仅将所有属性存储在一个按属性名键控的映射中，这允许更大的灵活性，以及以优化的方式处理索引属性等
  */
 @SuppressWarnings("serial")
 public class PropertyValue extends BeanMetadataAttributeAccessor implements Serializable {
 
-	private final String name;
+	private final String name; //属性名
 
 	@Nullable
-	private final Object value;
+	private final Object value;  //属性值
 
-	private boolean optional = false;
+	private boolean optional = false;  //可选择的
 
-	private boolean converted = false;
+	private boolean converted = false; //转换标识
 
 	@Nullable
 	private Object convertedValue;
 
-	/** Package-visible field that indicates whether conversion is necessary. */
+	/** 包可见字段，指示是否需要转换 */
 	@Nullable
 	volatile Boolean conversionNecessary;
 
-	/** Package-visible field for caching the resolved property path tokens. */
+	/** 包可见字段，用于缓存已解析的属性路径令牌 */
 	@Nullable
 	transient volatile Object resolvedTokens;
 
 
 	/**
-	 * Create a new PropertyValue instance.
-	 * @param name the name of the property (never {@code null})
-	 * @param value the value of the property (possibly before type conversion)
+	 *
 	 */
 	public PropertyValue(String name, @Nullable Object value) {
 		Assert.notNull(name, "Name must not be null");
@@ -75,8 +60,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	}
 
 	/**
-	 * Copy constructor.
-	 * @param original the PropertyValue to copy (never {@code null})
+	 *
 	 */
 	public PropertyValue(PropertyValue original) {
 		Assert.notNull(original, "Original must not be null");
@@ -92,10 +76,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	}
 
 	/**
-	 * Constructor that exposes a new value for an original value holder.
-	 * The original holder will be exposed as source of the new holder.
-	 * @param original the PropertyValue to link to (never {@code null})
-	 * @param newValue the new value to apply
+	 *
 	 */
 	public PropertyValue(PropertyValue original, @Nullable Object newValue) {
 		Assert.notNull(original, "Original must not be null");
@@ -110,17 +91,14 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 
 
 	/**
-	 * Return the name of the property.
+	 * 返回属性名
 	 */
 	public String getName() {
 		return this.name;
 	}
 
 	/**
-	 * Return the value of the property.
-	 * <p>Note that type conversion will <i>not</i> have occurred here.
-	 * It is the responsibility of the BeanWrapper implementation to
-	 * perform type conversion.
+	 * 返回属性值
 	 */
 	@Nullable
 	public Object getValue() {
@@ -128,9 +106,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	}
 
 	/**
-	 * Return the original PropertyValue instance for this value holder.
-	 * @return the original PropertyValue (either a source of this
-	 * value holder or this value holder itself).
+	 * 返回源对象
 	 */
 	public PropertyValue getOriginalPropertyValue() {
 		PropertyValue original = this;
@@ -143,44 +119,28 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	}
 
 	/**
-	 * Set whether this is an optional value, that is, to be ignored
-	 * when no corresponding property exists on the target class.
-	 * @since 3.0
+	 * 设置可选择的
 	 */
 	public void setOptional(boolean optional) {
 		this.optional = optional;
 	}
 
 	/**
-	 * Return whether this is an optional value, that is, to be ignored
-	 * when no corresponding property exists on the target class.
-	 * @since 3.0
+	 * 是否可选择的
 	 */
 	public boolean isOptional() {
 		return this.optional;
 	}
 
-	/**
-	 * Return whether this holder contains a converted value already ({@code true}),
-	 * or whether the value still needs to be converted ({@code false}).
-	 */
 	public synchronized boolean isConverted() {
 		return this.converted;
 	}
 
-	/**
-	 * Set the converted value of the constructor argument,
-	 * after processed type conversion.
-	 */
 	public synchronized void setConvertedValue(@Nullable Object value) {
 		this.converted = true;
 		this.convertedValue = value;
 	}
 
-	/**
-	 * Return the converted value of the constructor argument,
-	 * after processed type conversion.
-	 */
 	@Nullable
 	public synchronized Object getConvertedValue() {
 		return this.convertedValue;

@@ -20,12 +20,6 @@ import org.springframework.lang.Nullable;
 
 /**
  * 接口定义用于将元数据附加到/从任意对象访问元数据的通用契约。
- *
- * Interface defining a generic contract for attaching and accessing metadata
- * to/from arbitrary objects.
- *
- * @author Rob Harrop
- * @since 2.0
  */
 public interface AttributeAccessor {
 

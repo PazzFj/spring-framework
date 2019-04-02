@@ -19,13 +19,8 @@ package org.springframework.beans;
 import org.springframework.lang.Nullable;
 
 /**
- * 接口，由携带配置源对象的bean元数据元素实现
- *
- * Interface to be implemented by bean metadata elements
- * that carry a configuration source object.
- *
- * @author Juergen Hoeller
- * @since 2.0
+ * 接口, 由携带配置源对象的bean元数据元素实现
+ * @see BeanMetadataAttribute
  */
 public interface BeanMetadataElement {
 
