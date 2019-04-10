@@ -113,6 +113,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 				interceptorDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 				//注入事务管理器 transactionManager
 				registerTransactionManager(element, interceptorDef);
+				//interceptorDef.getPropertyValues().add("transactionManagerBeanName", "transactionManager");
 				interceptorDef.getPropertyValues().add("transactionAttributeSource", new RuntimeBeanReference(sourceName));
 				String interceptorName = parserContext.getReaderContext().registerWithGeneratedName(interceptorDef);
 
