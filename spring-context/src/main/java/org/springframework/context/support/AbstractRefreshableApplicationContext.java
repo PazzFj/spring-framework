@@ -26,41 +26,7 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.lang.Nullable;
 
 /**
- * Base class for {@link org.springframework.context.ApplicationContext}
- * implementations which are supposed to support multiple calls to {@link #refresh()},
- * creating a new internal bean factory instance every time.
- * Typically (but not necessarily), such a context will be driven by
- * a set of config locations to load bean definitions from.
- *
- * <p>The only method to be implemented by subclasses is {@link #loadBeanDefinitions},
- * which gets invoked on each refresh. A concrete implementation is supposed to load
- * bean definitions into the given
- * {@link org.springframework.beans.factory.support.DefaultListableBeanFactory},
- * typically delegating to one or more specific bean definition readers.
- *
- * <p><b>Note that there is a similar base class for WebApplicationContexts.</b>
- * {@link org.springframework.web.context.support.AbstractRefreshableWebApplicationContext}
- * provides the same subclassing strategy, but additionally pre-implements
- * all context functionality for web environments. There is also a
- * pre-defined way to receive config locations for a web context.
- *
- * <p>Concrete standalone subclasses of this base class, reading in a
- * specific bean definition format, are {@link ClassPathXmlApplicationContext}
- * and {@link FileSystemXmlApplicationContext}, which both derive from the
- * common {@link AbstractXmlApplicationContext} base class;
- * {@link org.springframework.context.annotation.AnnotationConfigApplicationContext}
- * supports {@code @Configuration}-annotated classes as a source of bean definitions.
- *
- * @author Juergen Hoeller
- * @author Chris Beams
- * @since 1.1.3
- * @see #loadBeanDefinitions
- * @see org.springframework.beans.factory.support.DefaultListableBeanFactory
- * @see org.springframework.web.context.support.AbstractRefreshableWebApplicationContext
- * @see AbstractXmlApplicationContext
- * @see ClassPathXmlApplicationContext
- * @see FileSystemXmlApplicationContext
- * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
+ * 可刷新应用
  */
 public abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
 
@@ -191,8 +157,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
-	 * 设置是否允许 BeanDefinition 覆盖
-	 * 设置是否允许循环引用
+	 * 设置给定的容器属性：
+	 * 		1、是否允许重写 BeanDefinition
+	 * 		2、是否允许循环引用
 	 */
 	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
 		if (this.allowBeanDefinitionOverriding != null) {
@@ -207,7 +174,6 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * 将 BeanDefinitions 加载到 BeanFactory
 	 * @see AbstractXmlApplicationContext#loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
 	 */
-	protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
-			throws BeansException, IOException;
+	protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException;
 
 }
