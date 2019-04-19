@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>此策略接口的默认实现为
  * {@link org.springframework.transaction.jta.JtaTransactionManager} and
- * {@link org.springframework.jdbc.datasource.DataSourceTransactionManager},
+ * {@link org.springframework.jdbc.datasource.DataSourceTransactionManager},  jdbc 模块
  */
 public interface PlatformTransactionManager {
 
