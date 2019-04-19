@@ -78,10 +78,6 @@ import org.springframework.util.StringValueResolver;
 
 /**
  *
- * @see #getBeanDefinition
- * @see #createBean
- * @see AbstractAutowireCapableBeanFactory#createBean
- * @see DefaultListableBeanFactory#getBeanDefinition
  */
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
