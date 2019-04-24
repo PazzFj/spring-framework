@@ -887,12 +887,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 
 	/**
-	 * Register a shutdown hook with the JVM runtime, closing this context
-	 * on JVM shutdown unless it has already been closed at that time.
-	 * <p>Delegates to {@code doClose()} for the actual closing procedure.
-	 * @see Runtime#addShutdownHook
-	 * @see #close()
-	 * @see #doClose()
+	 * 向JVM运行时注册一个关机钩子，在JVM关机时关闭这个上下文，除非它当时已经关闭
 	 */
 	@Override
 	public void registerShutdownHook() {
