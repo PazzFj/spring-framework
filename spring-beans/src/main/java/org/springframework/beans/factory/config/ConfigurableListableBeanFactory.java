@@ -61,56 +61,24 @@ public interface ConfigurableListableBeanFactory
 	void registerResolvableDependency(Class<?> dependencyType, @Nullable Object autowiredValue);
 
 	/**
-	 * Determine whether the specified bean qualifies as an autowire candidate,
-	 * to be injected into other beans which declare a dependency of matching type.
-	 * <p>This method checks ancestor factories as well.
-	 * @param beanName the name of the bean to check
-	 * @param descriptor the descriptor of the dependency to resolve
-	 * @return whether the bean should be considered as autowire candidate
-	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
+	 * 确定指定的bean是否具有自动装配候选资格，以便被注入到声明匹配类型依赖关系的其他bean中。
 	 */
 	boolean isAutowireCandidate(String beanName, DependencyDescriptor descriptor)
 			throws NoSuchBeanDefinitionException;
 
 	/**
-	 * Return the registered BeanDefinition for the specified bean, allowing access
-	 * to its property values and constructor argument value (which can be
-	 * modified during bean factory post-processing).
-	 * <p>A returned BeanDefinition object should not be a copy but the original
-	 * definition object as registered in the factory. This means that it should
-	 * be castable to a more specific implementation type, if necessary.
-	 * <p><b>NOTE:</b> This method does <i>not</i> consider ancestor factories.
-	 * It is only meant for accessing local bean definitions of this factory.
-	 * @param beanName the name of the bean
-	 * @return the registered BeanDefinition
-	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
-	 * defined in this factory
+	 * 根据名称获取BeanDefinition
+	 * @see org.springframework.beans.factory.support.BeanDefinitionRegistry#getBeanDefinition(String)
 	 */
 	BeanDefinition getBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
 
 	/**
-	 * Return a unified view over all bean names managed by this factory.
-	 * <p>Includes bean definition names as well as names of manually registered
-	 * singleton instances, with bean definition names consistently coming first,
-	 * analogous to how type/annotation specific retrieval of bean names works.
-	 * @return the composite iterator for the bean names view
-	 * @since 4.1.2
-	 * @see #containsBeanDefinition
-	 * @see #registerSingleton
-	 * @see #getBeanNamesForType
-	 * @see #getBeanNamesForAnnotation
+	 * 获取所有bean名称, 迭代模式
 	 */
 	Iterator<String> getBeanNamesIterator();
 
 	/**
-	 * Clear the merged bean definition cache, removing entries for beans
-	 * which are not considered eligible for full metadata caching yet.
-	 * <p>Typically triggered after changes to the original bean definitions,
-	 * e.g. after applying a {@link BeanFactoryPostProcessor}. Note that metadata
-	 * for beans which have already been created at this point will be kept around.
-	 * @since 4.2
-	 * @see #getBeanDefinition
-	 * @see #getMergedBeanDefinition
+	 * 清除合并的bean定义缓存，删除那些被认为没有资格进行完全元数据缓存的bean的条目
 	 */
 	void clearMetadataCache();
 
