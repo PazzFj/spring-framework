@@ -28,12 +28,14 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.lang.Nullable;
 
 /**
- * 在bean定义解析过程中传递的上下文，它封装所有相关配置和状态。嵌套在{@link XmlReaderContext}中
+ * 在bean定义解析过程中传递的上下文, 它封装所有相关配置和状态. {@link XmlReaderContext}
  */
 public final class ParserContext {
 
+	// XML读取上下文
 	private final XmlReaderContext readerContext;
 
+	// BeanDefinition解析代理
 	private final BeanDefinitionParserDelegate delegate;
 
 	@Nullable

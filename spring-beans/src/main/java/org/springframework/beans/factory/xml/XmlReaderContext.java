@@ -41,21 +41,17 @@ public class XmlReaderContext extends ReaderContext {
 	// BeanDefinition读取器
 	private final XmlBeanDefinitionReader reader;
 
-	/**
-	 * 命名空间管理解析器  <xmlns:context="http://www.springframework.org/schema/context">
-	 */
+	// 命名空间管理解析器  	<xmlns:context="http://www.springframework.org/schema/context">
 	private final NamespaceHandlerResolver namespaceHandlerResolver;
 
 
 	/**
 	 * 构造 XmlReaderContext
 	 */
-	public XmlReaderContext(
-			Resource resource, ProblemReporter problemReporter,
-			ReaderEventListener eventListener, SourceExtractor sourceExtractor,
-			XmlBeanDefinitionReader reader, NamespaceHandlerResolver namespaceHandlerResolver) {
-
+	public XmlReaderContext(Resource resource, ProblemReporter problemReporter, ReaderEventListener eventListener,SourceExtractor sourceExtractor,
+							XmlBeanDefinitionReader reader, NamespaceHandlerResolver namespaceHandlerResolver) {
 		super(resource, problemReporter, eventListener, sourceExtractor);
+
 		this.reader = reader;
 		this.namespaceHandlerResolver = namespaceHandlerResolver;
 	}

@@ -54,22 +54,10 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	 */
 	private final Map<String, BeanDefinitionParser> parsers = new HashMap<>();
 
-	/**
-	 * Stores the {@link BeanDefinitionDecorator} implementations keyed by the
-	 * local name of the {@link Element Elements} they handle.
-	 */
 	private final Map<String, BeanDefinitionDecorator> decorators = new HashMap<>();
 
-	/**
-	 * Stores the {@link BeanDefinitionDecorator} implementations keyed by the local
-	 * name of the {@link Attr Attrs} they handle.
-	 */
 	private final Map<String, BeanDefinitionDecorator> attributeDecorators = new HashMap<>();
 
-
-	/**
-	 * 通过委托给为该{@link Element}注册的{@link BeanDefinitionParser}来解析提供的{@link Element}。
-	 */
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
@@ -77,9 +65,6 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		return (parser != null ? parser.parse(element, parserContext) : null);
 	}
 
-	/**
-	 * 使用提供的{@link Element}的本地名称从寄存器实现中定位{@link BeanDefinitionParser}
-	 */
 	@Nullable
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {
 		String localName = parserContext.getDelegate().getLocalName(element);
@@ -91,10 +76,6 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		return parser;
 	}
 
-	/**
-	 * Decorates the supplied {@link Node} by delegating to the {@link BeanDefinitionDecorator} that
-	 * is registered to handle that {@link Node}.
-	 */
 	@Override
 	@Nullable
 	public BeanDefinitionHolder decorate(
@@ -104,11 +85,6 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		return (decorator != null ? decorator.decorate(node, definition, parserContext) : null);
 	}
 
-	/**
-	 * Locates the {@link BeanDefinitionParser} from the register implementations using
-	 * the local name of the supplied {@link Node}. Supports both {@link Element Elements}
-	 * and {@link Attr Attrs}.
-	 */
 	@Nullable
 	private BeanDefinitionDecorator findDecoratorForNode(Node node, ParserContext parserContext) {
 		BeanDefinitionDecorator decorator = null;
@@ -131,29 +107,14 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	}
 
 
-	/**
-	 * Subclasses can call this to register the supplied {@link BeanDefinitionParser} to
-	 * handle the specified element. The element name is the local (non-namespace qualified)
-	 * name.
-	 */
 	protected final void registerBeanDefinitionParser(String elementName, BeanDefinitionParser parser) {
 		this.parsers.put(elementName, parser);
 	}
 
-	/**
-	 * Subclasses can call this to register the supplied {@link BeanDefinitionDecorator} to
-	 * handle the specified element. The element name is the local (non-namespace qualified)
-	 * name.
-	 */
 	protected final void registerBeanDefinitionDecorator(String elementName, BeanDefinitionDecorator dec) {
 		this.decorators.put(elementName, dec);
 	}
 
-	/**
-	 * Subclasses can call this to register the supplied {@link BeanDefinitionDecorator} to
-	 * handle the specified attribute. The attribute name is the local (non-namespace qualified)
-	 * name.
-	 */
 	protected final void registerBeanDefinitionDecoratorForAttribute(String attrName, BeanDefinitionDecorator dec) {
 		this.attributeDecorators.put(attrName, dec);
 	}

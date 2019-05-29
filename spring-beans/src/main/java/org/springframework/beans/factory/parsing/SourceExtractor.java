@@ -20,19 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 
 /**
- * Simple strategy allowing tools to control how source metadata is attached
- * to the bean definition metadata.
- *
- * <p>Configuration parsers <strong>may</strong> provide the ability to attach
- * source metadata during the parse phase. They will offer this metadata in a
- * generic format which can be further modified by a {@link SourceExtractor}
- * before being attached to the bean definition metadata.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 2.0
- * @see org.springframework.beans.BeanMetadataElement#getSource()
- * @see org.springframework.beans.factory.config.BeanDefinition
+ * 资源提取器
  */
 @FunctionalInterface
 public interface SourceExtractor {
