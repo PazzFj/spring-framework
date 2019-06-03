@@ -38,6 +38,10 @@ import org.springframework.lang.Nullable;
  */
 class AspectJAutoProxyBeanDefinitionParser implements BeanDefinitionParser {
 
+
+	/**
+	 * 解析
+	 */
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
@@ -50,12 +54,14 @@ class AspectJAutoProxyBeanDefinitionParser implements BeanDefinitionParser {
 		return null;
 	}
 
+
 	private void extendBeanDefinition(Element element, ParserContext parserContext) {
 		BeanDefinition beanDef = parserContext.getRegistry().getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
 		if (element.hasChildNodes()) {
 			addIncludePatterns(element, parserContext, beanDef);
 		}
 	}
+
 
 	private void addIncludePatterns(Element element, ParserContext parserContext, BeanDefinition beanDef) {
 		ManagedList<TypedStringValue> includePatterns = new ManagedList<>();

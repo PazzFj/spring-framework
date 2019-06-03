@@ -215,7 +215,7 @@ public class BeanDefinitionParserDelegate {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final XmlReaderContext readerContext;  //xml读取上下文
+	private final XmlReaderContext readerContext;  			//xml读取上下文(构造时必须)
 
 	private final DocumentDefaultsDefinition defaults = new DocumentDefaultsDefinition();
 

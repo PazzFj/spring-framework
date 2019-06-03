@@ -49,56 +49,31 @@ import org.springframework.util.CollectionUtils;
  */
 public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver {
 
-	/**
-	 * The location to look for the mapping files. Can be present in multiple JAR files.
-	 */
 	public static final String DEFAULT_HANDLER_MAPPINGS_LOCATION = "META-INF/spring.handlers";
 
 
-	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** ClassLoader to use for NamespaceHandler classes. */
+	// 类加载器
 	@Nullable
 	private final ClassLoader classLoader;
 
-	/** Resource location to search for. */
+	// 管理映射路径, 默认 META-INF/spring.handlers 路径
 	private final String handlerMappingsLocation;
 
-	/** Stores the mappings from namespace URI to NamespaceHandler class name / instance. */
+	// 储存映射的命名空间管理处理类
 	@Nullable
 	private volatile Map<String, Object> handlerMappings;
 
 
-	/**
-	 * Create a new {@code DefaultNamespaceHandlerResolver} using the
-	 * default mapping file location.
-	 * <p>This constructor will result in the thread context ClassLoader being used
-	 * to load resources.
-	 * @see #DEFAULT_HANDLER_MAPPINGS_LOCATION
-	 */
 	public DefaultNamespaceHandlerResolver() {
 		this(null, DEFAULT_HANDLER_MAPPINGS_LOCATION);
 	}
 
-	/**
-	 * Create a new {@code DefaultNamespaceHandlerResolver} using the
-	 * default mapping file location.
-	 * @param classLoader the {@link ClassLoader} instance used to load mapping resources
-	 * (may be {@code null}, in which case the thread context ClassLoader will be used)
-	 * @see #DEFAULT_HANDLER_MAPPINGS_LOCATION
-	 */
 	public DefaultNamespaceHandlerResolver(@Nullable ClassLoader classLoader) {
 		this(classLoader, DEFAULT_HANDLER_MAPPINGS_LOCATION);
 	}
 
-	/**
-	 * Create a new {@code DefaultNamespaceHandlerResolver} using the
-	 * supplied mapping file location.
-	 * @param classLoader the {@link ClassLoader} instance used to load mapping resources
-	 * may be {@code null}, in which case the thread context ClassLoader will be used)
-	 * @param handlerMappingsLocation the mapping file location
-	 */
 	public DefaultNamespaceHandlerResolver(@Nullable ClassLoader classLoader, String handlerMappingsLocation) {
 		Assert.notNull(handlerMappingsLocation, "Handler mappings location must not be null");
 		this.classLoader = (classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader());

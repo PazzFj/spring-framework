@@ -24,18 +24,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Holder for a BeanDefinition with name and aliases.
- * Can be registered as a placeholder for an inner bean.
  *
- * <p>Can also be used for programmatic registration of inner bean
- * definitions. If you don't care about BeanNameAware and the like,
- * registering RootBeanDefinition or ChildBeanDefinition is good enough.
- *
- * @author Juergen Hoeller
- * @since 1.0.2
- * @see org.springframework.beans.factory.BeanNameAware
- * @see org.springframework.beans.factory.support.RootBeanDefinition
- * @see org.springframework.beans.factory.support.ChildBeanDefinition
  */
 public class BeanDefinitionHolder implements BeanMetadataElement {
 
@@ -46,22 +35,10 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	@Nullable
 	private final String[] aliases;
 
-
-	/**
-	 * Create a new BeanDefinitionHolder.
-	 * @param beanDefinition the BeanDefinition to wrap
-	 * @param beanName the name of the bean, as specified for the bean definition
-	 */
 	public BeanDefinitionHolder(BeanDefinition beanDefinition, String beanName) {
 		this(beanDefinition, beanName, null);
 	}
 
-	/**
-	 * Create a new BeanDefinitionHolder.
-	 * @param beanDefinition the BeanDefinition to wrap
-	 * @param beanName the name of the bean, as specified for the bean definition
-	 * @param aliases alias names for the bean, or {@code null} if none
-	 */
 	public BeanDefinitionHolder(BeanDefinition beanDefinition, String beanName, @Nullable String[] aliases) {
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 		Assert.notNull(beanName, "Bean name must not be null");
@@ -70,13 +47,6 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 		this.aliases = aliases;
 	}
 
-	/**
-	 * Copy constructor: Create a new BeanDefinitionHolder with the
-	 * same contents as the given BeanDefinitionHolder instance.
-	 * <p>Note: The wrapped BeanDefinition reference is taken as-is;
-	 * it is {@code not} deeply copied.
-	 * @param beanDefinitionHolder the BeanDefinitionHolder to copy
-	 */
 	public BeanDefinitionHolder(BeanDefinitionHolder beanDefinitionHolder) {
 		Assert.notNull(beanDefinitionHolder, "BeanDefinitionHolder must not be null");
 		this.beanDefinition = beanDefinitionHolder.getBeanDefinition();
@@ -85,43 +55,25 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	}
 
 
-	/**
-	 * Return the wrapped BeanDefinition.
-	 */
 	public BeanDefinition getBeanDefinition() {
 		return this.beanDefinition;
 	}
 
-	/**
-	 * Return the primary name of the bean, as specified for the bean definition.
-	 */
 	public String getBeanName() {
 		return this.beanName;
 	}
 
-	/**
-	 * Return the alias names for the bean, as specified directly for the bean definition.
-	 * @return the array of alias names, or {@code null} if none
-	 */
 	@Nullable
 	public String[] getAliases() {
 		return this.aliases;
 	}
 
-	/**
-	 * Expose the bean definition's source object.
-	 * @see BeanDefinition#getSource()
-	 */
 	@Override
 	@Nullable
 	public Object getSource() {
 		return this.beanDefinition.getSource();
 	}
 
-	/**
-	 * Determine whether the given candidate name matches the bean name
-	 * or the aliases stored in this bean definition.
-	 */
 	public boolean matchesName(@Nullable String candidateName) {
 		return (candidateName != null && (candidateName.equals(this.beanName) ||
 				candidateName.equals(BeanFactoryUtils.transformedBeanName(this.beanName)) ||
@@ -129,11 +81,6 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	}
 
 
-	/**
-	 * Return a friendly, short description for the bean, stating name and aliases.
-	 * @see #getBeanName()
-	 * @see #getAliases()
-	 */
 	public String getShortDescription() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Bean definition with name '").append(this.beanName).append("'");
@@ -143,24 +90,12 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 		return sb.toString();
 	}
 
-	/**
-	 * Return a long description for the bean, including name and aliases
-	 * as well as a description of the contained {@link BeanDefinition}.
-	 * @see #getShortDescription()
-	 * @see #getBeanDefinition()
-	 */
 	public String getLongDescription() {
 		StringBuilder sb = new StringBuilder(getShortDescription());
 		sb.append(": ").append(this.beanDefinition);
 		return sb.toString();
 	}
 
-	/**
-	 * This implementation returns the long description. Can be overridden
-	 * to return the short description or any kind of custom description instead.
-	 * @see #getLongDescription()
-	 * @see #getShortDescription()
-	 */
 	@Override
 	public String toString() {
 		return getLongDescription();

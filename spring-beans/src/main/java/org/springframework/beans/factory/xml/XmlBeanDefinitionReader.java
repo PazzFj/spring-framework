@@ -112,117 +112,58 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	//XmlValidation模式检测器
 	private final XmlValidationModeDetector validationModeDetector = new XmlValidationModeDetector();
 	//存储EncodedResource集合
-	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded =
-			new NamedThreadLocal<>("XML bean definition resources currently being loaded");
+	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded = new NamedThreadLocal<>("XML bean definition resources currently being loaded");
 
 
-	/**
-	 * 要将bean定义以BeanDefinitionRegistry的形式加载到其中的BeanFactory
-	 */
 	public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		super(registry);
 	}
 
 
-	/**
-	 * Set whether to use XML validation. Default is {@code true}.
-	 * <p>This method switches namespace awareness on if validation is turned off,
-	 * in order to still process schema namespaces properly in such a scenario.
-	 * @see #setValidationMode
-	 * @see #setNamespaceAware
-	 */
 	public void setValidating(boolean validating) {
 		this.validationMode = (validating ? VALIDATION_AUTO : VALIDATION_NONE);
 		this.namespaceAware = !validating;
 	}
 
-	/**
-	 * Set the validation mode to use by name. Defaults to {@link #VALIDATION_AUTO}.
-	 * @see #setValidationMode
-	 */
 	public void setValidationModeName(String validationModeName) {
 		setValidationMode(constants.asNumber(validationModeName).intValue());
 	}
 
-	/**
-	 * Set the validation mode to use. Defaults to {@link #VALIDATION_AUTO}.
-	 * <p>Note that this only activates or deactivates validation itself.
-	 * If you are switching validation off for schema files, you might need to
-	 * activate schema namespace support explicitly: see {@link #setNamespaceAware}.
-	 */
 	public void setValidationMode(int validationMode) {
 		this.validationMode = validationMode;
 	}
 
-	/**
-	 * Return the validation mode to use.
-	 */
 	public int getValidationMode() {
 		return this.validationMode;
 	}
 
-	/**
-	 * Set whether or not the XML parser should be XML namespace aware.
-	 * Default is "false".
-	 * <p>This is typically not needed when schema validation is active.
-	 * However, without validation, this has to be switched to "true"
-	 * in order to properly process schema namespaces.
-	 */
 	public void setNamespaceAware(boolean namespaceAware) {
 		this.namespaceAware = namespaceAware;
 	}
 
-	/**
-	 * Return whether or not the XML parser should be XML namespace aware.
-	 */
 	public boolean isNamespaceAware() {
 		return this.namespaceAware;
 	}
 
-	/**
-	 * Specify which {@link org.springframework.beans.factory.parsing.ProblemReporter} to use.
-	 * <p>The default implementation is {@link org.springframework.beans.factory.parsing.FailFastProblemReporter}
-	 * which exhibits fail fast behaviour. External tools can provide an alternative implementation
-	 * that collates errors and warnings for display in the tool UI.
-	 */
 	public void setProblemReporter(@Nullable ProblemReporter problemReporter) {
 		this.problemReporter = (problemReporter != null ? problemReporter : new FailFastProblemReporter());
 	}
 
-	/**
-	 * Specify which {@link ReaderEventListener} to use.
-	 * <p>The default implementation is EmptyReaderEventListener which discards every event notification.
-	 * External tools can provide an alternative implementation to monitor the components being
-	 * registered in the BeanFactory.
-	 */
+	// 设置事件监听器
 	public void setEventListener(@Nullable ReaderEventListener eventListener) {
 		this.eventListener = (eventListener != null ? eventListener : new EmptyReaderEventListener());
 	}
 
-	/**
-	 * Specify the {@link SourceExtractor} to use.
-	 * <p>The default implementation is {@link NullSourceExtractor} which simply returns {@code null}
-	 * as the source object. This means that - during normal runtime execution -
-	 * no additional source metadata is attached to the bean configuration metadata.
-	 */
+	// 设置资源提取器
 	public void setSourceExtractor(@Nullable SourceExtractor sourceExtractor) {
 		this.sourceExtractor = (sourceExtractor != null ? sourceExtractor : new NullSourceExtractor());
 	}
 
-	/**
-	 * Specify the {@link NamespaceHandlerResolver} to use.
-	 * <p>If none is specified, a default instance will be created through
-	 * {@link #createDefaultNamespaceHandlerResolver()}.
-	 */
+	// 设置命名空间管理解析器 (用于解析命名空间如: <aop /> <context/>  )
 	public void setNamespaceHandlerResolver(@Nullable NamespaceHandlerResolver namespaceHandlerResolver) {
 		this.namespaceHandlerResolver = namespaceHandlerResolver;
 	}
 
-	/**
-	 * Specify the {@link DocumentLoader} to use.
-	 * <p>The default implementation is {@link DefaultDocumentLoader}
-	 * which loads {@link Document} instances using JAXP.
-	 */
 	public void setDocumentLoader(@Nullable DocumentLoader documentLoader) {
 		this.documentLoader = (documentLoader != null ? documentLoader : new DefaultDocumentLoader());
 	}
@@ -251,24 +192,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		return this.entityResolver;
 	}
 
-	/**
-	 * Set an implementation of the {@code org.xml.sax.ErrorHandler}
-	 * interface for custom handling of XML parsing errors and warnings.
-	 * <p>If not set, a default SimpleSaxErrorHandler is used that simply
-	 * logs warnings using the logger instance of the view class,
-	 * and rethrows errors to discontinue the XML transformation.
-	 * @see SimpleSaxErrorHandler
-	 */
 	public void setErrorHandler(ErrorHandler errorHandler) {
 		this.errorHandler = errorHandler;
 	}
 
-	/**
-	 * Specify the {@link BeanDefinitionDocumentReader} implementation to use,
-	 * responsible for the actual reading of the XML bean definition document.
-	 * <p>The default is {@link DefaultBeanDefinitionDocumentReader}.
-	 * @param documentReaderClass the desired BeanDefinitionDocumentReader implementation class
-	 */
 	public void setDocumentReaderClass(Class<? extends BeanDefinitionDocumentReader> documentReaderClass) {
 		this.documentReaderClass = documentReaderClass;
 	}
@@ -515,11 +442,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		return this.namespaceHandlerResolver;
 	}
 
-	/**
-	 * Create the default implementation of {@link NamespaceHandlerResolver} used if none is specified.
-	 * <p>The default implementation returns an instance of {@link DefaultNamespaceHandlerResolver}.
-	 * @see DefaultNamespaceHandlerResolver#DefaultNamespaceHandlerResolver(ClassLoader)
-	 */
+	// 创建命名空间解析器 DefaultNamespaceHandlerResolver
 	protected NamespaceHandlerResolver createDefaultNamespaceHandlerResolver() {
 		ClassLoader cl = (getResourceLoader() != null ? getResourceLoader().getClassLoader() : getBeanClassLoader());
 		return new DefaultNamespaceHandlerResolver(cl);

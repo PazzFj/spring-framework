@@ -49,9 +49,7 @@ public final class ParserContext {
 		this.delegate = delegate;
 	}
 
-	public ParserContext(XmlReaderContext readerContext, BeanDefinitionParserDelegate delegate,
-			@Nullable BeanDefinition containingBeanDefinition) {
-
+	public ParserContext(XmlReaderContext readerContext, BeanDefinitionParserDelegate delegate, @Nullable BeanDefinition containingBeanDefinition) {
 		this.readerContext = readerContext;
 		this.delegate = delegate;
 		this.containingBeanDefinition = containingBeanDefinition;

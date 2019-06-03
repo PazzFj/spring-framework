@@ -116,21 +116,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 
 	/**
-	 * 在给定的根元素{@code <beans/>}中注册每个bean定义
 	 * Register each bean definition within the given root {@code <beans/>} element.
 	 */
-	@SuppressWarnings("deprecation")  // for Environment.acceptsProfiles(String...)
+	@SuppressWarnings("deprecation")
 	protected void doRegisterBeanDefinitions(Element root) {
-		// Any nested <beans> elements will cause recursion in this method. In
-		// order to propagate and preserve <beans> default-* attributes correctly,
-		// keep track of the current (parent) delegate, which may be null. Create
-		// the new (child) delegate with a reference to the parent for fallback purposes,
-		// then ultimately reset this.delegate back to its original (parent) reference.
-		// this behavior emulates a stack of delegates without actually necessitating one.
 
-		//当前代理对象 BeanDefinitionParserDelegate 为null
 		BeanDefinitionParserDelegate parent = this.delegate;
-		//创建代理对象BeanDefinitionParserDelegate
+		//创建 BeanDefinitionParserDelegate 解析代理
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
 		//验证
@@ -160,7 +152,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
-	 * 创建代理对象 BeanDefinitionParserDelegate
+	 * 创建 BeanDefinitionParserDelegate 解析代理
 	 */
 	protected BeanDefinitionParserDelegate createDelegate(XmlReaderContext readerContext, Element root, @Nullable BeanDefinitionParserDelegate parentDelegate) {
 		BeanDefinitionParserDelegate delegate = new BeanDefinitionParserDelegate(readerContext);
@@ -169,13 +161,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		return delegate;
 	}
 
-	/**
-	 * 解析文档中根级别的元素:“import”、“alias”、“bean”
-	 *
-	 * Parse the elements at the root level in the document:
-	 * "import", "alias", "bean".
-	 * @param root the DOM root element of the document
-	 */
+	// 解析文档中根级别的元素:“import”、“alias”、“bean”
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
 		if (delegate.isDefaultNamespace(root)) {
 			NodeList nl = root.getChildNodes();

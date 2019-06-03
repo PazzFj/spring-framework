@@ -28,29 +28,17 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.lang.Nullable;
 
 /**
- * Support class for implementing custom {@link NamespaceHandler NamespaceHandlers}.
- * Parsing and decorating of individual {@link Node Nodes} is done via {@link BeanDefinitionParser}
- * and {@link BeanDefinitionDecorator} strategy interfaces, respectively.
+ * 支持实现自定义{@link NamespaceHandler NamespaceHandlers}的类。
+ * 单个{@link Node Nodes}的解析和装饰分别通过
+ * {@link BeanDefinitionParser}和{@link BeanDefinitionDecorator}策略接口完成。
  *
- * <p>Provides the {@link #registerBeanDefinitionParser} and {@link #registerBeanDefinitionDecorator}
- * methods for registering a {@link BeanDefinitionParser} or {@link BeanDefinitionDecorator}
- * to handle a specific element.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @since 2.0
  * @see #registerBeanDefinitionParser(String, BeanDefinitionParser)
  * @see #registerBeanDefinitionDecorator(String, BeanDefinitionDecorator)
  */
 public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 
 	/**
-	 * 存储由它们处理的{@link Element Elements}的本地名称键值的{@link BeanDefinitionParser}实现
-	 * 每个NamespaceHandler 都会对应着几个Bean定义解析器, <如:aop 标签>
-	 *     <aop:config />
-	 *     <aop:aspectj-autoproxy />
-	 *     <aop:scoped-proxy />
-	 *     就会对应 ConfigBeanDefinitionParser   AspectJAutoProxyBeanDefinitionParser...
+	 * 储存 BeanDefinitionParser
 	 */
 	private final Map<String, BeanDefinitionParser> parsers = new HashMap<>();
 
@@ -65,13 +53,13 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		return (parser != null ? parser.parse(element, parserContext) : null);
 	}
 
+	//
 	@Nullable
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {
 		String localName = parserContext.getDelegate().getLocalName(element);
 		BeanDefinitionParser parser = this.parsers.get(localName);
 		if (parser == null) {
-			parserContext.getReaderContext().fatal(
-					"Cannot locate BeanDefinitionParser for element [" + localName + "]", element);
+			parserContext.getReaderContext().fatal("Cannot locate BeanDefinitionParser for element [" + localName + "]", element);
 		}
 		return parser;
 	}
