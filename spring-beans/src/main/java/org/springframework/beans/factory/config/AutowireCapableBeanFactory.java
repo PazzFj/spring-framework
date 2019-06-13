@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * 扩展{@link org.springframework.beans.factory.BeanFactory}接口将由能够自动装配的bean工厂实现
- *
+ * <p>
  * 自动装配的bean工厂
  */
 public interface AutowireCapableBeanFactory extends BeanFactory {
@@ -81,17 +81,20 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	//-------------------------------------------------------------------------
 	// Specialized methods for fine-grained control over the bean lifecycle
+	// 用于对bean生命周期进行详细的控制的专用方法
 	//-------------------------------------------------------------------------
 
 	/**
 	 * 用指定的自动装配策略完全创建给定类的新bean实例。这里支持此接口中定义的所有常量
 	 */
-	Object createBean(Class<?> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
+	Object createBean(Class<?> beanClass, int autowireMode, boolean dependencyCheck)
+			throws BeansException;
 
 	/**
-	 *
+	 * 自动装配
 	 */
-	Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
+	Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck)
+			throws BeansException;
 
 	/**
 	 * 按名称或类型自动装配给定bean实例的bean属性
@@ -102,12 +105,14 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * 请求bean属性
 	 */
-	void applyBeanPropertyValues(Object existingBean, String beanName) throws BeansException;
+	void applyBeanPropertyValues(Object existingBean, String beanName)
+			throws BeansException;
 
 	/**
 	 * 初始化给定的bean
 	 */
-	Object initializeBean(Object existingBean, String beanName) throws BeansException;
+	Object initializeBean(Object existingBean, String beanName)
+			throws BeansException;
 
 	/**
 	 * 请求bean实例化之前调用处理器
@@ -116,10 +121,11 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 			throws BeansException;
 
 	/**
-	 * 将{@link BeanPostProcessor BeanPostProcessor}应用于给定的现有bean实例，调用它们的{@code postProcessAfterInitialization}方法
+	 * 将{@link BeanPostProcessor BeanPostProcessor}应用于给定的现有bean实例, 调用它们的{@code postProcessAfterInitialization}方法
 	 * 返回的bean实例可能是原始bean的包装器
 	 */
-	Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException;
+	Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
+			throws BeansException;
 
 	/**
 	 * 销毁给定的实例对象

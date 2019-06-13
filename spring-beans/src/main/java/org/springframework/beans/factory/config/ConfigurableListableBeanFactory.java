@@ -24,39 +24,22 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.lang.Nullable;
 
 /**
- * Configuration interface to be implemented by most listable bean factories.
- * In addition to {@link ConfigurableBeanFactory}, it provides facilities to
- * analyze and modify bean definitions, and to pre-instantiate singletons.
- *
- * <p>This subinterface of {@link org.springframework.beans.factory.BeanFactory}
- * is not meant to be used in normal application code: Stick to
- * {@link org.springframework.beans.factory.BeanFactory} or
- * {@link org.springframework.beans.factory.ListableBeanFactory} for typical
- * use cases. This interface is just meant to allow for framework-internal
- * plug'n'play even when needing access to bean factory configuration methods.
- *
- * @author Juergen Hoeller
- * @since 03.11.2003
- * @see org.springframework.context.support.AbstractApplicationContext#getBeanFactory()
+ * 配置接口将由大多数可列bean工厂实现。除了{@link ConfigurableBeanFactory}之外，它还提供了分析和修改bean定义以及预实例化单例的工具。
  */
-public interface ConfigurableListableBeanFactory
-		extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
+public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
 	/**
-	 * Ignore the given dependency type for autowiring:
-	 * for example, String. Default is none.
-	 * @param type the dependency type to ignore
+	 * 忽视用于自动连接的依赖项Class类型
 	 */
 	void ignoreDependencyType(Class<?> type);
 
 	/**
-	 * 忽略用于自动连接的给定依赖项接口。
-	 * @see org.springframework.beans.factory.BeanFactoryAware
+	 * 忽略用于自动连接的给定依赖项接口
 	 */
 	void ignoreDependencyInterface(Class<?> ifc);
 
 	/**
-	 * 注册具有相应自动获取值的特殊依赖项类型。
+	 * 注册具有相应自动获取值的特殊依赖项类型
 	 */
 	void registerResolvableDependency(Class<?> dependencyType, @Nullable Object autowiredValue);
 
