@@ -1328,11 +1328,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 			if (System.getSecurityManager() != null) {
 				return AccessController.doPrivileged((PrivilegedExceptionAction<Class<?>>) () ->
-					doResolveBeanClass(mbd, typesToMatch), getAccessControlContext());  //
+					doResolveBeanClass(mbd, typesToMatch), getAccessControlContext());
 			}
 			else {
-				//转换
-				return doResolveBeanClass(mbd, typesToMatch);//做分解获取BeanClass
+				//do 真正做转换获取BeanClass
+				return doResolveBeanClass(mbd, typesToMatch);	// do
 			}
 		}
 		catch (PrivilegedActionException pae) {
@@ -1406,7 +1406,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		// 定期解析，将结果缓存到bean定义中…
-		return mbd.resolveBeanClass(beanClassLoader); //Class.forName(classPath)
+		return mbd.resolveBeanClass(beanClassLoader); 	//do
 	}
 
 	/**

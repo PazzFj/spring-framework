@@ -30,14 +30,8 @@ import org.springframework.lang.Nullable;
  */
 public abstract class AopNamespaceUtils {
 
-	/**
-	 * The {@code proxy-target-class} attribute as found on AOP-related XML tags.
-	 */
 	public static final String PROXY_TARGET_CLASS_ATTRIBUTE = "proxy-target-class";
 
-	/**
-	 * The {@code expose-proxy} attribute as found on AOP-related XML tags.
-	 */
 	private static final String EXPOSE_PROXY_ATTRIBUTE = "expose-proxy";
 
 	//注册自动代理, 如果需要

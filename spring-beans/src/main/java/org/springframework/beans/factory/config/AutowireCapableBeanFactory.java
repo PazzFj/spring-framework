@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * 扩展{@link org.springframework.beans.factory.BeanFactory}接口将由能够自动装配的bean工厂实现
- * <p>
+ *
  * 自动装配的bean工厂
  */
 public interface AutowireCapableBeanFactory extends BeanFactory {
@@ -91,7 +91,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 			throws BeansException;
 
 	/**
-	 * 自动装配
+	 * 自动装配class
 	 */
 	Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck)
 			throws BeansException;

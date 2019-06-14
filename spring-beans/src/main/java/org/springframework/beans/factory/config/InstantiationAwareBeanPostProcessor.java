@@ -43,7 +43,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	}
 
 	/**
-	 *
+	 * 后置处理(属性)
 	 */
 	@Nullable
 	default PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)
@@ -53,7 +53,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	}
 
 	/**
-	 *
+	 * 后置处理(属性值)
 	 */
 	@Deprecated
 	@Nullable

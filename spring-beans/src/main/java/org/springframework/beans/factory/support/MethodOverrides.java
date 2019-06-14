@@ -24,41 +24,26 @@ import java.util.Set;
 import org.springframework.lang.Nullable;
 
 /**
- * Set of method overrides, determining which, if any, methods on a
- * managed object the Spring IoC container will override at runtime.
- *
- * <p>The currently supported {@link MethodOverride} variants are
- * {@link LookupOverride} and {@link ReplaceOverride}.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 1.1
- * @see MethodOverride
+ * 方法覆盖集合，确定Spring IoC容器在运行时将覆盖托管对象上的哪些方法(如果有的话)。
  */
 public class MethodOverrides {
 
 	private final Set<MethodOverride> overrides = Collections.synchronizedSet(new LinkedHashSet<>(2));
 
-	private volatile boolean modified = false;
+	private volatile boolean modified = false;	//已修改标志
 
 
-	/**
-	 * Create new MethodOverrides.
-	 */
 	public MethodOverrides() {
 	}
 
 	/**
-	 * Deep copy constructor.
+	 * 深拷贝构造函数
 	 */
 	public MethodOverrides(MethodOverrides other) {
 		addOverrides(other);
 	}
 
 
-	/**
-	 * Copy all given method overrides into this object.
-	 */
 	public void addOverrides(@Nullable MethodOverrides other) {
 		if (other != null) {
 			this.modified = true;
@@ -66,36 +51,20 @@ public class MethodOverrides {
 		}
 	}
 
-	/**
-	 * Add the given method override.
-	 */
 	public void addOverride(MethodOverride override) {
 		this.modified = true;
 		this.overrides.add(override);
 	}
 
-	/**
-	 * Return all method overrides contained by this object.
-	 * @return a Set of MethodOverride objects
-	 * @see MethodOverride
-	 */
 	public Set<MethodOverride> getOverrides() {
 		this.modified = true;
 		return this.overrides;
 	}
 
-	/**
-	 * Return whether the set of method overrides is empty.
-	 */
 	public boolean isEmpty() {
 		return (!this.modified || this.overrides.isEmpty());
 	}
 
-	/**
-	 * Return the override for the given method, if any.
-	 * @param method method to check for overrides for
-	 * @return the method override, or {@code null} if none
-	 */
 	@Nullable
 	public MethodOverride getOverride(Method method) {
 		if (!this.modified) {
