@@ -81,8 +81,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Spring对{@link ConfigurableListableBeanFactory}和{@link BeanDefinitionRegistry}接口的默认实现:
- * 基于BeanDefinition元数据的成熟 BeanFactory, 可通过后处理器扩展。
+ * Spring对{@link ConfigurableListableBeanFactory}和{@link BeanDefinitionRegistry}接口的默认实现: 基于BeanDefinition元数据的成熟 BeanFactory, 可通过后处理器扩展。
  */
 @SuppressWarnings("serial")
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
@@ -93,8 +92,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	static {
 		try {
-			javaxInjectProviderClass =
-					ClassUtils.forName("javax.inject.Provider", DefaultListableBeanFactory.class.getClassLoader());
+			javaxInjectProviderClass = ClassUtils.forName("javax.inject.Provider", DefaultListableBeanFactory.class.getClassLoader());
 		}
 		catch (ClassNotFoundException ex) {
 			// JSR-330 API not available - Provider interface simply not supported then.
@@ -103,73 +101,60 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 
-	/** Map from serialized id to factory instance. */
 	private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories =
 			new ConcurrentHashMap<>(8);
 
-	/** Optional id for this factory, for serialization purposes. */
 	@Nullable
 	private String serializationId;
 
-	/** 允许BeanDefinition覆盖  默认为true */
+	// 允许BeanDefinition覆盖  默认为true
 	private boolean allowBeanDefinitionOverriding = true;
 
-	/** Whether to allow eager class loading even for lazy-init beans. */
+	// 是否允许即时加载类，即使是延迟初始化bean
 	private boolean allowEagerClassLoading = true;
 
-	/** Optional OrderComparator for dependency Lists and arrays. */
+	// 可选的OrderComparator，用于依赖列表和数组
 	@Nullable
 	private Comparator<Object> dependencyComparator;
 
-	/** Resolver to use for checking if a bean definition is an autowire candidate. */
+	// Resolver to use for checking if a bean definition is an autowire candidate.
 	private AutowireCandidateResolver autowireCandidateResolver = new SimpleAutowireCandidateResolver();
 
-	/** Map from dependency type to corresponding autowired value. */
+	// Map from dependency type to corresponding autowired value. */
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
-	/** Map of bean definition objects, keyed by bean name. */
+	// Map of bean definition objects, keyed by bean name. */
 	// BeanDefinition注册中心, key 为 BeanId/BeanName
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
-	/** Map of singleton and non-singleton bean names, keyed by dependency type. */
+	// Map of singleton and non-singleton bean names, keyed by dependency type. */
 	private final Map<Class<?>, String[]> allBeanNamesByType = new ConcurrentHashMap<>(64);
 
-	/** Map of singleton-only bean names, keyed by dependency type. */
+	// Map of singleton-only bean names, keyed by dependency type. */
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
-	/** 注册BeanDefinition的bean名称集合 */
+	// 注册BeanDefinition的bean名称集合 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
-	/** 注册单例的bean名称列表 */
+	// 注册单例的bean名称列表 */
 	private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
 
-	/** 冻结BeanDefinition名称的数组 */
+	// 冻结BeanDefinition名称的数组 */
 	@Nullable
 	private volatile String[] frozenBeanDefinitionNames;
 
-	/** 是否可以为所有bean缓存bean定义元数据 */
+	// 是否可以为所有bean缓存bean定义元数据 */
 	private volatile boolean configurationFrozen = false;
 
-
-	/**
-	 * Create a new DefaultListableBeanFactory.
-	 */
 	public DefaultListableBeanFactory() {
 		super();
 	}
 
-	/**
-	 * Create a new DefaultListableBeanFactory with the given parent.
-	 */
 	public DefaultListableBeanFactory(@Nullable BeanFactory parentBeanFactory) {
 		super(parentBeanFactory);
 	}
 
 
-	/**
-	 * Specify an id for serialization purposes, allowing this BeanFactory to be
-	 * deserialized from this id back into the BeanFactory object, if needed.
-	 */
 	public void setSerializationId(@Nullable String serializationId) {
 		if (serializationId != null) {
 			serializableFactories.put(serializationId, new WeakReference<>(this));
@@ -180,9 +165,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		this.serializationId = serializationId;
 	}
 
-	/**
-	 *
-	 */
 	@Nullable
 	public String getSerializationId() {
 		return this.serializationId;
@@ -528,11 +510,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 * Check whether the specified bean would need to be eagerly initialized
-	 * in order to determine its type.
-	 * @param factoryBeanName a factory-bean reference that the bean definition
-	 * defines a factory method for
-	 * @return whether eager initialization is necessary
+	 * 检查是否需要急切地初始化指定的bean，以确定其类型
 	 */
 	private boolean requiresEagerInitForType(@Nullable String factoryBeanName) {
 		return (factoryBeanName != null && isFactoryBean(factoryBeanName) && !containsSingleton(factoryBeanName));
@@ -610,10 +588,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 * Find a {@link Annotation} of {@code annotationType} on the specified
-	 * bean, traversing its interfaces and super classes if no annotation can be
-	 * found on the given class itself, as well as checking its raw bean class
-	 * if not found on the exposed bean reference (e.g. in case of a proxy).
+	 * 找到{@link注释}{@code annotationType}在指定的bean,遍历它的接口和超级类如果没有注释可以发现在给定的类本身,以及检查它的原始bean类如果没有找到暴露bean引用(例如对于代理)
 	 */
 	@Override
 	@Nullable
@@ -662,12 +637,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 * Determine whether the specified bean definition qualifies as an autowire candidate,
-	 * to be injected into other beans which declare a dependency of matching type.
-	 * @param beanName the name of the bean definition to check
-	 * @param descriptor the descriptor of the dependency to resolve
-	 * @param resolver the AutowireCandidateResolver to use for the actual resolution algorithm
-	 * @return whether the bean should be considered as autowire candidate
+	 * 确定指定的bean定义是否符合自动装配候选项的条件，以便注入声明匹配类型依赖关系的其他bean
 	 */
 	protected boolean isAutowireCandidate(String beanName, DependencyDescriptor descriptor, AutowireCandidateResolver resolver)
 			throws NoSuchBeanDefinitionException {
@@ -695,13 +665,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 * Determine whether the specified bean definition qualifies as an autowire candidate,
-	 * to be injected into other beans which declare a dependency of matching type.
-	 * @param beanName the name of the bean definition to check
-	 * @param mbd the merged bean definition to check
-	 * @param descriptor the descriptor of the dependency to resolve
-	 * @param resolver the AutowireCandidateResolver to use for the actual resolution algorithm
-	 * @return whether the bean should be considered as autowire candidate
+	 * 确定指定的bean定义是否符合自动装配候选项的条件，以便注入声明匹配类型依赖关系的其他bean
 	 */
 	protected boolean isAutowireCandidate(String beanName, RootBeanDefinition mbd,
 			DependencyDescriptor descriptor, AutowireCandidateResolver resolver) {

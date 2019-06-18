@@ -117,30 +117,28 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/** 用于注释属性值的字符串解析器 */
 	private final List<StringValueResolver> embeddedValueResolvers = new CopyOnWriteArrayList<>();
 
-	/** BeanPostProcessors集合 */
+	// BeanPostProcessors集合
 	private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
 
-	/** 指示是否已注册任何  InstantiationAwareBeanPostProcessor   (默认false) */
+	// 指示是否已注册任何  InstantiationAwareBeanPostProcessor   (默认false)
 	private volatile boolean hasInstantiationAwareBeanPostProcessors;
 
-	/** 指示是否已注册了任何 DestructionAwareBeanPostProcessor   (默认false) */
+	// 指示是否已注册了任何 DestructionAwareBeanPostProcessor   (默认false)
 	private volatile boolean hasDestructionAwareBeanPostProcessors;
 
-	/** Map from scope identifier String to corresponding Scope. */
 	private final Map<String, Scope> scopes = new LinkedHashMap<>(8);
 
-	/** Security context used when running with a SecurityManager. */
+	// 使用SecurityManager运行时使用的安全上下文
 	@Nullable
 	private SecurityContextProvider securityContextProvider;
 
-	/** Map from bean name to merged RootBeanDefinition. */
 	// 合并的BeanDefinition, RootBeanDefinition
 	private final Map<String, RootBeanDefinition> mergedBeanDefinitions = new ConcurrentHashMap<>(256);
 
-	/** 已经创建的bean的名称集合 */
+	// 已经创建的bean的名称集合
 	private final Set<String> alreadyCreated = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
-	/** 原型bean当前在创建 (一开始存放beanName, 然后是Set<String> beanName集合)*/
+	// 原型bean当前在创建 (一开始存放beanName, 然后是Set<String> beanName集合)
 	private final ThreadLocal<Object> prototypesCurrentlyInCreation = new NamedThreadLocal<>("Prototype beans currently in creation");
 
 
@@ -850,12 +848,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		return this.beanPostProcessors;
 	}
 
-	/**
-	 * Return whether this factory holds a InstantiationAwareBeanPostProcessor
-	 * that will get applied to singleton beans on shutdown.
-	 * @see #addBeanPostProcessor
-	 * @see org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor
-	 */
+	// 返回该工厂是否持有一个InstantiationAwareBeanPostProcessor，该实例化处理程序将在关闭时应用于单例bean
 	protected boolean hasInstantiationAwareBeanPostProcessors() {
 		return this.hasInstantiationAwareBeanPostProcessors;
 	}

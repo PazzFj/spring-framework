@@ -52,15 +52,15 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	private List<Pattern> includePatterns;
 
 	@Nullable
-	private AspectJAdvisorFactory aspectJAdvisorFactory;	//factory
+	private AspectJAdvisorFactory aspectJAdvisorFactory;	//面向方面编程顾问 factory
 
 	@Nullable
-	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;   // builder
+	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;   //bean工厂面向方面编程顾问 builder
 
 
 	/**
-	 * Set a list of regex patterns, matching eligible @AspectJ bean names.
-	 * <p>Default is to consider all @AspectJ beans as eligible.
+	 * 设置regex模式列表，匹配符合条件的@AspectJ bean名称。
+	 * <p>默认情况下认为所有@AspectJ bean都是合格的。
 	 */
 	public void setIncludePatterns(List<String> patterns) {
 		this.includePatterns = new ArrayList<>(patterns.size());
@@ -104,14 +104,6 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	 */
 	@Override
 	protected boolean isInfrastructureClass(Class<?> beanClass) {
-		// Previously we setProxyTargetClass(true) in the constructor, but that has too
-		// broad an impact. Instead we now override isInfrastructureClass to avoid proxying
-		// aspects. I'm not entirely happy with that as there is no good reason not
-		// to advise aspects, except that it causes advice invocation to go through a
-		// proxy, and if the aspect implements e.g the Ordered interface it will be
-		// proxied by that interface and fail at runtime as the advice method is not
-		// defined on the interface. We could potentially relax the restriction about
-		// not advising aspects in the future.
 		return (super.isInfrastructureClass(beanClass) || (this.aspectJAdvisorFactory != null && this.aspectJAdvisorFactory.isAspect(beanClass)));
 	}
 

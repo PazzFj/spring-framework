@@ -91,52 +91,38 @@ import org.springframework.util.StringUtils;
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
 		implements AutowireCapableBeanFactory {
 
-	/** 创建bean实例的策略 */
+	// 创建bean实例的策略 */
 	private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
-	/** Resolver strategy for method parameter names. */
+	// Resolver strategy for method parameter names. */
 	@Nullable
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
-	/** 允许循环引用 */
+	// 允许循环引用 */
 	private boolean allowCircularReferences = true;
 
-	/**
-	 * 在循环引用的情况下，是否采用注入原始bean实例，即使注入的bean最终被包装
-	 */
+	// 在循环引用的情况下，是否采用注入原始bean实例，即使注入的bean最终被包装
 	private boolean allowRawInjectionDespiteWrapping = false;
 
-	/**
-	 * Dependency types to ignore on dependency check and autowire, as Set of
-	 * Class objects: for example, String. Default is none.
-	 */
+	// 要在依赖项检查和自动装配时忽略的依赖项类型，如一组类对象:例如String 默认是没有的
 	private final Set<Class<?>> ignoredDependencyTypes = new HashSet<>();
 
-	/**
-	 * 忽略依赖项检查和自动连接的依赖项接口，如类对象集。默认情况下，只忽略BeanFactory接口。
-	 */
+	// 忽略依赖项检查和自动连接的依赖项接口，如类对象集。默认情况下，只忽略BeanFactory接口。
 	private final Set<Class<?>> ignoredDependencyInterfaces = new HashSet<>();
 
-	/**
-	 * The name of the currently created bean, for implicit dependency registration
-	 * on getBean etc invocations triggered from a user-specified Supplier callback.
-	 */
+	// The name of the currently created bean, for implicit dependency registration on getBean etc invocations triggered from a user-specified Supplier callback.
 	private final NamedThreadLocal<String> currentlyCreatedBean = new NamedThreadLocal<>("Currently created bean");
 
-	/** 未完成FactoryBean实例的缓存:将FactoryBean名称缓存到BeanWrapper. */
+	// 未完成FactoryBean实例的缓存:将FactoryBean名称缓存到BeanWrapper. */
 	private final ConcurrentMap<String, BeanWrapper> factoryBeanInstanceCache = new ConcurrentHashMap<>();
 
-	/** Cache of candidate factory methods per factory class. */
+	// Cache of candidate factory methods per factory class. */
 	private final ConcurrentMap<Class<?>, Method[]> factoryMethodCandidateCache = new ConcurrentHashMap<>();
 
-	/** Cache of filtered PropertyDescriptors: bean Class to PropertyDescriptor array. */
+	// Cache of filtered PropertyDescriptors: bean Class to PropertyDescriptor array. */
 	private final ConcurrentMap<Class<?>, PropertyDescriptor[]> filteredPropertyDescriptorsCache =
 			new ConcurrentHashMap<>();
 
-
-	/**
-	 * Create a new AbstractAutowireCapableBeanFactory.
-	 */
 	public AbstractAutowireCapableBeanFactory() {
 		super();
 		ignoreDependencyInterface(BeanNameAware.class);
@@ -1153,7 +1139,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
-		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();	//populate
 		boolean needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);
 
 		PropertyDescriptor[] filteredPds = null;

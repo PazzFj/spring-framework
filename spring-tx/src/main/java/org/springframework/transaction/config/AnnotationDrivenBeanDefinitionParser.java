@@ -37,18 +37,6 @@ import org.springframework.util.ClassUtils;
  * BeanDefinitionParser} implementation that allows users to easily configure
  * all the infrastructure beans required to enable annotation-driven transaction
  * demarcation.
- *
- * <p>By default, all proxies are created as JDK proxies. This may cause some
- * problems if you are injecting objects as concrete classes rather than
- * interfaces. To overcome this restriction you can set the
- * '{@code proxy-target-class}' attribute to '{@code true}', which
- * will result in class-based proxies being created.
- *
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @author Chris Beams
- * @author Stephane Nicoll
- * @since 2.0
  */
 class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 

@@ -69,12 +69,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 
 
 	/**
-	 * Lazily instantiate joinpoint for the current invocation.
-	 * Requires MethodInvocation to be bound with ExposeInvocationInterceptor.
-	 * <p>Do not use if access is available to the current ReflectiveMethodInvocation
-	 * (in an around advice).
-	 * @return current AspectJ joinpoint, or through an exception if we're not in a
-	 * Spring AOP invocation.
+	 * 当前AspectJ连接点，如果不在Spring AOP调用中，则通过异常
 	 */
 	public static JoinPoint currentJoinPoint() {
 		MethodInvocation mi = ExposeInvocationInterceptor.currentInvocation();
@@ -90,29 +85,22 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		return jp;
 	}
 
-
+	//声明class
 	private final Class<?> declaringClass;
-
+	//方法名称
 	private final String methodName;
-
+	//参数类型组
 	private final Class<?>[] parameterTypes;
-
+	//方法对象
 	protected transient Method aspectJAdviceMethod;
-
+	//切面表达切入点
 	private final AspectJExpressionPointcut pointcut;
 
 	private final AspectInstanceFactory aspectInstanceFactory;
 
-	/**
-	 * The name of the aspect (ref bean) in which this advice was defined
-	 * (used when determining advice precedence so that we can determine
-	 * whether two pieces of advice come from the same aspect).
-	 */
+	// 定义此通知的方面(ref bean)的名称(在确定通知优先级时使用，以便我们可以确定两个通知是否来自同一方面)
 	private String aspectName = "";
 
-	/**
-	 * The order of declaration of this advice within the aspect.
-	 */
 	private int declarationOrder;
 
 	/**

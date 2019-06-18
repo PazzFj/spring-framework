@@ -36,7 +36,7 @@ public class ProxyConfig implements Serializable {
 	// 代理目标class
 	private boolean proxyTargetClass = false;
 
-	// 优化代理
+	// 优化
 	private boolean optimize = false;
 
 	// 不透明的
@@ -49,23 +49,14 @@ public class ProxyConfig implements Serializable {
 	private boolean frozen = false;
 
 
-	/**
-	 *
-	 */
 	public void setProxyTargetClass(boolean proxyTargetClass) {
 		this.proxyTargetClass = proxyTargetClass;
 	}
 
-	/**
-	 *
-	 */
 	public boolean isProxyTargetClass() {
 		return this.proxyTargetClass;
 	}
 
-	/**
-	 *
-	 */
 	public void setOptimize(boolean optimize) {
 		this.optimize = optimize;
 	}
@@ -77,44 +68,26 @@ public class ProxyConfig implements Serializable {
 		return this.optimize;
 	}
 
-	/**
-	 *
-	 */
 	public void setOpaque(boolean opaque) {
 		this.opaque = opaque;
 	}
 
-	/**
-	 *
-	 */
 	public boolean isOpaque() {
 		return this.opaque;
 	}
 
-	/**
-	 *
-	 */
 	public void setExposeProxy(boolean exposeProxy) {
 		this.exposeProxy = exposeProxy;
 	}
 
-	/**
-	 *
-	 */
 	public boolean isExposeProxy() {
 		return this.exposeProxy;
 	}
 
-	/**
-	 *
-	 */
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
 	}
 
-	/**
-	 *
-	 */
 	public boolean isFrozen() {
 		return this.frozen;
 	}
