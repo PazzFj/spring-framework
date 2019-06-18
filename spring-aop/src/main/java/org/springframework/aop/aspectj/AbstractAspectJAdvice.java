@@ -103,18 +103,12 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 
 	private int declarationOrder;
 
-	/**
-	 * This will be non-null if the creator of this advice object knows the argument names
-	 * and sets them explicitly.
-	 */
 	@Nullable
 	private String[] argumentNames;
 
-	/** Non-null if after throwing advice binds the thrown value. */
 	@Nullable
 	private String throwingName;
 
-	/** Non-null if after returning advice binds the return value. */
 	@Nullable
 	private String returningName;
 
@@ -538,13 +532,8 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	}
 
 	/**
-	 * Take the arguments at the method execution join point and output a set of arguments
-	 * to the advice method.
-	 * @param jp the current JoinPoint
-	 * @param jpMatch the join point match that matched this execution join point
-	 * @param returnValue the return value from the method execution (may be null)
-	 * @param ex the exception thrown by the method execution (may be null)
-	 * @return the empty array if there are no arguments
+	 * 捆绑参数:
+	 * 	接受方法执行连接点上的参数，并向advice方法输出一组参数
 	 */
 	protected Object[] argBinding(JoinPoint jp, @Nullable JoinPointMatch jpMatch,
 			@Nullable Object returnValue, @Nullable Throwable ex) {
@@ -600,27 +589,22 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 
 
 	/**
-	 * Invoke the advice method.
-	 * @param jpMatch the JoinPointMatch that matched this execution join point
-	 * @param returnValue the return value from the method execution (may be null)
-	 * @param ex the exception thrown by the method execution (may be null)
-	 * @return the invocation result
-	 * @throws Throwable in case of invocation failure
+	 * 调用advice方法。
 	 */
-	protected Object invokeAdviceMethod(
-			@Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable ex)
+	protected Object invokeAdviceMethod(@Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable ex)
 			throws Throwable {
-
-		return invokeAdviceMethodWithGivenArgs(argBinding(getJoinPoint(), jpMatch, returnValue, ex));
+		return invokeAdviceMethodWithGivenArgs(argBinding(getJoinPoint(), jpMatch, returnValue, ex));//调用Other通知方法随着给予的参数
 	}
 
 	// As above, but in this case we are given the join point.
-	protected Object invokeAdviceMethod(JoinPoint jp, @Nullable JoinPointMatch jpMatch,
-			@Nullable Object returnValue, @Nullable Throwable t) throws Throwable {
-
-		return invokeAdviceMethodWithGivenArgs(argBinding(jp, jpMatch, returnValue, t));
+	protected Object invokeAdviceMethod(JoinPoint jp, @Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable t)
+			throws Throwable {
+		return invokeAdviceMethodWithGivenArgs(argBinding(jp, jpMatch, returnValue, t));//调用Around通知方法随着给予的参数
 	}
 
+	/**
+	 * 调用通知方法 使用给予的参数
+	 */
 	protected Object invokeAdviceMethodWithGivenArgs(Object[] args) throws Throwable {
 		Object[] actualArgs = args;
 		if (this.aspectJAdviceMethod.getParameterCount() == 0) {

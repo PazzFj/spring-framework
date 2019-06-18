@@ -538,10 +538,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			return this.transactionStatus;
 		}
 
-		/**
-		 * Return whether a transaction was created by this aspect,
-		 * or whether we just have a placeholder to keep ThreadLocal stack integrity.
-		 */
 		public boolean hasTransaction() {
 			return (this.transactionStatus != null);
 		}
