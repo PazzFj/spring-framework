@@ -28,15 +28,9 @@ import org.springframework.util.ClassUtils;
 @SuppressWarnings("serial")
 public class ProxyFactory extends ProxyCreatorSupport {
 
-	/**
-	 * Create a new ProxyFactory.
-	 */
 	public ProxyFactory() {
 	}
 
-	/**
-	 * 创建一个新的ProxyFactory
-	 */
 	public ProxyFactory(Object target) {
 		setTarget(target);
 		setInterfaces(ClassUtils.getAllInterfaces(target));

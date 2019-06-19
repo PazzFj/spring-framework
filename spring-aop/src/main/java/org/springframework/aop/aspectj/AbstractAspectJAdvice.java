@@ -138,15 +138,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	// Note: Unlike return type, no such generic information is needed for the throwing type,
 	// since Java doesn't allow exception types to be parameterized.
 
-
-	/**
-	 * Create a new AbstractAspectJAdvice for the given advice method.
-	 * @param aspectJAdviceMethod the AspectJ-style advice method
-	 * @param pointcut the AspectJ expression pointcut
-	 * @param aspectInstanceFactory the factory for aspect instances
-	 */
-	public AbstractAspectJAdvice(
-			Method aspectJAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aspectInstanceFactory) {
+	public AbstractAspectJAdvice(Method aspectJAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aspectInstanceFactory) {
 
 		Assert.notNull(aspectJAdviceMethod, "Advice method must not be null");
 		this.declaringClass = aspectJAdviceMethod.getDeclaringClass();

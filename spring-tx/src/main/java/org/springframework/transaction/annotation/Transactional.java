@@ -63,52 +63,30 @@ import org.springframework.transaction.TransactionDefinition;
 public @interface Transactional {
 
 	/**
-	 * Alias for {@link #transactionManager}.
-	 * @see #transactionManager
+	 * {@link #transactionManager}的别名
 	 */
 	@AliasFor("transactionManager")
 	String value() default "";
 
 	/**
-	 * A <em>qualifier</em> value for the specified transaction.
-	 * <p>May be used to determine the target transaction manager,
-	 * matching the qualifier value (or the bean name) of a specific
-	 * {@link org.springframework.transaction.PlatformTransactionManager}
-	 * bean definition.
-	 * @since 4.2
-	 * @see #value
+	 * 指定事务的<em>限定符</em>值
 	 */
 	@AliasFor("value")
 	String transactionManager() default "";
 
 	/**
-	 * The transaction propagation type.
-	 * <p>Defaults to {@link Propagation#REQUIRED}.
-	 * @see org.springframework.transaction.interceptor.TransactionAttribute#getPropagationBehavior()
+	 * 事务传播类型
 	 */
 	Propagation propagation() default Propagation.REQUIRED;
 
 	/**
-	 * The transaction isolation level.
+	 * 事务隔离级别
 	 * <p>Defaults to {@link Isolation#DEFAULT}.
-	 * <p>Exclusively designed for use with {@link Propagation#REQUIRED} or
-	 * {@link Propagation#REQUIRES_NEW} since it only applies to newly started
-	 * transactions. Consider switching the "validateExistingTransactions" flag to
-	 * "true" on your transaction manager if you'd like isolation level declarations
-	 * to get rejected when participating in an existing transaction with a different
-	 * isolation level.
-	 * @see org.springframework.transaction.interceptor.TransactionAttribute#getIsolationLevel()
-	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setValidateExistingTransaction
 	 */
 	Isolation isolation() default Isolation.DEFAULT;
 
 	/**
-	 * The timeout for this transaction (in seconds).
-	 * <p>Defaults to the default timeout of the underlying transaction system.
-	 * <p>Exclusively designed for use with {@link Propagation#REQUIRED} or
-	 * {@link Propagation#REQUIRES_NEW} since it only applies to newly started
-	 * transactions.
-	 * @see org.springframework.transaction.interceptor.TransactionAttribute#getTimeout()
+	 * 此事务的超时(以秒为单位)
 	 */
 	int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
 
@@ -163,27 +141,12 @@ public @interface Transactional {
 	String[] rollbackForClassName() default {};
 
 	/**
-	 * Defines zero (0) or more exception {@link Class Classes}, which must be
-	 * subclasses of {@link Throwable}, indicating which exception types must
-	 * <b>not</b> cause a transaction rollback.
-	 * <p>This is the preferred way to construct a rollback rule (in contrast
-	 * to {@link #noRollbackForClassName}), matching the exception class and
-	 * its subclasses.
-	 * <p>Similar to {@link org.springframework.transaction.interceptor.NoRollbackRuleAttribute#NoRollbackRuleAttribute(Class clazz)}.
-	 * @see #noRollbackForClassName
-	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
+	 * 定义0(0)个或多个异常{@link Class Classes}，这些异常必须是{@link Throwable}的子类，指示哪些异常类型必须<b>而不是</b>导致事务回滚
 	 */
 	Class<? extends Throwable>[] noRollbackFor() default {};
 
 	/**
-	 * Defines zero (0) or more exception names (for exceptions which must be a
-	 * subclass of {@link Throwable}) indicating which exception types must <b>not</b>
-	 * cause a transaction rollback.
-	 * <p>See the description of {@link #rollbackForClassName} for further
-	 * information on how the specified names are treated.
-	 * <p>Similar to {@link org.springframework.transaction.interceptor.NoRollbackRuleAttribute#NoRollbackRuleAttribute(String exceptionName)}.
-	 * @see #noRollbackFor
-	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
+	 * 定义零个(0)或多个异常名称(对于必须是{@link Throwable}子类的异常)，指示哪些异常类型必须<b>而不是</b>导致事务回滚
 	 */
 	String[] noRollbackForClassName() default {};
 

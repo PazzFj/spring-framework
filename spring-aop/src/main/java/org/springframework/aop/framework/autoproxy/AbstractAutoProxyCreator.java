@@ -57,33 +57,19 @@ import org.springframework.util.StringUtils;
 public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware {
 
-	/**
-	 * Convenience constant for subclasses: Return value for "do not proxy".
-	 * @see #getAdvicesAndAdvisorsForBean
-	 */
 	@Nullable
 	protected static final Object[] DO_NOT_PROXY = null;
 
-	/**
-	 * Convenience constant for subclasses: Return value for
-	 * "proxy without additional interceptors, just the common ones".
-	 * @see #getAdvicesAndAdvisorsForBean
-	 */
 	protected static final Object[] PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS = new Object[0];
 
 
-	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Default is global AdvisorAdapterRegistry. */
 	private AdvisorAdapterRegistry advisorAdapterRegistry = GlobalAdvisorAdapterRegistry.getInstance();
 
-	/**
-	 * 指示是否应该冻结代理。从super重写，以防止配置过早冻结
-	 */
+	// 指示是否应该冻结代理。从super重写，以防止配置过早冻结
 	private boolean freezeProxy = false;
 
-	/** Default is no common interceptors. */
 	private String[] interceptorNames = new String[0];
 
 	private boolean applyCommonInterceptorsFirst = true;
@@ -104,12 +90,6 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	private final Map<Object, Boolean> advisedBeans = new ConcurrentHashMap<>(256);
 
 
-	/**
-	 * Set whether or not the proxy should be frozen, preventing advice
-	 * from being added to it once it is created.
-	 * <p>Overridden from the super class to prevent the proxy configuration
-	 * from being frozen before the proxy is created.
-	 */
 	@Override
 	public void setFrozen(boolean frozen) {
 		this.freezeProxy = frozen;
@@ -129,28 +109,14 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		this.advisorAdapterRegistry = advisorAdapterRegistry;
 	}
 
-	/**
-	 *
-	 */
 	public void setCustomTargetSourceCreators(TargetSourceCreator... targetSourceCreators) {
 		this.customTargetSourceCreators = targetSourceCreators;
 	}
 
-	/**
-	 * Set the common interceptors. These must be bean names in the current factory.
-	 * They can be of any advice or advisor type Spring supports.
-	 * <p>If this property isn't set, there will be zero common interceptors.
-	 * This is perfectly valid, if "specific" interceptors such as matching
-	 * Advisors are all we want.
-	 */
 	public void setInterceptorNames(String... interceptorNames) {
 		this.interceptorNames = interceptorNames;
 	}
 
-	/**
-	 * Set whether the common interceptors should be applied before bean-specific ones.
-	 * Default is "true"; else, bean-specific interceptors will get applied first.
-	 */
 	public void setApplyCommonInterceptorsFirst(boolean applyCommonInterceptorsFirst) {
 		this.applyCommonInterceptorsFirst = applyCommonInterceptorsFirst;
 	}
@@ -160,10 +126,6 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		this.beanFactory = beanFactory;
 	}
 
-	/**
-	 * Return the owning {@link BeanFactory}.
-	 * May be {@code null}, as this post-processor doesn't need to belong to a bean factory.
-	 */
 	@Nullable
 	protected BeanFactory getBeanFactory() {
 		return this.beanFactory;
@@ -276,7 +238,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	}
 
 	/**
-	 * 如果有必要，包装给定的bean，例如，如果它符合代理的条件
+	 * 包装给定的bean，例如，如果它符合代理的条件
 	 */
 	protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) {
 		if (StringUtils.hasLength(beanName) && this.targetSourcedBeans.contains(beanName)) {
