@@ -21,16 +21,10 @@ import java.io.Serializable;
 import org.springframework.util.Assert;
 
 /**
- * Convenience superclass for configuration used in creating proxies,
- * to ensure that all proxy creators have consistent properties.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see AdvisedSupport
+ * 代理配置类 ProxyConfig
  */
 public class ProxyConfig implements Serializable {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -8409359707199703185L;
 
 	// 代理目标class
@@ -61,9 +55,6 @@ public class ProxyConfig implements Serializable {
 		this.optimize = optimize;
 	}
 
-	/**
-	 * 返回代理是否应该执行主动优化
-	 */
 	public boolean isOptimize() {
 		return this.optimize;
 	}

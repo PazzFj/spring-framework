@@ -33,21 +33,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * An implementation of the AspectJ {@link ProceedingJoinPoint} interface
- * wrapping an AOP Alliance {@link org.aopalliance.intercept.MethodInvocation}.
- *
- * <p><b>Note</b>: The {@code getThis()} method returns the current Spring AOP proxy.
- * The {@code getTarget()} method returns the current Spring AOP target (which may be
- * {@code null} if there is no target instance) as a plain POJO without any advice.
- * <b>If you want to call the object and have the advice take effect, use {@code getThis()}.</b>
- * A common example is casting the object to an introduced interface in the implementation of
- * an introduction. There is no such distinction between target and proxy in AspectJ itself.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Adrian Colyer
- * @author Ramnivas Laddad
- * @since 2.0
+ * 方法执行开始连接点
  */
 public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint, JoinPoint.StaticPart {
 
@@ -58,20 +44,12 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 	@Nullable
 	private Object[] args;
 
-	/** Lazily initialized signature object. */
 	@Nullable
 	private Signature signature;
 
-	/** Lazily initialized source location object. */
 	@Nullable
 	private SourceLocation sourceLocation;
 
-
-	/**
-	 * Create a new MethodInvocationProceedingJoinPoint, wrapping the given
-	 * Spring ProxyMethodInvocation object.
-	 * @param methodInvocation the Spring ProxyMethodInvocation object
-	 */
 	public MethodInvocationProceedingJoinPoint(ProxyMethodInvocation methodInvocation) {
 		Assert.notNull(methodInvocation, "MethodInvocation must not be null");
 		this.methodInvocation = methodInvocation;

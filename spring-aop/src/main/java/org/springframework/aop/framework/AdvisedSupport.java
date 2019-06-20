@@ -56,7 +56,6 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	/** use serialVersionUID from Spring 2.0 for interoperability. */
 	private static final long serialVersionUID = 2651364800145442165L;
 
-
 	/**
 	 * Canonical TargetSource when there's no target, and behavior is
 	 * supplied by the advisors.
@@ -106,7 +105,6 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		this();
 		setInterfaces(interfaces);
 	}
-
 
 	/**
 	 * 将给定的对象设置为目标 (SingletonTargetSource)

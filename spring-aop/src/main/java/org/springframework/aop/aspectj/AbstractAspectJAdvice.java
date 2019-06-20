@@ -50,54 +50,26 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Base class for AOP Alliance {@link org.aopalliance.aop.Advice} classes
- * wrapping an AspectJ aspect or an AspectJ-annotated advice method.
- *
- * @author Rod Johnson
- * @author Adrian Colyer
- * @author Juergen Hoeller
- * @author Ramnivas Laddad
- * @since 2.0
+ * 包装AspectJ方面或AspectJ注释的通知方法的类 (Advice 的基类)
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedenceInformation, Serializable {
 
-	/**
-	 * Key used in ReflectiveMethodInvocation userAttributes map for the current joinpoint.
-	 */
+	//连接点key
 	protected static final String JOIN_POINT_KEY = JoinPoint.class.getName();
 
-
-	/**
-	 * 当前AspectJ连接点，如果不在Spring AOP调用中，则通过异常
-	 */
-	public static JoinPoint currentJoinPoint() {
-		MethodInvocation mi = ExposeInvocationInterceptor.currentInvocation();
-		if (!(mi instanceof ProxyMethodInvocation)) {
-			throw new IllegalStateException("MethodInvocation is not a Spring ProxyMethodInvocation: " + mi);
-		}
-		ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;
-		JoinPoint jp = (JoinPoint) pmi.getUserAttribute(JOIN_POINT_KEY);
-		if (jp == null) {
-			jp = new MethodInvocationProceedingJoinPoint(pmi);
-			pmi.setUserAttribute(JOIN_POINT_KEY, jp);
-		}
-		return jp;
-	}
-
-	//声明class
+	//所需切入声明的Class
 	private final Class<?> declaringClass;
-	//方法名称
+	//切入方法名
 	private final String methodName;
-	//参数类型组
+	//切入方法参数
 	private final Class<?>[] parameterTypes;
-	//方法对象
+	//切入方法
 	protected transient Method aspectJAdviceMethod;
-	//切面表达切入点
+	//切入点
 	private final AspectJExpressionPointcut pointcut;
-
+	//切面实现的工厂
 	private final AspectInstanceFactory aspectInstanceFactory;
-
 	// 定义此通知的方面(ref bean)的名称(在确定通知优先级时使用，以便我们可以确定两个通知是否来自同一方面)
 	private String aspectName = "";
 
@@ -116,16 +88,8 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 
 	private Class<?> discoveredThrowingType = Object.class;
 
-	/**
-	 * Index for thisJoinPoint argument (currently only
-	 * supported at index 0 if present at all).
-	 */
 	private int joinPointArgumentIndex = -1;
 
-	/**
-	 * Index for thisJoinPointStaticPart argument (currently only
-	 * supported at index 0 if present at all).
-	 */
 	private int joinPointStaticPartArgumentIndex = -1;
 
 	@Nullable
@@ -139,7 +103,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	// since Java doesn't allow exception types to be parameterized.
 
 	public AbstractAspectJAdvice(Method aspectJAdviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory aspectInstanceFactory) {
-
 		Assert.notNull(aspectJAdviceMethod, "Advice method must not be null");
 		this.declaringClass = aspectJAdviceMethod.getDeclaringClass();
 		this.methodName = aspectJAdviceMethod.getName();
@@ -149,16 +112,29 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		this.aspectInstanceFactory = aspectInstanceFactory;
 	}
 
-
 	/**
-	 * Return the AspectJ-style advice method.
+	 * 当前AspectJ 连接点. 如果不在Spring AOP调用中, 则通过异常
 	 */
+	public static JoinPoint currentJoinPoint() {
+		MethodInvocation mi = ExposeInvocationInterceptor.currentInvocation();
+		if (!(mi instanceof ProxyMethodInvocation)) {
+			throw new IllegalStateException("MethodInvocation is not a Spring ProxyMethodInvocation: " + mi);
+		}
+		ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;
+		JoinPoint jp = (JoinPoint) pmi.getUserAttribute(JOIN_POINT_KEY);
+		if (jp == null) {
+			jp = new MethodInvocationProceedingJoinPoint(pmi);
+			pmi.setUserAttribute(JOIN_POINT_KEY, jp);
+		}
+		return jp;
+	}
+
 	public final Method getAspectJAdviceMethod() {
 		return this.aspectJAdviceMethod;
 	}
 
 	/**
-	 * Return the AspectJ expression pointcut.
+	 * 返回AspectJ表达式切入点
 	 */
 	public final AspectJExpressionPointcut getPointcut() {
 		calculateArgumentBindings();
@@ -166,27 +142,18 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	}
 
 	/**
-	 * Build a 'safe' pointcut that excludes the AspectJ advice method itself.
-	 * @return a composable pointcut that builds on the original AspectJ expression pointcut
-	 * @see #getPointcut()
+	 * 构建安全切入点
 	 */
 	public final Pointcut buildSafePointcut() {
 		Pointcut pc = getPointcut();
-		MethodMatcher safeMethodMatcher = MethodMatchers.intersection(
-				new AdviceExcludingMethodMatcher(this.aspectJAdviceMethod), pc.getMethodMatcher());
+		MethodMatcher safeMethodMatcher = MethodMatchers.intersection(new AdviceExcludingMethodMatcher(this.aspectJAdviceMethod), pc.getMethodMatcher());
 		return new ComposablePointcut(pc.getClassFilter(), safeMethodMatcher);
 	}
 
-	/**
-	 * Return the factory for aspect instances.
-	 */
 	public final AspectInstanceFactory getAspectInstanceFactory() {
 		return this.aspectInstanceFactory;
 	}
 
-	/**
-	 * Return the ClassLoader for aspect instances.
-	 */
 	@Nullable
 	public final ClassLoader getAspectClassLoader() {
 		return this.aspectInstanceFactory.getAspectClassLoader();
@@ -197,10 +164,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		return this.aspectInstanceFactory.getOrder();
 	}
 
-
-	/**
-	 * Set the name of the aspect (bean) in which the advice was declared.
-	 */
 	public void setAspectName(String name) {
 		this.aspectName = name;
 	}
@@ -210,9 +173,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		return this.aspectName;
 	}
 
-	/**
-	 * Set the declaration order of this advice within the aspect.
-	 */
 	public void setDeclarationOrder(int order) {
 		this.declarationOrder = order;
 	}
@@ -222,12 +182,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		return this.declarationOrder;
 	}
 
-	/**
-	 * Set by creator of this advice object if the argument names are known.
-	 * <p>This could be for example because they have been explicitly specified in XML,
-	 * or in an advice annotation.
-	 * @param argNames comma delimited list of arg names
-	 */
 	public void setArgumentNames(String argNames) {
 		String[] tokens = StringUtils.commaDelimitedListToStringArray(argNames);
 		setArgumentNamesFromStringArray(tokens);
@@ -263,10 +217,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		throw new UnsupportedOperationException("Only afterReturning advice can be used to bind a return value");
 	}
 
-	/**
-	 * We need to hold the returning name at this level for argument binding calculations,
-	 * this method allows the afterReturning advice subclass to set the name.
-	 */
 	protected void setReturningNameNoCheck(String name) {
 		// name could be a variable or a type...
 		if (isVariableName(name)) {
@@ -298,10 +248,6 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		throw new UnsupportedOperationException("Only afterThrowing advice can be used to bind a thrown exception");
 	}
 
-	/**
-	 * We need to hold the throwing name at this level for argument binding calculations,
-	 * this method allows the afterThrowing advice subclass to set the name.
-	 */
 	protected void setThrowingNameNoCheck(String name) {
 		// name could be a variable or a type...
 		if (isVariableName(name)) {

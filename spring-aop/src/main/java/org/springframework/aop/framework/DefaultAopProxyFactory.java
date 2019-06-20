@@ -47,12 +47,12 @@ import org.springframework.aop.SpringProxy;
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 	/**
-	 * 默认使用Jdk动态代理
+	 * 创建Aop代理, 默认使用Jdk动态代理(JdkDynamicAopProxy、CglibAopProxy)
 	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
-		// config.isOptimize()           (默认false)
-		// config.isProxyTargetClass()   (默认false)
+		// config.isOptimize()           (默认false)优化
+		// config.isProxyTargetClass()   (默认false)是否代理目标类
 		// hasNoUserSuppliedProxyInterfaces(config)     (是否有接口)
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
