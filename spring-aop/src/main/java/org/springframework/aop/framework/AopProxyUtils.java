@@ -32,26 +32,15 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Utility methods for AOP proxy factories.
- * Mainly for internal use within the AOP framework.
+ * AOP代理工厂的实用方法。
+ * 主要用于AOP框架的内部使用
  *
- * <p>See {@link org.springframework.aop.support.AopUtils} for a collection of
- * generic AOP utility methods which do not depend on AOP framework internals.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see org.springframework.aop.support.AopUtils
+ * <p>See {@link org.springframework.aop.support.AopUtils} 用于一组不依赖于AOP框架内部的通用AOP实用程序方法.
  */
 public abstract class AopProxyUtils {
 
 	/**
-	 * Obtain the singleton target object behind the given proxy, if any.
-	 * @param candidate the (potential) proxy to check
-	 * @return the singleton target object managed in a {@link SingletonTargetSource},
-	 * or {@code null} in any other case (not a proxy, not an existing singleton target)
-	 * @since 4.3.8
-	 * @see Advised#getTargetSource()
-	 * @see SingletonTargetSource#getTarget()
+	 * 获取给定代理背后的单例目标对象(如果有的话)
 	 */
 	@Nullable
 	public static Object getSingletonTarget(Object candidate) {
@@ -65,14 +54,7 @@ public abstract class AopProxyUtils {
 	}
 
 	/**
-	 * Determine the ultimate target class of the given bean instance, traversing
-	 * not only a top-level proxy but any number of nested proxies as well &mdash;
-	 * as long as possible without side effects, that is, just for singleton targets.
-	 * @param candidate the instance to check (might be an AOP proxy)
-	 * @return the ultimate target class (or the plain class of the given
-	 * object as fallback; never {@code null})
-	 * @see org.springframework.aop.TargetClassAware#getTargetClass()
-	 * @see Advised#getTargetSource()
+	 *
 	 */
 	public static Class<?> ultimateTargetClass(Object candidate) {
 		Assert.notNull(candidate, "Candidate object must not be null");
@@ -89,14 +71,7 @@ public abstract class AopProxyUtils {
 	}
 
 	/**
-	 * Determine the complete set of interfaces to proxy for the given AOP configuration.
-	 * <p>This will always add the {@link Advised} interface unless the AdvisedSupport's
-	 * {@link AdvisedSupport#setOpaque "opaque"} flag is on. Always adds the
-	 * {@link org.springframework.aop.SpringProxy} marker interface.
-	 * @param advised the proxy config
-	 * @return the complete set of interfaces to proxy
-	 * @see SpringProxy
-	 * @see Advised
+	 * 确定用于代理给定AOP配置的完整接口集
 	 */
 	public static Class<?>[] completeProxiedInterfaces(AdvisedSupport advised) {
 		return completeProxiedInterfaces(advised, false);

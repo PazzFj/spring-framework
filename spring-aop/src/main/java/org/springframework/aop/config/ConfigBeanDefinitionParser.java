@@ -51,13 +51,6 @@ import org.springframework.util.xml.DomUtils;
 
 /**
  * {@link BeanDefinitionParser} for the {@code <aop:config>} tag.
- *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @author Adrian Colyer
- * @author Mark Fisher
- * @author Ramnivas Laddad
- * @since 2.0
  */
 class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 
@@ -99,8 +92,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
-		CompositeComponentDefinition compositeDef =
-				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
+		CompositeComponentDefinition compositeDef = new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
 
 		configureAutoProxyCreator(parserContext, element);
@@ -124,19 +116,12 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Configures the auto proxy creator needed to support the {@link BeanDefinition BeanDefinitions}
-	 * created by the '{@code <aop:config/>}' tag. Will force class proxying if the
-	 * '{@code proxy-target-class}' attribute is set to '{@code true}'.
-	 * @see AopNamespaceUtils
 	 */
 	private void configureAutoProxyCreator(ParserContext parserContext, Element element) {
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(parserContext, element);
 	}
 
 	/**
-	 * Parses the supplied {@code <advisor>} element and registers the resulting
-	 * {@link org.springframework.aop.Advisor} and any resulting {@link org.springframework.aop.Pointcut}
-	 * with the supplied {@link BeanDefinitionRegistry}.
 	 */
 	private void parseAdvisor(Element advisorElement, ParserContext parserContext) {
 		AbstractBeanDefinition advisorDef = createAdvisorBeanDefinition(advisorElement, parserContext);
@@ -170,8 +155,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Create a {@link RootBeanDefinition} for the advisor described in the supplied. Does <strong>not</strong>
-	 * parse any associated '{@code pointcut}' or '{@code pointcut-ref}' attributes.
+	 *
 	 */
 	private AbstractBeanDefinition createAdvisorBeanDefinition(Element advisorElement, ParserContext parserContext) {
 		RootBeanDefinition advisorDefinition = new RootBeanDefinition(DefaultBeanFactoryPointcutAdvisor.class);
@@ -260,9 +244,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Return {@code true} if the supplied node describes an advice type. May be one of:
-	 * '{@code before}', '{@code after}', '{@code after-returning}',
-	 * '{@code after-throwing}' or '{@code around}'.
 	 */
 	private boolean isAdviceNode(Node aNode, ParserContext parserContext) {
 		if (!(aNode instanceof Element)) {
@@ -276,9 +257,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Parse a '{@code declare-parents}' element and register the appropriate
-	 * DeclareParentsAdvisor with the BeanDefinitionRegistry encapsulated in the
-	 * supplied ParserContext.
 	 */
 	private AbstractBeanDefinition parseDeclareParents(Element declareParentsElement, ParserContext parserContext) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(DeclareParentsAdvisor.class);
@@ -307,10 +285,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Parses one of '{@code before}', '{@code after}', '{@code after-returning}',
-	 * '{@code after-throwing}' or '{@code around}' and registers the resulting
-	 * BeanDefinition with the supplied BeanDefinitionRegistry.
-	 * @return the generated advice RootBeanDefinition
 	 */
 	private AbstractBeanDefinition parseAdvice(
 			String aspectName, int order, Element aspectElement, Element adviceElement, ParserContext parserContext,
@@ -356,10 +330,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Creates the RootBeanDefinition for a POJO advice bean. Also causes pointcut
-	 * parsing to occur so that the pointcut may be associate with the advice bean.
-	 * This same pointcut is also configured as the pointcut for the enclosing
-	 * Advisor definition using the supplied MutablePropertyValues.
 	 */
 	private AbstractBeanDefinition createAdviceDefinition(
 			Element adviceElement, ParserContext parserContext, String aspectName, int order,
@@ -430,8 +400,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Parses the supplied {@code <pointcut>} and registers the resulting
-	 * Pointcut with the BeanDefinitionRegistry.
 	 */
 	private AbstractBeanDefinition parsePointcut(Element pointcutElement, ParserContext parserContext) {
 		String id = pointcutElement.getAttribute(ID);
@@ -463,10 +431,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Parses the {@code pointcut} or {@code pointcut-ref} attributes of the supplied
-	 * {@link Element} and add a {@code pointcut} property as appropriate. Generates a
-	 * {@link org.springframework.beans.factory.config.BeanDefinition} for the pointcut if  necessary
-	 * and returns its bean name, otherwise returns the bean name of the referred pointcut.
 	 */
 	@Nullable
 	private Object parsePointcutProperty(Element element, ParserContext parserContext) {
@@ -501,8 +465,6 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	}
 
 	/**
-	 * Creates a {@link BeanDefinition} for the {@link AspectJExpressionPointcut} class using
-	 * the supplied pointcut expression.
 	 */
 	protected AbstractBeanDefinition createPointcutDefinition(String expression) {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(AspectJExpressionPointcut.class);

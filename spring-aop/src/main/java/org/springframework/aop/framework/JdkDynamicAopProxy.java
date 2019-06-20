@@ -79,25 +79,24 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	/** We use a static Log to avoid serialization issues. */
 	private static final Log logger = LogFactory.getLog(JdkDynamicAopProxy.class);
 
-	/** Config used to configure this proxy. */
+	/** 用于配置此代理的配置 */
 	private final AdvisedSupport advised;
 
 	/**
+	 * 是否在代理接口上定义了{@link #equals}方法
 	 * Is the {@link #equals} method defined on the proxied interfaces?
 	 */
 	private boolean equalsDefined;
 
 	/**
+	 * 是否在代理接口上定义了{@link #hashCode}方法
 	 * Is the {@link #hashCode} method defined on the proxied interfaces?
 	 */
 	private boolean hashCodeDefined;
 
 
 	/**
-	 * Construct a new JdkDynamicAopProxy for the given AOP configuration.
-	 * @param config the AOP configuration as AdvisedSupport object
-	 * @throws AopConfigException if the config is invalid. We try to throw an informative
-	 * exception in this case, rather than let a mysterious failure happen later.
+	 * 为给定的AOP配置构造一个新的JdkDynamicAopProxy
 	 */
 	public JdkDynamicAopProxy(AdvisedSupport config) throws AopConfigException {
 		Assert.notNull(config, "AdvisedSupport must not be null");
@@ -124,9 +123,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	}
 
 	/**
-	 * Finds any {@link #equals} or {@link #hashCode} method that may be defined
-	 * on the supplied set of interfaces.
-	 * @param proxiedInterfaces the interfaces to introspect
+	 * 查找可能在提供的接口集上定义的任何{@link #equals}或{@link #hashCode}方法
 	 */
 	private void findDefinedEqualsAndHashCodeMethods(Class<?>[] proxiedInterfaces) {
 		for (Class<?> proxiedInterface : proxiedInterfaces) {
