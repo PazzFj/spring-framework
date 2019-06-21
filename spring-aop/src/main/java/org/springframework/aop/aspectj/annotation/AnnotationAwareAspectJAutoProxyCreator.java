@@ -41,7 +41,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	private AspectJAdvisorFactory aspectJAdvisorFactory;	//面向方面编程顾问 factory
 
 	@Nullable
-	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;   //bean工厂面向方面编程顾问 builder
+	private BeanFactoryAspectJAdvisorsBuilder aspectJAdvisorsBuilder;   //bean工厂面向方面编程顾问构建
 
 
 	/**
