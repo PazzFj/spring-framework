@@ -219,7 +219,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		}
 		if (beanType != null && isHandler(beanType)) {
 			//检测 HandlerMethod
-			detectHandlerMethods(beanName);
+			detectHandlerMethods(beanName); //do
 		}
 	}
 
