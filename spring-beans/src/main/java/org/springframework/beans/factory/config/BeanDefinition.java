@@ -23,6 +23,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * bean定义描述一个bean实例，它具有属性值、构造函数参数值和具体实现提供的进一步信息
+ * bean定义 + 属性存取 + bean元数据节点
  *
  * @see ConfigurableListableBeanFactory#getBeanDefinition
  * @see org.springframework.beans.factory.support.RootBeanDefinition
