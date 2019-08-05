@@ -24,7 +24,7 @@ import javax.servlet.ServletContextListener;
  * 简单地委托给{@link ContextLoader}和{@link ContextCleanupListener}
  *
  * <p>从Spring 3.1开始，{@code ContextLoaderListener}支持通过{@link #ContextLoaderListener(WebApplicationContext)}构造函数注入根web应用程序上下文，
- * 允许在Servlet 3.0+环境中进行编程配置。看到{@link org.springframework.web。用于使用示例的WebApplicationInitializer}
+ * 允许在Servlet 3.0+环境中进行编程配置。看到{@link org.springframework.web.WebApplicationInitializer}
  *
  * @author Juergen Hoeller
  * @author Chris Beams

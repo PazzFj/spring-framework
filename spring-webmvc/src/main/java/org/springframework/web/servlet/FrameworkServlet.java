@@ -114,7 +114,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	private String namespace;
 
 	@Nullable
-	private String contextConfigLocation;
+	private String contextConfigLocation;		// spring 启动, 加载上下文配置的路径
 
 	//应用上下文实例
 	private final List<ApplicationContextInitializer<ConfigurableApplicationContext>> contextInitializers = new ArrayList<>();
@@ -131,7 +131,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	//线程上下文可遗传
 	private boolean threadContextInheritable = false;
 
-	//分派操作请求
+	//可选择请求
 	private boolean dispatchOptionsRequest = false;
 
 	//分派追踪请求

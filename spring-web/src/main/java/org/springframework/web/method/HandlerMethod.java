@@ -43,28 +43,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Encapsulates information about a handler method consisting of a
- * {@linkplain #getMethod() method} and a {@linkplain #getBean() bean}.
- * Provides convenient access to method parameters, the method return value,
- * method annotations, etc.
- *
- * <p>The class may be created with a bean instance or with a bean name
- * (e.g. lazy-init bean, prototype bean). Use {@link #createWithResolvedBean()}
- * to obtain a {@code HandlerMethod} instance with a bean instance resolved
- * through the associated {@link BeanFactory}.
- *
- * @author Arjen Poutsma
- * @author Rossen Stoyanchev
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @since 3.1
+ * 封装由{@linkplain #getMethod()}和{@linkplain #getBean() bean}组成的处理程序方法的信息。
+ * 提供对方法参数、方法返回值、方法注释等的方便访问
  */
 public class HandlerMethod {
 
-	/** Logger that is available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final Object bean;
+	private final Object bean; 				//对应的类对象
 
 	@Nullable
 	private final BeanFactory beanFactory;
@@ -73,7 +59,7 @@ public class HandlerMethod {
 
 	private final Method method;
 
-	private final Method bridgedMethod;
+	private final Method bridgedMethod;		//bridged桥接
 
 	private final MethodParameter[] parameters;
 

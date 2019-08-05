@@ -1317,14 +1317,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
-	 * Determine whether the given bean property is excluded from dependency checks.
-	 * <p>This implementation excludes properties defined by CGLIB and
-	 * properties whose type matches an ignored dependency type or which
-	 * are defined by an ignored dependency interface.
-	 * @param pd the PropertyDescriptor of the bean property
-	 * @return whether the bean property is excluded
-	 * @see #ignoreDependencyType(Class)
-	 * @see #ignoreDependencyInterface(Class)
+	 * 确定给定bean属性是否被排除在依赖项检查之外
+	 * 是否排除来自依赖检查
 	 */
 	protected boolean isExcludedFromDependencyCheck(PropertyDescriptor pd) {
 		return (AutowireUtils.isExcludedFromDependencyCheck(pd) ||

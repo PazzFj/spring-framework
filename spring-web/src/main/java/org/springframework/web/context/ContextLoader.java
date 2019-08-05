@@ -48,8 +48,7 @@ import org.springframework.util.StringUtils;
 public class ContextLoader {
 
 	/**
-	 * Config param for the root WebApplicationContext id,
-	 * to be used as serialization id for the underlying BeanFactory: {@value}.
+	 * 配置根WebApplicationContext id的参数，用作底层BeanFactory的序列化id: {@value}
 	 */
 	public static final String CONTEXT_ID_PARAM = "contextId";
 
@@ -164,12 +163,14 @@ public class ContextLoader {
 
 
 	/**
+	 * @see org.springframework.web.context.ContextLoader#createWebApplicationContext(ServletContext sc)
+	 * @see org.springframework.web.context.ContextLoader#configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac, ServletContext sc)
 	 * 初始化Spring的web应用程序上下文
-	 * @param servletContext 当前servlet上下文
-	 * @return the new WebApplicationContext
-	 * @see #ContextLoader(WebApplicationContext)
-	 * @see #CONTEXT_CLASS_PARAM
-	 * @see #CONFIG_LOCATION_PARAM
+	 * 	1、org.springframework.web.context.WebApplicationContext.ROOT 属性不存在
+	 * 	2、根据 javax.servlet.ServletContext 创建 WebApplicationContext  --->>>  XmlWebApplicationContext
+	 * 	3、配置与更新web应用上下文
+	 * 	4、设置xxx.ROOT 属性和应用上下文到 servletContext 中
+	 * 	5、获取当前类加载器及应用上下文,存储
 	 */
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
 		if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
@@ -269,6 +270,15 @@ public class ContextLoader {
 		}
 	}
 
+	/**
+	 * 配置与更新应用上下文
+	 *     1、从 ServletContext 中获取 contextId 配置到应用上下文Id
+	 *     2、配置应用上下文的 ServletContext
+	 *     3、获取上下文配置参数(classpath:spring-mvc.xml)
+	 *     4、通过应用上下文获取到(配置环境对象 StandardServletEnvironment), 并初始化(ServletContext 服务上下文)属性资源
+	 *     5、自定义上下文(待分析...TODO)
+	 *     6、刷新应用上下文
+	 */
 	protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac, ServletContext sc) {
 		if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
 			// contextId
@@ -297,9 +307,9 @@ public class ContextLoader {
 		}
 
 		//自定义上下文
-		customizeContext(sc, wac);
+		customizeContext(sc, wac);	//do
 		// 应用刷新
-		wac.refresh();
+		wac.refresh();	//do   ContextLoader
 	}
 
 	/**

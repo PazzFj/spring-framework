@@ -29,58 +29,19 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Filter base class that aims to guarantee a single execution per request
- * dispatch, on any servlet container. It provides a {@link #doFilterInternal}
- * method with HttpServletRequest and HttpServletResponse arguments.
- *
- * <p>As of Servlet 3.0, a filter may be invoked as part of a
- * {@link javax.servlet.DispatcherType#REQUEST REQUEST} or
- * {@link javax.servlet.DispatcherType#ASYNC ASYNC} dispatches that occur in
- * separate threads. A filter can be configured in {@code web.xml} whether it
- * should be involved in async dispatches. However, in some cases servlet
- * containers assume different default configuration. Therefore sub-classes can
- * override the method {@link #shouldNotFilterAsyncDispatch()} to declare
- * statically if they should indeed be invoked, <em>once</em>, during both types
- * of dispatches in order to provide thread initialization, logging, security,
- * and so on. This mechanism complements and does not replace the need to
- * configure a filter in {@code web.xml} with dispatcher types.
- *
- * <p>Subclasses may use {@link #isAsyncDispatch(HttpServletRequest)} to
- * determine when a filter is invoked as part of an async dispatch, and use
- * {@link #isAsyncStarted(HttpServletRequest)} to determine when the request
- * has been placed in async mode and therefore the current dispatch won't be
- * the last one for the given request.
- *
- * <p>Yet another dispatch type that also occurs in its own thread is
- * {@link javax.servlet.DispatcherType#ERROR ERROR}. Subclasses can override
- * {@link #shouldNotFilterErrorDispatch()} if they wish to declare statically
- * if they should be invoked <em>once</em> during error dispatches.
- *
- * <p>The {@link #getAlreadyFilteredAttributeName} method determines how to
- * identify that a request is already filtered. The default implementation is
- * based on the configured name of the concrete filter instance.
- *
- * @author Juergen Hoeller
- * @author Rossen Stoyanchev
- * @since 06.12.2003
+ * Filter基类，它的目标是保证在任何servlet容器上每次请求分派都执行一次。
+ * 它提供了一个带有HttpServletRequest和HttpServletResponse参数的{@link #doFilterInternal}方法。
  */
 public abstract class OncePerRequestFilter extends GenericFilterBean {
 
 	/**
-	 * Suffix that gets appended to the filter name for the
-	 * "already filtered" request attribute.
-	 * @see #getAlreadyFilteredAttributeName
+	 * 附加到“已过滤”请求属性的筛选器名称的后缀
 	 */
 	public static final String ALREADY_FILTERED_SUFFIX = ".FILTERED";
 
 
 	/**
-	 * This {@code doFilter} implementation stores a request attribute for
-	 * "already filtered", proceeding without filtering again if the
-	 * attribute is already there.
-	 * @see #getAlreadyFilteredAttributeName
-	 * @see #shouldNotFilter
-	 * @see #doFilterInternal
+	 * 附加到“已过滤”请求属性的筛选器名称的后缀。这个{@code doFilter}实现为“already filtered”存储了一个request属性，如果属性已经存在，则不进行过滤
 	 */
 	@Override
 	public final void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
@@ -125,37 +86,22 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	}
 
 	/**
-	 * The dispatcher type {@code javax.servlet.DispatcherType.ASYNC} introduced
-	 * in Servlet 3.0 means a filter can be invoked in more than one thread over
-	 * the course of a single request. This method returns {@code true} if the
-	 * filter is currently executing within an asynchronous dispatch.
-	 * @param request the current request
-	 * @since 3.2
-	 * @see WebAsyncManager#hasConcurrentResult()
+	 * dispatcher类型{@code javax.servlet.DispatcherType}
+	 * 在Servlet 3.0中引入的ASYNC}意味着一个过滤器可以在一个请求的过程中被多个线程调用。如果过滤器当前在异步分派中执行，此方法将返回{@code true}
 	 */
 	protected boolean isAsyncDispatch(HttpServletRequest request) {
 		return WebAsyncUtils.getAsyncManager(request).hasConcurrentResult();
 	}
 
 	/**
-	 * Whether request processing is in asynchronous mode meaning that the
-	 * response will not be committed after the current thread is exited.
-	 * @param request the current request
-	 * @since 3.2
-	 * @see WebAsyncManager#isConcurrentHandlingStarted()
+	 * 请求处理是否处于异步模式意味着当前线程退出后将不会提交响应
 	 */
 	protected boolean isAsyncStarted(HttpServletRequest request) {
 		return WebAsyncUtils.getAsyncManager(request).isConcurrentHandlingStarted();
 	}
 
 	/**
-	 * Return the name of the request attribute that identifies that a request
-	 * is already filtered.
-	 * <p>The default implementation takes the configured name of the concrete filter
-	 * instance and appends ".FILTERED". If the filter is not fully initialized,
-	 * it falls back to its class name.
-	 * @see #getFilterName
-	 * @see #ALREADY_FILTERED_SUFFIX
+	 * 返回请求属性的名称，该属性标识请求已经过筛选
 	 */
 	protected String getAlreadyFilteredAttributeName() {
 		String name = getFilterName();
@@ -166,44 +112,21 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	}
 
 	/**
-	 * Can be overridden in subclasses for custom filtering control,
-	 * returning {@code true} to avoid filtering of the given request.
-	 * <p>The default implementation always returns {@code false}.
-	 * @param request current HTTP request
-	 * @return whether the given request should <i>not</i> be filtered
-	 * @throws ServletException in case of errors
+	 * 可以在子类中重写自定义过滤控件，返回{@code true}以避免过滤给定的请求
 	 */
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 		return false;
 	}
 
 	/**
-	 * The dispatcher type {@code javax.servlet.DispatcherType.ASYNC} introduced
-	 * in Servlet 3.0 means a filter can be invoked in more than one thread
-	 * over the course of a single request. Some filters only need to filter
-	 * the initial thread (e.g. request wrapping) while others may need
-	 * to be invoked at least once in each additional thread for example for
-	 * setting up thread locals or to perform final processing at the very end.
-	 * <p>Note that although a filter can be mapped to handle specific dispatcher
-	 * types via {@code web.xml} or in Java through the {@code ServletContext},
-	 * servlet containers may enforce different defaults with regards to
-	 * dispatcher types. This flag enforces the design intent of the filter.
-	 * <p>The default return value is "true", which means the filter will not be
-	 * invoked during subsequent async dispatches. If "false", the filter will
-	 * be invoked during async dispatches with the same guarantees of being
-	 * invoked only once during a request within a single thread.
-	 * @since 3.2
+	 * 应该不过滤异步显示
 	 */
 	protected boolean shouldNotFilterAsyncDispatch() {
 		return true;
 	}
 
 	/**
-	 * Whether to filter error dispatches such as when the servlet container
-	 * processes and error mapped in {@code web.xml}. The default return value
-	 * is "true", which means the filter will not be invoked in case of an error
-	 * dispatch.
-	 * @since 3.2
+	 * 应该不过滤异常显示
 	 */
 	protected boolean shouldNotFilterErrorDispatch() {
 		return true;
@@ -211,11 +134,7 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 
 
 	/**
-	 * Same contract as for {@code doFilter}, but guaranteed to be
-	 * just invoked once per request within a single request thread.
-	 * See {@link #shouldNotFilterAsyncDispatch()} for details.
-	 * <p>Provides HttpServletRequest and HttpServletResponse arguments instead of the
-	 * default ServletRequest and ServletResponse ones.
+	 * 与{@code doFilter}相同的契约，但保证在单个请求线程中仅对每个请求调用一次
 	 */
 	protected abstract void doFilterInternal(
 			HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

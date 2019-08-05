@@ -357,6 +357,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			this.earlyApplicationEvents.add(applicationEvent);
 		}
 		else {
+			//获取多通道, 进行多路广播
 			getApplicationEventMulticaster().multicastEvent(applicationEvent, eventType);
 		}
 
@@ -592,6 +593,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * 3、
 	 * 配置工厂的标准上下文特征，例如上下文的类加载器和后处理器。
 	 * 一、配置类加载器
 	 * 二、配置表达式分解器

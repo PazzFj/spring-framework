@@ -54,14 +54,7 @@ import org.springframework.web.servlet.HandlerMapping;
 public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMapping implements InitializingBean {
 
 	/**
-	 * Bean name prefix for target beans behind scoped proxies. Used to exclude those
-	 * targets from handler method detection, in favor of the corresponding proxies.
-	 * <p>We're not checking the autowire-candidate status here, which is how the
-	 * proxy target filtering problem is being handled at the autowiring level,
-	 * since autowire-candidate may have been turned to {@code false} for other
-	 * reasons, while still expecting the bean to be eligible for handler methods.
-	 * <p>Originally defined in {@link org.springframework.aop.scope.ScopedProxyUtils}
-	 * but duplicated here to avoid a hard dependency on the spring-aop module.
+	 * 作用域代理后面的目标Bean的Bean名称前缀。用于将这些目标排除在处理程序方法检测之外，以支持相应的代理
 	 */
 	private static final String SCOPED_TARGET_NAME_PREFIX = "scopedTarget.";
 

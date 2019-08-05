@@ -69,7 +69,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 
 	/**
-	 * 创建BeanFactory
+	 * 更新BeanFactory
 	 * 1、判断是否存在BeanFactory  (存在则关闭BeanFactory)
 	 * 2、创建DefaultListableBeanFactory (设置BeanFactory Id)
 	 * 3、加载BeanDefinition

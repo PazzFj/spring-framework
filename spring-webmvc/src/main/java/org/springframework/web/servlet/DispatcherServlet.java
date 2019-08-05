@@ -289,7 +289,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	public DispatcherServlet(WebApplicationContext webApplicationContext) {
 		super(webApplicationContext);
-		setDispatchOptionsRequest(true);
+		setDispatchOptionsRequest(true);// 设置发送可选择请求
 	}
 
 
