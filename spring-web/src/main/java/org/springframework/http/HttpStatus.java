@@ -19,17 +19,7 @@ package org.springframework.http;
 import org.springframework.lang.Nullable;
 
 /**
- * Enumeration of HTTP status codes.
- *
- * <p>The HTTP status code series can be retrieved via {@link #series()}.
- *
- * @author Arjen Poutsma
- * @author Sebastien Deleuze
- * @author Brian Clozel
- * @since 3.0
- * @see HttpStatus.Series
- * @see <a href="http://www.iana.org/assignments/http-status-codes">HTTP Status Code Registry</a>
- * @see <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">List of HTTP status codes - Wikipedia</a>
+ * HTTP状态码的枚举
  */
 public enum HttpStatus {
 

@@ -28,7 +28,7 @@ import org.springframework.web.method.HandlerMethod;
 public interface HandlerInterceptor {
 
 	/**
-	 * 之前调用, 默认返回true
+	 * 前置处理, 默认返回true
 	 */
 	default boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -37,14 +37,14 @@ public interface HandlerInterceptor {
 	}
 
 	/**
-	 * 之后调用, 默认不做任何处理
+	 * 后置处理, 默认不做任何处理
 	 */
 	default void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			@Nullable ModelAndView modelAndView) throws Exception {
 	}
 
 	/**
-	 *
+	 * 后置实现
 	 */
 	default void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
 			@Nullable Exception ex) throws Exception {

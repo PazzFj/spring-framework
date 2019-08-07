@@ -49,16 +49,12 @@ public class HandlerExecutionChain {
 
 	private int interceptorIndex = -1;
 
-
-	/**
-	 *
-	 */
 	public HandlerExecutionChain(Object handler) {
 		this(handler, (HandlerInterceptor[]) null);
 	}
 
 	/**
-	 *
+	 * 创建HandlerExecutionChain 对象, 根据 HandlerMethod 与 HandlerInterceptor
 	 */
 	public HandlerExecutionChain(Object handler, @Nullable HandlerInterceptor... interceptors) {
 		if (handler instanceof HandlerExecutionChain) {
@@ -135,7 +131,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
-	 * 应用已注册拦截器的事后方法
+	 * 应用已注册拦截器的后置处理
 	 */
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)
 			throws Exception {

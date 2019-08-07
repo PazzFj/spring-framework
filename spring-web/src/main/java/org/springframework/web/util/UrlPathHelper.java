@@ -152,13 +152,8 @@ public class UrlPathHelper {
 
 
 	/**
-	 * Return the mapping lookup path for the given request, within the current
-	 * servlet mapping if applicable, else within the web application.
-	 * <p>Detects include request URL if called within a RequestDispatcher include.
-	 * @param request current HTTP request
-	 * @return the lookup path
-	 * @see #getPathWithinApplication
-	 * @see #getPathWithinServletMapping
+	 * 返回给定请求的映射查找路径，如果适用，在当前servlet映射中返回，在web应用程序中返回
+	 * <p>检测包含请求URL(如果在RequestDispatcher include中调用)
 	 */
 	public String getLookupPathForRequest(HttpServletRequest request) {
 		// Always use full path within current servlet context?

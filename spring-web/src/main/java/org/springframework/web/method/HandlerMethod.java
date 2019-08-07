@@ -50,35 +50,31 @@ public class HandlerMethod {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final Object bean; 				//对应的类对象
+	private final Object bean; 				//bean对象 (一开始是beanName)
 
 	@Nullable
 	private final BeanFactory beanFactory;
 
-	private final Class<?> beanType;
+	private final Class<?> beanType;		//bean类型
 
-	private final Method method;
+	private final Method method;			//对应方法
 
 	private final Method bridgedMethod;		//bridged桥接
 
 	private final MethodParameter[] parameters;
 
 	@Nullable
-	private HttpStatus responseStatus;
+	private HttpStatus responseStatus;		//状态码
 
 	@Nullable
-	private String responseStatusReason;
+	private String responseStatusReason;	//响应码理由
 
 	@Nullable
 	private HandlerMethod resolvedFromHandlerMethod;
 
 	@Nullable
-	private volatile List<Annotation[][]> interfaceParameterAnnotations;
+	private volatile List<Annotation[][]> interfaceParameterAnnotations;	//接口参数注解
 
-
-	/**
-	 * Create an instance from a bean instance and a method.
-	 */
 	public HandlerMethod(Object bean, Method method) {
 		Assert.notNull(bean, "Bean is required");
 		Assert.notNull(method, "Method is required");
@@ -91,10 +87,6 @@ public class HandlerMethod {
 		evaluateResponseStatus();
 	}
 
-	/**
-	 * Create an instance from a bean instance, method name, and parameter types.
-	 * @throws NoSuchMethodException when the method cannot be found
-	 */
 	public HandlerMethod(Object bean, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
 		Assert.notNull(bean, "Bean is required");
 		Assert.notNull(methodName, "Method name is required");
@@ -107,11 +99,6 @@ public class HandlerMethod {
 		evaluateResponseStatus();
 	}
 
-	/**
-	 * Create an instance from a bean name, a method, and a {@code BeanFactory}.
-	 * The method {@link #createWithResolvedBean()} may be used later to
-	 * re-create the {@code HandlerMethod} with an initialized bean.
-	 */
 	public HandlerMethod(String beanName, BeanFactory beanFactory, Method method) {
 		Assert.hasText(beanName, "Bean name is required");
 		Assert.notNull(beanFactory, "BeanFactory is required");
@@ -129,9 +116,6 @@ public class HandlerMethod {
 		evaluateResponseStatus();
 	}
 
-	/**
-	 * Copy constructor for use in subclasses.
-	 */
 	protected HandlerMethod(HandlerMethod handlerMethod) {
 		Assert.notNull(handlerMethod, "HandlerMethod is required");
 		this.bean = handlerMethod.bean;
@@ -145,9 +129,6 @@ public class HandlerMethod {
 		this.resolvedFromHandlerMethod = handlerMethod.resolvedFromHandlerMethod;
 	}
 
-	/**
-	 * Re-create HandlerMethod with the resolved handler.
-	 */
 	private HandlerMethod(HandlerMethod handlerMethod, Object handler) {
 		Assert.notNull(handlerMethod, "HandlerMethod is required");
 		Assert.notNull(handler, "Handler object is required");
@@ -184,114 +165,57 @@ public class HandlerMethod {
 		}
 	}
 
-
-	/**
-	 * Return the bean for this handler method.
-	 */
 	public Object getBean() {
 		return this.bean;
 	}
 
-	/**
-	 * Return the method for this handler method.
-	 */
 	public Method getMethod() {
 		return this.method;
 	}
 
-	/**
-	 * This method returns the type of the handler for this handler method.
-	 * <p>Note that if the bean type is a CGLIB-generated class, the original
-	 * user-defined class is returned.
-	 */
 	public Class<?> getBeanType() {
 		return this.beanType;
 	}
 
-	/**
-	 * If the bean method is a bridge method, this method returns the bridged
-	 * (user-defined) method. Otherwise it returns the same method as {@link #getMethod()}.
-	 */
 	protected Method getBridgedMethod() {
 		return this.bridgedMethod;
 	}
 
-	/**
-	 * Return the method parameters for this handler method.
-	 */
 	public MethodParameter[] getMethodParameters() {
 		return this.parameters;
 	}
 
-	/**
-	 * Return the specified response status, if any.
-	 * @since 4.3.8
-	 * @see ResponseStatus#code()
-	 */
 	@Nullable
 	protected HttpStatus getResponseStatus() {
 		return this.responseStatus;
 	}
 
-	/**
-	 * Return the associated response status reason, if any.
-	 * @since 4.3.8
-	 * @see ResponseStatus#reason()
-	 */
 	@Nullable
 	protected String getResponseStatusReason() {
 		return this.responseStatusReason;
 	}
 
-	/**
-	 * Return the HandlerMethod return type.
-	 */
 	public MethodParameter getReturnType() {
 		return new HandlerMethodParameter(-1);
 	}
 
-	/**
-	 * Return the actual return value type.
-	 */
 	public MethodParameter getReturnValueType(@Nullable Object returnValue) {
 		return new ReturnValueMethodParameter(returnValue);
 	}
 
-	/**
-	 * Return {@code true} if the method return type is void, {@code false} otherwise.
-	 */
 	public boolean isVoid() {
 		return Void.TYPE.equals(getReturnType().getParameterType());
 	}
 
-	/**
-	 * Return a single annotation on the underlying method traversing its super methods
-	 * if no annotation can be found on the given method itself.
-	 * <p>Also supports <em>merged</em> composed annotations with attribute
-	 * overrides as of Spring Framework 4.2.2.
-	 * @param annotationType the type of annotation to introspect the method for
-	 * @return the annotation, or {@code null} if none found
-	 * @see AnnotatedElementUtils#findMergedAnnotation
-	 */
 	@Nullable
 	public <A extends Annotation> A getMethodAnnotation(Class<A> annotationType) {
 		return AnnotatedElementUtils.findMergedAnnotation(this.method, annotationType);
 	}
 
-	/**
-	 * Return whether the parameter is declared with the given annotation type.
-	 * @param annotationType the annotation type to look for
-	 * @since 4.3
-	 * @see AnnotatedElementUtils#hasAnnotation
-	 */
 	public <A extends Annotation> boolean hasMethodAnnotation(Class<A> annotationType) {
 		return AnnotatedElementUtils.hasAnnotation(this.method, annotationType);
 	}
 
-	/**
-	 * Return the HandlerMethod from which this HandlerMethod instance was
-	 * resolved via {@link #createWithResolvedBean()}.
-	 */
 	@Nullable
 	public HandlerMethod getResolvedFromHandlerMethod() {
 		return this.resolvedFromHandlerMethod;

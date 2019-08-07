@@ -37,26 +37,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.async.DeferredResult.DeferredResultHandler;
 
 /**
- * The central class for managing asynchronous request processing, mainly intended
- * as an SPI and not typically used directly by application classes.
- *
- * <p>An async scenario starts with request processing as usual in a thread (T1).
- * Concurrent request handling can be initiated by calling
- * {@link #startCallableProcessing(Callable, Object...) startCallableProcessing} or
- * {@link #startDeferredResultProcessing(DeferredResult, Object...) startDeferredResultProcessing},
- * both of which produce a result in a separate thread (T2). The result is saved
- * and the request dispatched to the container, to resume processing with the saved
- * result in a third thread (T3). Within the dispatched thread (T3), the saved
- * result can be accessed via {@link #getConcurrentResult()} or its presence
- * detected via {@link #hasConcurrentResult()}.
- *
- * @author Rossen Stoyanchev
- * @author Juergen Hoeller
- * @since 3.2
- * @see org.springframework.web.context.request.AsyncWebRequestInterceptor
- * @see org.springframework.web.servlet.AsyncHandlerInterceptor
- * @see org.springframework.web.filter.OncePerRequestFilter#shouldNotFilterAsyncDispatch
- * @see org.springframework.web.filter.OncePerRequestFilter#isAsyncDispatch
+ * 用于管理异步请求处理的中心类，主要用作SPI，通常不直接由应用程序类使用
  */
 public final class WebAsyncManager {
 
@@ -90,7 +71,7 @@ public final class WebAsyncManager {
 
 
 	/**
-	 * Package-private constructor.
+	 * 包的私有构造函数
 	 * @see WebAsyncUtils#getAsyncManager(javax.servlet.ServletRequest)
 	 * @see WebAsyncUtils#getAsyncManager(org.springframework.web.context.request.WebRequest)
 	 */

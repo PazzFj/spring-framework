@@ -48,24 +48,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- * Abstract base class for {@link org.springframework.web.servlet.HandlerMapping}
- * implementations. Supports ordering, a default handler, handler interceptors,
- * including handler interceptors mapped by path patterns.
- *
- * <p>Note: This base class does <i>not</i> support exposure of the
- * {@link #PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE}. Support for this attribute
- * is up to concrete subclasses, typically based on request URL mappings.
- *
- * @author Juergen Hoeller
- * @author Rossen Stoyanchev
- * @since 07.04.2003
- * @see #getHandlerInternal
- * @see #setDefaultHandler
- * @see #setAlwaysUseFullPath
- * @see #setUrlDecode
- * @see org.springframework.util.AntPathMatcher
- * @see #setInterceptors
- * @see org.springframework.web.servlet.HandlerInterceptor
+ * 支持排序、默认处理程序、处理程序拦截器，包括由路径模式映射的处理程序拦截器
  */
 public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 		implements HandlerMapping, Ordered, BeanNameAware {
@@ -390,11 +373,14 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * 通过Request请求获取 HandlerExecutionChain
+	 * 		1、通过请求路径获取 HandlerMethod ==>> getHandlerInternal(request)
+	 * 		2、通过HandlerMethod 与 HandlerInterceptor 创建 HandlerExecutionChain
+	 * 		3、跨域cors    (暂未分析)
 	 */
 	@Override
 	@Nullable
 	public final HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
-		// 从 AbstractHandlerMethodMapping 中获取到 HandlerMethod
+		// 抽象方法, 子类实现   -->>  HandlerMethod
 		Object handler = getHandlerInternal(request);
 		if (handler == null) {
 			handler = getDefaultHandler();

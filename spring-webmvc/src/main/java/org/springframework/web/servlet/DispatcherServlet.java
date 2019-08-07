@@ -111,47 +111,47 @@ public class DispatcherServlet extends FrameworkServlet {
 	public static final String VIEW_RESOLVER_BEAN_NAME = "viewResolver";
 
 	/**
-	 * 闪存
+	 * 闪存映射管理
 	 */
 	public static final String FLASH_MAP_MANAGER_BEAN_NAME = "flashMapManager";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.CONTEXT	上下文
+	 * web应用上下文
 	 */
 	public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherServlet.class.getName() + ".CONTEXT";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER  区域
+	 * 语言分解器
 	 */
 	public static final String LOCALE_RESOLVER_ATTRIBUTE = DispatcherServlet.class.getName() + ".LOCALE_RESOLVER";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.THEME_RESOLVER  主题
+	 * 内容分解器
 	 */
 	public static final String THEME_RESOLVER_ATTRIBUTE = DispatcherServlet.class.getName() + ".THEME_RESOLVER";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.THEME_SOURCE 主题source
+	 * 内容资源
 	 */
 	public static final String THEME_SOURCE_ATTRIBUTE = DispatcherServlet.class.getName() + ".THEME_SOURCE";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.INPUT_FLASH_MAP  输入闪存
+	 *  输入闪存
 	 */
 	public static final String INPUT_FLASH_MAP_ATTRIBUTE = DispatcherServlet.class.getName() + ".INPUT_FLASH_MAP";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.OUTPUT_FLASH_MAP  输出闪存
+	 * 输出闪存
 	 */
 	public static final String OUTPUT_FLASH_MAP_ATTRIBUTE = DispatcherServlet.class.getName() + ".OUTPUT_FLASH_MAP";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.FLASH_MAP_MANAGER  闪存管理
+	 * 闪存管理
 	 */
 	public static final String FLASH_MAP_MANAGER_ATTRIBUTE = DispatcherServlet.class.getName() + ".FLASH_MAP_MANAGER";
 
 	/**
-	 * org.springframework.web.servlet.DispatcherServlet.EXCEPTION  异常
+	 * 异常
 	 */
 	public static final String EXCEPTION_ATTRIBUTE = DispatcherServlet.class.getName() + ".EXCEPTION";
 
@@ -218,43 +218,43 @@ public class DispatcherServlet extends FrameworkServlet {
 	private boolean cleanupAfterInclude = true;
 
 	/**
-	 *
+	 * 文件上传解析器
 	 */
 	@Nullable
 	private MultipartResolver multipartResolver;
 
 	/**
-	 *
+	 * 国际化解析器
 	 */
 	@Nullable
 	private LocaleResolver localeResolver;
 
 	/**
-	 *
+	 * 主题解析器
 	 */
 	@Nullable
 	private ThemeResolver themeResolver;
 
 	/**
-	 * 管理映射集合
+	 * 管理映射-集合
 	 */
 	@Nullable
 	private List<HandlerMapping> handlerMappings;
 
 	/**
-	 *
+	 * 管理适配器-集合
 	 */
 	@Nullable
 	private List<HandlerAdapter> handlerAdapters;
 
 	/**
-	 *
+	 * 管理异常解析器
 	 */
 	@Nullable
 	private List<HandlerExceptionResolver> handlerExceptionResolvers;
 
 	/**
-	 *
+	 * 请求到视图转换器
 	 */
 	@Nullable
 	private RequestToViewNameTranslator viewNameTranslator;
@@ -266,7 +266,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private FlashMapManager flashMapManager;
 
 	/**
-	 * 视图解析器集合
+	 * 视图解析器-集合
 	 */
 	@Nullable
 	private List<ViewResolver> viewResolvers;
@@ -712,7 +712,8 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * 公开DispatcherServlet-specific 请求属性，并将其委托给{@link #doDispatch}用于实际的分派
+	 * 调用service 方法：
+	 * 		1、
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -818,7 +819,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// 遍历所有的 HandlerAdapter，找到可以处理该 Handler 的 HandlerAdapter
+				// 遍历所有的 HandlerAdapter，找到可以处理该 HandlerMethod 的 HandlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// 处理请求方法
@@ -832,7 +833,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
-				// 遍历拦截器，执行它们的 preHandle() 方法
+				// 遍历拦截器，执行它们的 preHandle() 方法  abstract class HandlerInterceptorAdapter
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
@@ -980,7 +981,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 			}
 		}
-		// If not returned before: return original request.
+		// 如果之前没有返回: 返回原始请求
 		return request;
 	}
 
@@ -1197,8 +1198,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Restore the request attributes after an include.
-	 *
+	 * 在包含之后恢复请求属性
 	 * @param request            current HTTP request
 	 * @param attributesSnapshot the snapshot of the request attributes before the include
 	 */

@@ -41,12 +41,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 /**
- * {@link WebRequest} adapter for an {@link javax.servlet.http.HttpServletRequest}.
- *
- * @author Juergen Hoeller
- * @author Brian Clozel
- * @author Markus Malkusch
- * @since 2.0
+ * 适配器
  */
 public class ServletWebRequest extends ServletRequestAttributes implements NativeWebRequest {
 
@@ -214,6 +209,9 @@ public class ServletWebRequest extends ServletRequestAttributes implements Nativ
 		return checkNotModified(etag, -1);
 	}
 
+	/**
+	 * 检测不修改
+	 */
 	@Override
 	public boolean checkNotModified(@Nullable String etag, long lastModifiedTimestamp) {
 		HttpServletResponse response = getResponse();

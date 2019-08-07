@@ -61,6 +61,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	private static final HandlerMethod PREFLIGHT_AMBIGUOUS_MATCH =
 			new HandlerMethod(new EmptyHandler(), ClassUtils.getMethod(EmptyHandler.class, "handle"));
 
+	//跨域配置
 	private static final CorsConfiguration ALLOW_CORS_CONFIG = new CorsConfiguration();
 
 	static {
@@ -82,30 +83,21 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 
 	/**
-	 *
+	 * Detect 探测
 	 */
 	public void setDetectHandlerMethodsInAncestorContexts(boolean detectHandlerMethodsInAncestorContexts) {
 		this.detectHandlerMethodsInAncestorContexts = detectHandlerMethodsInAncestorContexts;
 	}
 
-	/**
-	 *
-	 */
 	public void setHandlerMethodMappingNamingStrategy(HandlerMethodMappingNamingStrategy<T> namingStrategy) {
 		this.namingStrategy = namingStrategy;
 	}
 
-	/**
-	 *
-	 */
 	@Nullable
 	public HandlerMethodMappingNamingStrategy<T> getNamingStrategy() {
 		return this.namingStrategy;
 	}
 
-	/**
-	 *
-	 */
 	public Map<T, HandlerMethod> getHandlerMethods() {
 		this.mappingRegistry.acquireReadLock();
 		try {
@@ -116,24 +108,15 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		}
 	}
 
-	/**
-	 *
-	 */
 	@Nullable
 	public List<HandlerMethod> getHandlerMethodsForMappingName(String mappingName) {
 		return this.mappingRegistry.getHandlerMethodsByMappingName(mappingName);
 	}
 
-	/**
-	 *
-	 */
 	MappingRegistry getMappingRegistry() {
 		return this.mappingRegistry;
 	}
 
-	/**
-	 *
-	 */
 	public void registerMapping(T mapping, Object handler, Method method) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Register \"" + mapping + "\" to " + method.toGenericString());
@@ -142,9 +125,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
-	 * Un-register the given mapping.
-	 * <p>This method may be invoked at runtime after initialization has completed.
-	 * @param mapping the mapping to unregister
+	 * 取消对给定映射的注册
 	 */
 	public void unregisterMapping(T mapping) {
 		if (logger.isTraceEnabled()) {
@@ -316,18 +297,23 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * 通过请求 Request 获取请求对应的 RequestMethod
+	 * 1、获取到请求路径. 如: /test/getTestById
+	 * 2、获取读取锁的 -> 读锁.
+	 * 3、
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
 		//获取请求的路径 "/test/get"
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
-		this.mappingRegistry.acquireReadLock();
+		this.mappingRegistry.acquireReadLock();		// 拿到注册池的读取锁
 		try {
-			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
+			// 查找 HandlerMethod 对象
+			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);  //do
+			// 创建新 HandlerMethod 对象
 			return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
 		}
 		finally {
-			this.mappingRegistry.releaseReadLock();
+			this.mappingRegistry.releaseReadLock();		// 释放注册池的读取锁
 		}
 	}
 
@@ -474,6 +460,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		private final Map<T, HandlerMethod> mappingLookup = new LinkedHashMap<>();
 
+		//map 的扩展
 		private final MultiValueMap<String, T> urlLookup = new LinkedMultiValueMap<>();
 
 		private final Map<String, List<HandlerMethod>> nameLookup = new ConcurrentHashMap<>();

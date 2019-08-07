@@ -658,17 +658,17 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		//根据请求构建 LocaleContext，公开请求的语言环境为当前语言环境
 		LocaleContext localeContext = buildLocaleContext(request);
 
-		//返回当前绑定到线程的 RequestAttributes
+		//获取当前本次请求的 RequestAttributes
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
-		//根据请求构建ServletRequestAttributes
+		//创建 RequestAttributes , 封装request, response
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 
-		//获取当前请求的WebAsyncManager, 如果没有找到则创建  (request中请求属性=>WebAsyncManager.WEB_ASYNC_MANAGER)
+		//1、获取 WebAsyncManager, 如果没有则创建 WebAsyncManager 并储存.   (request 中请求属性 => WebAsyncManager.WEB_ASYNC_MANAGER)
+		//2、给 WebAsyncManager 注册请求回调拦截对象 (RequestBindingInterceptor)
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
-		//给web异步管理器注册拦截器 RequestBindingInterceptor
 		asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
 
-		//使 LocaleContext 和 requestAttributes 关联
+		//设置 LocaleContext 和 requestAttributes 到对应的上下文
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {

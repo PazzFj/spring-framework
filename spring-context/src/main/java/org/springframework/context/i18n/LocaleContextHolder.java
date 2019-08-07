@@ -86,15 +86,9 @@ public final class LocaleContextHolder {
 	}
 
 	/**
-	 * Associate the given LocaleContext with the current thread.
-	 * <p>The given LocaleContext may be a {@link TimeZoneAwareLocaleContext},
-	 * containing a locale with associated time zone information.
-	 * @param localeContext the current LocaleContext,
-	 * or {@code null} to reset the thread-bound context
-	 * @param inheritable whether to expose the LocaleContext as inheritable
-	 * for child threads (using an {@link InheritableThreadLocal})
-	 * @see SimpleLocaleContext
-	 * @see SimpleTimeZoneAwareLocaleContext
+	 * 将给定的LocaleContext与当前线程关联。给定的LocaleContext可以是{@link TimeZoneAwareLocaleContext}，其中包含具有相关时区信息的区域设置。
+	 * @param localeContext 当前LocaleContext或{@code null}来重置线程绑定上下文
+	 * @param inheritable 是否将LocaleContext公开为子线程的可继承的(使用{@link InheritableThreadLocal})  默认false
 	 */
 	public static void setLocaleContext(@Nullable LocaleContext localeContext, boolean inheritable) {
 		if (localeContext == null) {

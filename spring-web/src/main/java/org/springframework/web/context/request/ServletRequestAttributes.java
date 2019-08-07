@@ -31,10 +31,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Servlet-based implementation of the {@link RequestAttributes} interface.
+ * 基于servlet的{@link RequestAttributes}接口实现
  *
- * <p>Accesses objects from servlet request and HTTP session scope,
- * with no distinction between "session" and "global session".
+ * <p>从servlet请求和HTTP会话范围访问对象，不区分“会话”和“全局会话”
  *
  * @author Juergen Hoeller
  * @since 2.0
@@ -44,8 +43,7 @@ import org.springframework.web.util.WebUtils;
 public class ServletRequestAttributes extends AbstractRequestAttributes {
 
 	/**
-	 * Constant identifying the {@link String} prefixed to the name of a
-	 * destruction callback when it is stored in a {@link HttpSession}.
+	 * 常量，该常量标识存储在{@link HttpSession}中的{@link String}前缀为销毁回调函数的名称
 	 */
 	public static final String DESTRUCTION_CALLBACK_NAME_PREFIX =
 			ServletRequestAttributes.class.getName() + ".DESTRUCTION_CALLBACK.";
@@ -70,46 +68,25 @@ public class ServletRequestAttributes extends AbstractRequestAttributes {
 
 	private final Map<String, Object> sessionAttributesToUpdate = new ConcurrentHashMap<>(1);
 
-
-	/**
-	 * Create a new ServletRequestAttributes instance for the given request.
-	 * @param request current HTTP request
-	 */
 	public ServletRequestAttributes(HttpServletRequest request) {
 		Assert.notNull(request, "Request must not be null");
 		this.request = request;
 	}
 
-	/**
-	 * Create a new ServletRequestAttributes instance for the given request.
-	 * @param request current HTTP request
-	 * @param response current HTTP response (for optional exposure)
-	 */
 	public ServletRequestAttributes(HttpServletRequest request, @Nullable HttpServletResponse response) {
 		this(request);
 		this.response = response;
 	}
 
-
-	/**
-	 * Exposes the native {@link HttpServletRequest} that we're wrapping.
-	 */
 	public final HttpServletRequest getRequest() {
 		return this.request;
 	}
 
-	/**
-	 * Exposes the native {@link HttpServletResponse} that we're wrapping (if any).
-	 */
 	@Nullable
 	public final HttpServletResponse getResponse() {
 		return this.response;
 	}
 
-	/**
-	 * Exposes the {@link HttpSession} that we're wrapping.
-	 * @param allowCreate whether to allow creation of a new session if none exists yet
-	 */
 	@Nullable
 	protected final HttpSession getSession(boolean allowCreate) {
 		if (isRequestActive()) {
@@ -122,8 +99,7 @@ public class ServletRequestAttributes extends AbstractRequestAttributes {
 			HttpSession session = this.session;
 			if (session == null) {
 				if (allowCreate) {
-					throw new IllegalStateException(
-							"No session found and request already completed - cannot create new session!");
+					throw new IllegalStateException("No session found and request already completed - cannot create new session!");
 				}
 				else {
 					session = this.request.getSession(false);

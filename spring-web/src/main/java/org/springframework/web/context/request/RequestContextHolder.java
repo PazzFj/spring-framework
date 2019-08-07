@@ -53,6 +53,7 @@ public abstract class RequestContextHolder  {
 
 	/**
 	 * 将给定的请求属性绑定到当前线程
+	 * @param inheritable 默认false  不可传播
 	 */
 	public static void setRequestAttributes(@Nullable RequestAttributes attributes, boolean inheritable) {
 		if (attributes == null) {
