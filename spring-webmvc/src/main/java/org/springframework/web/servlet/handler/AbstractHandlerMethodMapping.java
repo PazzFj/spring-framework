@@ -146,7 +146,10 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
-	 * 扫描所有的beanName, 处理
+	 * 初始 HandlerMethod
+	 * 	1、获取所有Object 的 bean名称
+	 * 	2、过滤掉 scopedTarget. 的bean名称
+	 * 	3、通过bean名称得到bean类型, 储存包含@Controller @RequestMapping 注解的class
 	 */
 	protected void initHandlerMethods() {
 		for (String beanName : getCandidateBeanNames()) {
@@ -172,13 +175,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
-	 * Determine the type of the specified candidate bean and call
-	 * {@link #detectHandlerMethods} if identified as a handler type.
-	 * <p>This implementation avoids bean creation through checking
-	 * {@link org.springframework.beans.factory.BeanFactory#getType}
-	 * and calling {@link #detectHandlerMethods} with the bean name.
-	 * @param beanName the name of the candidate bean
-	 * @since 5.1
+	 * 确定指定的候选bean的类型，如果标识为处理程序类型，则调用{@link #detectHandlerMethods}。
 	 */
 	protected void processCandidateBean(String beanName) {
 		Class<?> beanType = null;
@@ -193,12 +190,13 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		}
 		if (beanType != null && isHandler(beanType)) {
 			//检测 HandlerMethod
-			detectHandlerMethods(beanName); //do
+			detectHandlerMethods(beanName); 	// do
 		}
 	}
 
 	/**
-	 * 处理@Controller  @RequestMapping 处理的类class
+	 * detect 探测、发现
+	 * 处理@Controller  @RequestMapping 处理的类name
 	 * 每个Method 对应 RequestMappingInfo
 	 */
 	protected void detectHandlerMethods(Object handler) {

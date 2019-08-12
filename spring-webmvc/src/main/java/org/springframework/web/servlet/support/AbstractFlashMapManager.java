@@ -86,6 +86,12 @@ public abstract class AbstractFlashMapManager implements FlashMapManager {
 	}
 
 
+	/**
+	 * 检索与修改
+	 * 		1、获取HttpSession 中的 SessionFlashMapManager.FLASH_MAPS
+	 * 		2、过滤掉一些过期数据
+	 * 		3、重新设置HttpSession 的值
+	 */
 	@Override
 	@Nullable
 	public final FlashMap retrieveAndUpdate(HttpServletRequest request, HttpServletResponse response) {

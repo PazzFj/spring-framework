@@ -257,13 +257,13 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * 请求到视图转换器
 	 */
 	@Nullable
-	private RequestToViewNameTranslator viewNameTranslator;
+	private RequestToViewNameTranslator viewNameTranslator;		// DefaultRequestToViewNameTranslator
 
 	/**
 	 * 这个servlet使用的FlashMapManager
 	 */
 	@Nullable
-	private FlashMapManager flashMapManager;
+	private FlashMapManager flashMapManager;    //SessionFlashMapManager
 
 	/**
 	 * 视图解析器-集合
@@ -712,8 +712,10 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * 调用service 方法：
-	 * 		1、
+	 * 调用doService 方法：
+	 * 		1、打印日志
+	 * 		2、保存快照，(请求属性信息存入map中)
+	 * 		3、给请求request设置属性  (应用上下文、国际化解析器、主题解析器、 主题资源、HttpSession的属性)
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -739,6 +741,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());						  //org.springframework.web.servlet.DispatcherServlet.THEME_SOURCE
 
 		if (this.flashMapManager != null) {		//FlashMapManager对象
+			//设置HttpSession的值
 			FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);  //retrieve检索或者修复
 			if (inputFlashMap != null) {
 				request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));	//org.springframework.web.servlet.DispatcherServlet.INPUT_FLASH_MAP

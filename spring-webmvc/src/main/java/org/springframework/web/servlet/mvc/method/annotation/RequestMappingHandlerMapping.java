@@ -49,6 +49,10 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 /**
  * 在{@link Controller @Controller}类中，从类型和方法级{@link RequestMapping @RequestMapping}注释创建{@link RequestMappingInfo}实例
+ *
+ * 实现 {@see org.springframework.beans.factory.InitializingBean} 接口
+ * 实现 {@see org.springframework.context.ApplicationContextAware} 接口
+ * 实现 {@see org.springframework.web.context.ServletContextAware} 接口
  */
 public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
 		implements MatchableHandlerMapping, EmbeddedValueResolverAware {
