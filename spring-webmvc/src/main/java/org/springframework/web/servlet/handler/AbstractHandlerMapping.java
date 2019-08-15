@@ -422,13 +422,16 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	protected abstract Object getHandlerInternal(HttpServletRequest request) throws Exception;
 
 	/**
-	 * 通过 HandlerMethod 创建 HandlerExecutionChain
+	 * 获取 HandlerExecutionChain 对象
+	 * 		1、通过 HandlerMethod 创建 HandlerExecutionChain
+	 * 		2、遍历所有拦截器, 将非MappedInterceptor 拦截器添加到 HandlerExecutionChain 中
 	 */
 	protected HandlerExecutionChain getHandlerExecutionChain(Object handler, HttpServletRequest request) {
 		//通过 HandlerMethod 创建 HandlerExecutionChain
 		HandlerExecutionChain chain = (handler instanceof HandlerExecutionChain ? (HandlerExecutionChain) handler : new HandlerExecutionChain(handler));
 
 		// 通过 UrlPathHelper 对象来获取请求的路径
+		// @see org.springframework.web.util.UrlPathHelper#getLookupPathForRequest(HttpServletRequest)
 		String lookupPath = this.urlPathHelper.getLookupPathForRequest(request);
 		for (HandlerInterceptor interceptor : this.adaptedInterceptors) {
 			if (interceptor instanceof MappedInterceptor) {

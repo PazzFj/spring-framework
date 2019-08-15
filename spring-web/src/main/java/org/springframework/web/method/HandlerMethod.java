@@ -53,9 +53,9 @@ public class HandlerMethod {
 	private final Object bean; 				//bean对象 (一开始是beanName)
 
 	@Nullable
-	private final BeanFactory beanFactory;
+	private final BeanFactory beanFactory;	//bean工厂
 
-	private final Class<?> beanType;		//bean类型
+	private final Class<?> beanType;		//Controller类的bean类型
 
 	private final Method method;			//对应方法
 

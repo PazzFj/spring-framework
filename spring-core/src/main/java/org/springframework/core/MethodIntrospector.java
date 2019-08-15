@@ -28,15 +28,10 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * Defines the algorithm for searching for metadata-associated methods exhaustively
- * including interfaces and parent classes while also dealing with parameterized methods
- * as well as common scenarios encountered with interface and class-based proxies.
+ * 定义搜索与元数据相关的方法的算法，这些方法包括接口和父类，同时还处理参数化方法以及使用接口和基于类的代理遇到的常见场景
+ * <p>通常(但不一定)用于查找带注释的处理程序方法
  *
- * <p>Typically, but not necessarily, used for finding annotated handler methods.
- *
- * @author Juergen Hoeller
- * @author Rossen Stoyanchev
- * @since 4.2.3
+ * Introspector 内省
  */
 public final class MethodIntrospector {
 
@@ -80,12 +75,7 @@ public final class MethodIntrospector {
 	}
 
 	/**
-	 * Select methods on the given target type based on a filter.
-	 * <p>Callers define methods of interest through the {@code MethodFilter} parameter.
-	 * @param targetType the target type to search methods on
-	 * @param methodFilter a {@code MethodFilter} to help
-	 * recognize handler methods of interest
-	 * @return the selected methods, or an empty set in case of no match
+	 * 选择基于给定目标类型的方法
 	 */
 	public static Set<Method> selectMethods(Class<?> targetType, final ReflectionUtils.MethodFilter methodFilter) {
 		return selectMethods(targetType,
@@ -93,17 +83,8 @@ public final class MethodIntrospector {
 	}
 
 	/**
-	 * Select an invocable method on the target type: either the given method itself
-	 * if actually exposed on the target type, or otherwise a corresponding method
-	 * on one of the target type's interfaces or on the target type itself.
-	 * <p>Matches on user-declared interfaces will be preferred since they are likely
-	 * to contain relevant metadata that corresponds to the method on the target class.
-	 * @param method the method to check
-	 * @param targetType the target type to search methods on
-	 * (typically an interface-based JDK proxy)
-	 * @return a corresponding invocable method on the target type
-	 * @throws IllegalStateException if the given method is not invocable on the given
-	 * target type (typically due to a proxy mismatch)
+	 * 在目标类型上选择一个可调用的方法:
+	 * 如果实际暴露在目标类型上，则选择给定的方法本身，或者在目标类型的接口上选择相应的方法，或者在目标类型本身上选择相应的方法
 	 */
 	public static Method selectInvocableMethod(Method method, Class<?> targetType) {
 		if (method.getDeclaringClass().isAssignableFrom(targetType)) {

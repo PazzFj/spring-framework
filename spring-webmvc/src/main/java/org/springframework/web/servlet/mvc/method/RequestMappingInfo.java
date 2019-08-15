@@ -55,7 +55,7 @@ import org.springframework.web.util.UrlPathHelper;
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
 
 	@Nullable
-	private final String name;
+	private final String name;	//RequestMapping 注解中的name属性 就是请求路径
 
 	private final PatternsRequestCondition patternsCondition;
 
