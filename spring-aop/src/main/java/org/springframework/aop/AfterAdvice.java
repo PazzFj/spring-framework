@@ -21,10 +21,7 @@ import org.aopalliance.aop.Advice;
 /**
  * Common marker interface for after advice,
  * such as {@link AfterReturningAdvice} and {@link ThrowsAdvice}.
- *
- * @author Juergen Hoeller
- * @since 2.0.3
- * @see BeforeAdvice
+ * 在连接点执行完成后执行，不管是正常执行完成，还是抛出异常，都会执行返回通知中的内容
  */
 public interface AfterAdvice extends Advice {
 

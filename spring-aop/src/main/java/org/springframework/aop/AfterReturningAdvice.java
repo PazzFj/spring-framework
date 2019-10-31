@@ -21,12 +21,7 @@ import java.lang.reflect.Method;
 import org.springframework.lang.Nullable;
 
 /**
- * After returning advice is invoked only on normal method return, not if an
- * exception is thrown. Such advice can see the return value, but cannot change it.
- *
- * @author Rod Johnson
- * @see MethodBeforeAdvice
- * @see ThrowsAdvice
+ * 在连接点正常执行完成后执行，如果连接点抛出异常，则不会执行
  */
 public interface AfterReturningAdvice extends AfterAdvice {
 

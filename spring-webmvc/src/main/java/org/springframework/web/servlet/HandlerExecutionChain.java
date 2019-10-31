@@ -42,7 +42,7 @@ public class HandlerExecutionChain {
 	private final Object handler;   // HandlerMethod
 
 	@Nullable
-	private HandlerInterceptor[] interceptors;
+	private HandlerInterceptor[] interceptors;	//spring 拦截器
 
 	@Nullable
 	private List<HandlerInterceptor> interceptorList;
