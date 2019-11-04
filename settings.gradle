@@ -22,9 +22,9 @@ include "spring-framework-bom"
 
 // Exposes gradle buildSrc for IDE support
 include "buildSrc"
-rootProject.children.find{ it.name == "buildSrc" }.name = "spring-build-src"
+rootProject.children.find{ it.name == "buildSrc" }.name = "buildSrc"
 
-rootProject.name = "spring"
+rootProject.name = "spring-framework"
 rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
