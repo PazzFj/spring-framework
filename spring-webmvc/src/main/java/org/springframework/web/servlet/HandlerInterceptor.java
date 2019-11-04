@@ -23,7 +23,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 
 /**
- * 管理拦截器
+ * spring 拦截器    HandlerInterceptor
  */
 public interface HandlerInterceptor {
 

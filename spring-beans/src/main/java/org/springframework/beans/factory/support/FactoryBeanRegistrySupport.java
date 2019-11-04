@@ -32,14 +32,9 @@ import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.lang.Nullable;
 
 /**
- * Support base class for singleton registries which need to handle
- * {@link org.springframework.beans.factory.FactoryBean} instances,
- * integrated with {@link DefaultSingletonBeanRegistry}'s singleton management.
- *
- * <p>Serves as base class for {@link AbstractBeanFactory}.
- *
- * @author Juergen Hoeller
- * @since 2.5.1
+ * 支持单例注册表的基类, 它需要处理{@link org.springframework.beans.factory.FactoryBean}实例,
+ * 与{@link DefaultSingletonBeanRegistry}的单例管理集成。
+ * FactoryBean注册 Support
  */
 public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
 
@@ -48,10 +43,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 
 	/**
-	 * Determine the type for the given FactoryBean.
-	 * @param factoryBean the FactoryBean instance to check
-	 * @return the FactoryBean's object type,
-	 * or {@code null} if the type cannot be determined yet
+	 * 确定给定FactoryBean的类型
 	 */
 	@Nullable
 	protected Class<?> getTypeForFactoryBean(final FactoryBean<?> factoryBean) {
@@ -92,7 +84,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 				// 工厂Bean缓存中获取对象
 				Object object = this.factoryBeanObjectCache.get(beanName);
 				if (object == null) {  //不存在时
-					// 获取Bean直接通过工厂Bean
+					// 直接通过FactoryBean 获取Bean
 					object = doGetObjectFromFactoryBean(factory, beanName);
 					// 如果不是在上面的getObject()调用期间已经存在，则仅在进行后处理和存储(例如，由于自定义getBean调用触发的循环引用处理)
 					Object alreadyThere = this.factoryBeanObjectCache.get(beanName);
@@ -118,6 +110,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 							}
 						}
 						if (containsSingleton(beanName)) {
+							// 添加缓存对象 FactoryBean
 							this.factoryBeanObjectCache.put(beanName, object);
 						}
 					}
@@ -140,12 +133,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	}
 
 	/**
-	 * Obtain an object to expose from the given FactoryBean.
-	 * @param factory the FactoryBean instance
-	 * @param beanName the name of the bean
-	 * @return the object obtained from the FactoryBean
-	 * @throws BeanCreationException if FactoryBean object creation failed
-	 * @see org.springframework.beans.factory.FactoryBean#getObject()
+	 * 获取要从给定的FactoryBean公开的对象
 	 */
 	private Object doGetObjectFromFactoryBean(final FactoryBean<?> factory, final String beanName)
 			throws BeanCreationException {
