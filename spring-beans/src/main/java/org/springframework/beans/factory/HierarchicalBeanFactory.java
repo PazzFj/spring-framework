@@ -19,7 +19,7 @@ package org.springframework.beans.factory;
 import org.springframework.lang.Nullable;
 
 /**
- * 分层次bean工厂
+ * 分层次 HierarchicalBean工厂
  */
 public interface HierarchicalBeanFactory extends BeanFactory {
 

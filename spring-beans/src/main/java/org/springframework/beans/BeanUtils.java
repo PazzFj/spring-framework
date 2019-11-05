@@ -51,17 +51,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Static convenience methods for JavaBeans: for instantiating beans,
- * checking bean property types, copying bean properties, etc.
- *
- * <p>Mainly for use within the framework, but to some degree also
- * useful for application classes.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @author Sam Brannen
- * @author Sebastien Deleuze
+ * JavaBeans的静态便利方法：用于实例化Bean、检查Bean属性类型、复制Bean属性等
  */
 public abstract class BeanUtils {
 
@@ -72,13 +62,7 @@ public abstract class BeanUtils {
 
 
 	/**
-	 * Convenience method to instantiate a class using its no-arg constructor.
-	 * @param clazz class to instantiate
-	 * @return the new instance
-	 * @throws BeanInstantiationException if the bean cannot be instantiated
-	 * @deprecated as of Spring 5.0, following the deprecation of
-	 * {@link Class#newInstance()} in JDK 9
-	 * @see Class#newInstance()
+	 * 使用无参数构造函数实例化类的便利方法
 	 */
 	@Deprecated
 	public static <T> T instantiate(Class<T> clazz) throws BeanInstantiationException {
@@ -98,20 +82,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Instantiate a class using its 'primary' constructor (for Kotlin classes,
-	 * potentially having default arguments declared) or its default constructor
-	 * (for regular Java classes, expecting a standard no-arg setup).
-	 * <p>Note that this method tries to set the constructor accessible
-	 * if given a non-accessible (that is, non-public) constructor.
-	 * @param clazz the class to instantiate
-	 * @return the new instance
-	 * @throws BeanInstantiationException if the bean cannot be instantiated.
-	 * The cause may notably indicate a {@link NoSuchMethodException} if no
-	 * primary/default constructor was found, a {@link NoClassDefFoundError}
-	 * or other {@link LinkageError} in case of an unresolvable class definition
-	 * (e.g. due to a missing dependency at runtime), or an exception thrown
-	 * from the constructor invocation itself.
-	 * @see Constructor#newInstance
+	 * 使用其“primary”构造函数（对于kotlin类，可能声明了默认参数）或其默认构造函数（对于常规java类，需要标准的无参数设置）实例化类
 	 */
 	public static <T> T instantiateClass(Class<T> clazz) throws BeanInstantiationException {
 		Assert.notNull(clazz, "Class must not be null");
@@ -134,17 +105,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Instantiate a class using its no-arg constructor and return the new instance
-	 * as the specified assignable type.
-	 * <p>Useful in cases where the type of the class to instantiate (clazz) is not
-	 * available, but the type desired (assignableTo) is known.
-	 * <p>Note that this method tries to set the constructor accessible if given a
-	 * non-accessible (that is, non-public) constructor.
-	 * @param clazz class to instantiate
-	 * @param assignableTo type that clazz must be assignableTo
-	 * @return the new instance
-	 * @throws BeanInstantiationException if the bean cannot be instantiated
-	 * @see Constructor#newInstance
+	 * 使用类的无参数构造函数实例化该类，并将新实例作为指定的可分配类型返回
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T instantiateClass(Class<?> clazz, Class<T> assignableTo) throws BeanInstantiationException {
@@ -153,16 +114,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Convenience method to instantiate a class using the given constructor.
-	 * <p>Note that this method tries to set the constructor accessible if given a
-	 * non-accessible (that is, non-public) constructor, and supports Kotlin classes
-	 * with optional parameters and default values.
-	 * @param ctor the constructor to instantiate
-	 * @param args the constructor arguments to apply (use {@code null} for an unspecified
-	 * parameter if needed for Kotlin classes with optional parameters and default values)
-	 * @return the new instance
-	 * @throws BeanInstantiationException if the bean cannot be instantiated
-	 * @see Constructor#newInstance
+	 * 使用给定构造函数实例化类的便利方法
 	 */
 	public static <T> T instantiateClass(Constructor<T> ctor, Object... args) throws BeanInstantiationException {
 		Assert.notNull(ctor, "Constructor must not be null");
@@ -186,13 +138,8 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Return the primary constructor of the provided class. For Kotlin classes, this
-	 * returns the Java constructor corresponding to the Kotlin primary constructor
-	 * (as defined in the Kotlin specification). Otherwise, in particular for non-Kotlin
-	 * classes, this simply returns {@code null}.
-	 * @param clazz the class to check
-	 * @since 5.0
-	 * @see <a href="http://kotlinlang.org/docs/reference/classes.html#constructors">Kotlin docs</a>
+	 * 返回所提供类的主构造函数对于Kotlin类，这将返回与Kotlin主构造函数相对应的Java构造函数（如Kotlin规范中所定义）否则，
+	 * 特别是对于非Kotlin类，这只返回{@code null}
 	 */
 	@SuppressWarnings("unchecked")
 	@Nullable
@@ -208,18 +155,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a method with the given method name and the given parameter types,
-	 * declared on the given class or one of its superclasses. Prefers public methods,
-	 * but will return a protected, package access, or private method too.
-	 * <p>Checks {@code Class.getMethod} first, falling back to
-	 * {@code findDeclaredMethod}. This allows to find public methods
-	 * without issues even in environments with restricted Java security settings.
-	 * @param clazz the class to check
-	 * @param methodName the name of the method to find
-	 * @param paramTypes the parameter types of the method to find
-	 * @return the Method object, or {@code null} if not found
-	 * @see Class#getMethod
-	 * @see #findDeclaredMethod
+	 * 查找具有给定方法名和给定参数类型的方法，该方法在给定类或其超类之一上声明。首选公共方法，但也将返回受保护的包访问或私有方法
 	 */
 	@Nullable
 	public static Method findMethod(Class<?> clazz, String methodName, Class<?>... paramTypes) {
@@ -232,15 +168,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a method with the given method name and the given parameter types,
-	 * declared on the given class or one of its superclasses. Will return a public,
-	 * protected, package access, or private method.
-	 * <p>Checks {@code Class.getDeclaredMethod}, cascading upwards to all superclasses.
-	 * @param clazz the class to check
-	 * @param methodName the name of the method to find
-	 * @param paramTypes the parameter types of the method to find
-	 * @return the Method object, or {@code null} if not found
-	 * @see Class#getDeclaredMethod
+	 * 查找具有给定方法名和给定参数类型的方法，该方法在给定类或其超类之一上声明。将返回公共、受保护、包访问或私有方法
 	 */
 	@Nullable
 	public static Method findDeclaredMethod(Class<?> clazz, String methodName, Class<?>... paramTypes) {
@@ -256,19 +184,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a method with the given method name and minimal parameters (best case: none),
-	 * declared on the given class or one of its superclasses. Prefers public methods,
-	 * but will return a protected, package access, or private method too.
-	 * <p>Checks {@code Class.getMethods} first, falling back to
-	 * {@code findDeclaredMethodWithMinimalParameters}. This allows for finding public
-	 * methods without issues even in environments with restricted Java security settings.
-	 * @param clazz the class to check
-	 * @param methodName the name of the method to find
-	 * @return the Method object, or {@code null} if not found
-	 * @throws IllegalArgumentException if methods of the given name were found but
-	 * could not be resolved to a unique method with minimal parameters
-	 * @see Class#getMethods
-	 * @see #findDeclaredMethodWithMinimalParameters
+	 * 查找在给定类或其超类之一上声明的具有给定方法名和最小参数（最佳情况：无）的方法。首选公共方法，但也将返回受保护的包访问或私有方法
 	 */
 	@Nullable
 	public static Method findMethodWithMinimalParameters(Class<?> clazz, String methodName)
@@ -282,16 +198,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a method with the given method name and minimal parameters (best case: none),
-	 * declared on the given class or one of its superclasses. Will return a public,
-	 * protected, package access, or private method.
-	 * <p>Checks {@code Class.getDeclaredMethods}, cascading upwards to all superclasses.
-	 * @param clazz the class to check
-	 * @param methodName the name of the method to find
-	 * @return the Method object, or {@code null} if not found
-	 * @throws IllegalArgumentException if methods of the given name were found but
-	 * could not be resolved to a unique method with minimal parameters
-	 * @see Class#getDeclaredMethods
+	 * 查找在给定类或其超类之一上声明的具有给定方法名和最小参数（最佳情况：无）的方法。将返回公共、受保护、包访问或私有方法
 	 */
 	@Nullable
 	public static Method findDeclaredMethodWithMinimalParameters(Class<?> clazz, String methodName)
@@ -305,13 +212,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a method with the given method name and minimal parameters (best case: none)
-	 * in the given list of methods.
-	 * @param methods the methods to check
-	 * @param methodName the name of the method to find
-	 * @return the Method object, or {@code null} if not found
-	 * @throws IllegalArgumentException if methods of the given name were found but
-	 * could not be resolved to a unique method with minimal parameters
+	 * 在给定的方法列表中查找具有给定方法名和最小参数（最佳情况：无）的方法
 	 */
 	@Nullable
 	public static Method findMethodWithMinimalParameters(Method[] methods, String methodName)
@@ -348,22 +249,8 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Parse a method signature in the form {@code methodName[([arg_list])]},
-	 * where {@code arg_list} is an optional, comma-separated list of fully-qualified
-	 * type names, and attempts to resolve that signature against the supplied {@code Class}.
-	 * <p>When not supplying an argument list ({@code methodName}) the method whose name
-	 * matches and has the least number of parameters will be returned. When supplying an
-	 * argument type list, only the method whose name and argument types match will be returned.
-	 * <p>Note then that {@code methodName} and {@code methodName()} are <strong>not</strong>
-	 * resolved in the same way. The signature {@code methodName} means the method called
-	 * {@code methodName} with the least number of arguments, whereas {@code methodName()}
-	 * means the method called {@code methodName} with exactly 0 arguments.
-	 * <p>If no method can be found, then {@code null} is returned.
-	 * @param signature the method signature as String representation
-	 * @param clazz the class to resolve the method signature against
-	 * @return the resolved Method
-	 * @see #findMethod
-	 * @see #findMethodWithMinimalParameters
+	 * 解析格式为{@code methodName[（[arg_list]）]}的方法签名，
+	 * 其中{@code arg_list}是可选的、逗号分隔的完全限定类型名列表，并尝试根据提供的{@code class}解析该签名
 	 */
 	@Nullable
 	public static Method resolveSignature(String signature, Class<?> clazz) {
@@ -403,10 +290,7 @@ public abstract class BeanUtils {
 
 
 	/**
-	 * Retrieve the JavaBeans {@code PropertyDescriptor}s of a given class.
-	 * @param clazz the Class to retrieve the PropertyDescriptors for
-	 * @return an array of {@code PropertyDescriptors} for the given class
-	 * @throws BeansException if PropertyDescriptor look fails
+	 * 检索给定类的javabeans{@code PropertyDescriptors}
 	 */
 	public static PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz) throws BeansException {
 		CachedIntrospectionResults cr = CachedIntrospectionResults.forClass(clazz);
@@ -414,11 +298,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Retrieve the JavaBeans {@code PropertyDescriptors} for the given property.
-	 * @param clazz the Class to retrieve the PropertyDescriptor for
-	 * @param propertyName the name of the property
-	 * @return the corresponding PropertyDescriptor, or {@code null} if none
-	 * @throws BeansException if PropertyDescriptor lookup fails
+	 * 检索给定属性的JavaBeans{@code PropertyDescriptors}
 	 */
 	@Nullable
 	public static PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String propertyName)
@@ -429,13 +309,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a JavaBeans {@code PropertyDescriptor} for the given method,
-	 * with the method either being the read method or the write method for
-	 * that bean property.
-	 * @param method the method to find a corresponding PropertyDescriptor for,
-	 * introspecting its declaring class
-	 * @return the corresponding PropertyDescriptor, or {@code null} if none
-	 * @throws BeansException if PropertyDescriptor lookup fails
+	 * 找到给定方法的javabeans{@code PropertyDescriptor}，方法可以是该bean属性的read方法，也可以是write方法
 	 */
 	@Nullable
 	public static PropertyDescriptor findPropertyForMethod(Method method) throws BeansException {
@@ -443,14 +317,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a JavaBeans {@code PropertyDescriptor} for the given method,
-	 * with the method either being the read method or the write method for
-	 * that bean property.
-	 * @param method the method to find a corresponding PropertyDescriptor for
-	 * @param clazz the (most specific) class to introspect for descriptors
-	 * @return the corresponding PropertyDescriptor, or {@code null} if none
-	 * @throws BeansException if PropertyDescriptor lookup fails
-	 * @since 3.2.13
+	 * 找到给定方法的javabeans{@code PropertyDescriptor}，方法可以是该bean属性的read方法，也可以是write方法
 	 */
 	@Nullable
 	public static PropertyDescriptor findPropertyForMethod(Method method, Class<?> clazz) throws BeansException {
@@ -465,13 +332,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Find a JavaBeans PropertyEditor following the 'Editor' suffix convention
-	 * (e.g. "mypackage.MyDomainClass" -> "mypackage.MyDomainClassEditor").
-	 * <p>Compatible to the standard JavaBeans convention as implemented by
-	 * {@link java.beans.PropertyEditorManager} but isolated from the latter's
-	 * registered default editors for primitive types.
-	 * @param targetType the type to find an editor for
-	 * @return the corresponding editor, or {@code null} if none found
+	 * 按照“editor”后缀约定（例如“mypackage.mydomainclass”->“mypackage.mydomainclasseditor”）查找JavaBeans属性编辑器
 	 */
 	@Nullable
 	public static PropertyEditor findEditorByConvention(@Nullable Class<?> targetType) {
@@ -518,11 +379,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Determine the bean property type for the given property from the
-	 * given classes/interfaces, if possible.
-	 * @param propertyName the name of the bean property
-	 * @param beanClasses the classes to check against
-	 * @return the property type, or {@code Object.class} as fallback
+	 * 如果可能，从给定的类/接口确定给定属性的bean属性类型
 	 */
 	public static Class<?> findPropertyType(String propertyName, @Nullable Class<?>... beanClasses) {
 		if (beanClasses != null) {
@@ -537,10 +394,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Obtain a new MethodParameter object for the write method of the
-	 * specified property.
-	 * @param pd the PropertyDescriptor for the property
-	 * @return a corresponding MethodParameter object
+	 * 为指定属性的write方法获取新的MethodParameter对象
 	 */
 	public static MethodParameter getWriteMethodParameter(PropertyDescriptor pd) {
 		if (pd instanceof GenericTypeAwarePropertyDescriptor) {
@@ -554,14 +408,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Check if the given type represents a "simple" property:
-	 * a primitive, a String or other CharSequence, a Number, a Date,
-	 * a URI, a URL, a Locale, a Class, or a corresponding array.
-	 * <p>Used to determine properties to check for a "simple" dependency-check.
-	 * @param clazz the type to check
-	 * @return whether the given type represents a "simple" property
-	 * @see org.springframework.beans.factory.support.RootBeanDefinition#DEPENDENCY_CHECK_SIMPLE
-	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#checkDependencies
+	 * 检查给定类型是否表示“简单”属性：原语、字符串或其他字符序列、数字、日期、uri、url、区域设置、类或相应的数组
 	 */
 	public static boolean isSimpleProperty(Class<?> clazz) {
 		Assert.notNull(clazz, "Class must not be null");
@@ -569,11 +416,7 @@ public abstract class BeanUtils {
 	}
 
 	/**
-	 * Check if the given type represents a "simple" value type:
-	 * a primitive, an enum, a String or other CharSequence, a Number, a Date,
-	 * a URI, a URL, a Locale or a Class.
-	 * @param clazz the type to check
-	 * @return whether the given type represents a "simple" value type
+	 * 检查给定类型是否表示“简单”值类型：原语、枚举、字符串或其他字符序列、数字、日期、uri、url、区域设置或类
 	 */
 	public static boolean isSimpleValueType(Class<?> clazz) {
 		return (ClassUtils.isPrimitiveOrWrapper(clazz) ||
@@ -587,68 +430,28 @@ public abstract class BeanUtils {
 
 
 	/**
-	 * Copy the property values of the given source bean into the target bean.
-	 * <p>Note: The source and target classes do not have to match or even be derived
-	 * from each other, as long as the properties match. Any bean properties that the
-	 * source bean exposes but the target bean does not will silently be ignored.
-	 * <p>This is just a convenience method. For more complex transfer needs,
-	 * consider using a full BeanWrapper.
-	 * @param source the source bean
-	 * @param target the target bean
-	 * @throws BeansException if the copying failed
-	 * @see BeanWrapper
+	 * 将给定源bean的属性值复制到目标bean中
 	 */
 	public static void copyProperties(Object source, Object target) throws BeansException {
 		copyProperties(source, target, null, (String[]) null);
 	}
 
 	/**
-	 * Copy the property values of the given source bean into the given target bean,
-	 * only setting properties defined in the given "editable" class (or interface).
-	 * <p>Note: The source and target classes do not have to match or even be derived
-	 * from each other, as long as the properties match. Any bean properties that the
-	 * source bean exposes but the target bean does not will silently be ignored.
-	 * <p>This is just a convenience method. For more complex transfer needs,
-	 * consider using a full BeanWrapper.
-	 * @param source the source bean
-	 * @param target the target bean
-	 * @param editable the class (or interface) to restrict property setting to
-	 * @throws BeansException if the copying failed
-	 * @see BeanWrapper
+	 * 将给定源bean的属性值复制到给定的目标bean中，只设置在给定的“可编辑”类（或接口）中定义的属性
 	 */
 	public static void copyProperties(Object source, Object target, Class<?> editable) throws BeansException {
 		copyProperties(source, target, editable, (String[]) null);
 	}
 
 	/**
-	 * Copy the property values of the given source bean into the given target bean,
-	 * ignoring the given "ignoreProperties".
-	 * <p>Note: The source and target classes do not have to match or even be derived
-	 * from each other, as long as the properties match. Any bean properties that the
-	 * source bean exposes but the target bean does not will silently be ignored.
-	 * <p>This is just a convenience method. For more complex transfer needs,
-	 * consider using a full BeanWrapper.
-	 * @param source the source bean
-	 * @param target the target bean
-	 * @param ignoreProperties array of property names to ignore
-	 * @throws BeansException if the copying failed
-	 * @see BeanWrapper
+	 * 将给定源bean的属性值复制到给定目标bean中，忽略给定的“ignoreProperties”
 	 */
 	public static void copyProperties(Object source, Object target, String... ignoreProperties) throws BeansException {
 		copyProperties(source, target, null, ignoreProperties);
 	}
 
 	/**
-	 * Copy the property values of the given source bean into the given target bean.
-	 * <p>Note: The source and target classes do not have to match or even be derived
-	 * from each other, as long as the properties match. Any bean properties that the
-	 * source bean exposes but the target bean does not will silently be ignored.
-	 * @param source the source bean
-	 * @param target the target bean
-	 * @param editable the class (or interface) to restrict property setting to
-	 * @param ignoreProperties array of property names to ignore
-	 * @throws BeansException if the copying failed
-	 * @see BeanWrapper
+	 * 将给定源bean的属性值复制到给定目标bean中
 	 */
 	private static void copyProperties(Object source, Object target, @Nullable Class<?> editable,
 			@Nullable String... ignoreProperties) throws BeansException {
@@ -697,7 +500,7 @@ public abstract class BeanUtils {
 
 
 	/**
-	 * Inner class to avoid a hard dependency on Kotlin at runtime.
+	 * 内部类以避免运行时对kotlin的硬依赖
 	 */
 	private static class KotlinDelegate {
 
