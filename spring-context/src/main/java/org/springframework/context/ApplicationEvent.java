@@ -19,11 +19,12 @@ package org.springframework.context;
 import java.util.EventObject;
 
 /**
- * 类由所有应用程序事件扩展。抽象，因为直接发布一般事件是没有意义的
+ * 抽象类由所有应用程序事件扩展, 因为直接发布一般事件是没有意义的
+ * {@link org.springframework.boot.context.event.SpringApplicationEvent} 子类
+ * EventObject 对象为: SpringApplication
  */
 public abstract class ApplicationEvent extends EventObject {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = 7099057708183571937L;
 
 	private final long timestamp;

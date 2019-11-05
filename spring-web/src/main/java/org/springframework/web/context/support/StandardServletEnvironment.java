@@ -38,9 +38,7 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
  * {@link PropertySource} instances. See {@link #customizePropertySources} method
  * documentation for details.
  *
- * @author Chris Beams
- * @since 3.1
- * @see StandardEnvironment
+ * 标准 Servlet 环境
  */
 public class StandardServletEnvironment extends StandardEnvironment implements ConfigurableWebEnvironment {
 

@@ -40,24 +40,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * General purpose factory loading mechanism for internal use within the framework.
- *
- * <p>{@code SpringFactoriesLoader} {@linkplain #loadFactories loads} and instantiates
- * factories of a given type from {@value #FACTORIES_RESOURCE_LOCATION} files which
- * may be present in multiple JAR files in the classpath. The {@code spring.factories}
- * file must be in {@link Properties} format, where the key is the fully qualified
- * name of the interface or abstract class, and the value is a comma-separated list of
- * implementation class names. For example:
- *
- * <pre class="code">example.MyService=example.MyServiceImpl1,example.MyServiceImpl2</pre>
- *
- * where {@code example.MyService} is the name of the interface, and {@code MyServiceImpl1}
- * and {@code MyServiceImpl2} are two implementations.
- *
- * @author Arjen Poutsma
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @since 3.2
+ * 框架内部使用的通用工厂加载机制
  */
 public final class SpringFactoriesLoader {
 
@@ -129,8 +112,7 @@ public final class SpringFactoriesLoader {
 			}
 			cache.put(classLoader, result);
 			return result;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalArgumentException("Unable to load factories from location [" +
 					FACTORIES_RESOURCE_LOCATION + "]", ex);
 		}
@@ -145,8 +127,7 @@ public final class SpringFactoriesLoader {
 						"Class [" + instanceClassName + "] is not assignable to [" + factoryClass.getName() + "]");
 			}
 			return (T) ReflectionUtils.accessibleConstructor(instanceClass).newInstance();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			throw new IllegalArgumentException("Unable to instantiate factory class: " + factoryClass.getName(), ex);
 		}
 	}
