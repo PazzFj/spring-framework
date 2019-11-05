@@ -62,11 +62,9 @@ import org.springframework.util.StringUtils;
 public final class SpringFactoriesLoader {
 
 	/**
-	 * The location to look for factories.
-	 * <p>Can be present in multiple JAR files.
+	 * 寻找工厂的地点 <p> 可以存在于多个JAR文件中.
 	 */
 	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factories";
-
 
 	private static final Log logger = LogFactory.getLog(SpringFactoriesLoader.class);
 
@@ -78,16 +76,7 @@ public final class SpringFactoriesLoader {
 
 
 	/**
-	 * Load and instantiate the factory implementations of the given type from
-	 * {@value #FACTORIES_RESOURCE_LOCATION}, using the given class loader.
-	 * <p>The returned factories are sorted through {@link AnnotationAwareOrderComparator}.
-	 * <p>If a custom instantiation strategy is required, use {@link #loadFactoryNames}
-	 * to obtain all registered factory names.
-	 * @param factoryClass the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading (can be {@code null} to use the default)
-	 * @throws IllegalArgumentException if any factory implementation class cannot
-	 * be loaded or if an error occurs while instantiating any factory
-	 * @see #loadFactoryNames
+	 * 使用给定的类加载器从{@value #FACTORIES_RESOURCE_LOCATION}加载并实例化给定类型的工厂实现
 	 */
 	public static <T> List<T> loadFactories(Class<T> factoryClass, @Nullable ClassLoader classLoader) {
 		Assert.notNull(factoryClass, "'factoryClass' must not be null");
@@ -108,20 +97,14 @@ public final class SpringFactoriesLoader {
 	}
 
 	/**
-	 * Load the fully qualified class names of factory implementations of the
-	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
-	 * class loader.
-	 * @param factoryClass the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading resources; can be
-	 * {@code null} to use the default
-	 * @throws IllegalArgumentException if an error occurs while loading factory names
-	 * @see #loadFactories
+	 * 从 spring.factories 配置文件中获取对应的class 的映射类名（返回类名集合）
 	 */
 	public static List<String> loadFactoryNames(Class<?> factoryClass, @Nullable ClassLoader classLoader) {
 		String factoryClassName = factoryClass.getName();
-		return loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList());
+		return loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList()); // 获取SpringApplication 映射的配置类
 	}
 
+	// 通过类加载器去读取 {@see META-INF/spring.factories} 路径的配置文件放入 cache 缓存中并返回.
 	private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
 		MultiValueMap<String, String> result = cache.get(classLoader);
 		if (result != null) {

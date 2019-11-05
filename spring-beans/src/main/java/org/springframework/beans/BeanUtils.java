@@ -500,15 +500,12 @@ public abstract class BeanUtils {
 
 
 	/**
-	 * 内部类以避免运行时对kotlin的硬依赖
+	 * 内部类以避免运行时对 Kotlin (科特林) 的硬依赖
 	 */
 	private static class KotlinDelegate {
 
 		/**
-		 * Retrieve the Java constructor corresponding to the Kotlin primary constructor, if any.
-		 * @param clazz the {@link Class} of the Kotlin class
-		 * @see <a href="http://kotlinlang.org/docs/reference/classes.html#constructors">
-		 * http://kotlinlang.org/docs/reference/classes.html#constructors</a>
+		 * 检索与 Kotlin (科特林) 主构造函数（如果有）对应的Java构造函数
 		 */
 		@Nullable
 		public static <T> Constructor<T> findPrimaryConstructor(Class<T> clazz) {
@@ -530,10 +527,7 @@ public abstract class BeanUtils {
 		}
 
 		/**
-		 * Instantiate a Kotlin class using the provided constructor.
-		 * @param ctor the constructor of the Kotlin class to instantiate
-		 * @param args the constructor arguments to apply
-		 * (use {@code null} for unspecified parameter if needed)
+		 * 使用提供的构造函数实例化 Kotlin (科特林) 类
 		 */
 		public static <T> T instantiateClass(Constructor<T> ctor, Object... args)
 				throws IllegalAccessException, InvocationTargetException, InstantiationException {
