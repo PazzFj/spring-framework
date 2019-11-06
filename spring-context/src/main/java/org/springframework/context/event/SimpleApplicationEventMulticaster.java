@@ -41,7 +41,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	@Nullable
 	private ErrorHandler errorHandler;
 
-	// EventMul 多播
+	// EventMul 多播       (应用事件广播器)
 	public SimpleApplicationEventMulticaster() {
 	}
 

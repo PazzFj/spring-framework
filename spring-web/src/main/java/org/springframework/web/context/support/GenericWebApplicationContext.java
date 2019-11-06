@@ -37,30 +37,7 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * Subclass of {@link GenericApplicationContext}, suitable for web environments.
- *
- * <p>Implements the
- * {@link org.springframework.web.context.ConfigurableWebApplicationContext},
- * but is not intended for declarative setup in {@code web.xml}. Instead,
- * it is designed for programmatic setup, for example for building nested contexts or
- * for use within Spring 3.1 {@link org.springframework.web.WebApplicationInitializer org.springframework.web.WebApplicationInitializers}.
- *
- * <p><b>If you intend to implement a WebApplicationContext that reads bean definitions
- * from configuration files, consider deriving from AbstractRefreshableWebApplicationContext,
- * reading the bean definitions in an implementation of the {@code loadBeanDefinitions}
- * method.</b>
- *
- * <p>Interprets resource paths as servlet context resources, i.e. as paths beneath
- * the web application root. Absolute paths, e.g. for files outside the web app root,
- * can be accessed via "file:" URLs, as implemented by AbstractApplicationContext.
- *
- * <p>In addition to the special beans detected by
- * {@link org.springframework.context.support.AbstractApplicationContext},
- * this class detects a ThemeSource bean in the context, with the name "themeSource".
- *
- * @author Juergen Hoeller
- * @author Chris Beams
- * @since 1.2
+ * {@link GenericApplicationContext}的子类，适用于web环境
  */
 public class GenericWebApplicationContext extends GenericApplicationContext
 		implements ConfigurableWebApplicationContext, ThemeSource {
@@ -71,45 +48,18 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 	@Nullable
 	private ThemeSource themeSource;
 
-
-	/**
-	 * Create a new GenericWebApplicationContext.
-	 * @see #setServletContext
-	 * @see #registerBeanDefinition
-	 * @see #refresh
-	 */
 	public GenericWebApplicationContext() {
 		super();
 	}
 
-	/**
-	 * Create a new GenericWebApplicationContext for the given ServletContext.
-	 * @param servletContext the ServletContext to run in
-	 * @see #registerBeanDefinition
-	 * @see #refresh
-	 */
 	public GenericWebApplicationContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
 
-	/**
-	 * Create a new GenericWebApplicationContext with the given DefaultListableBeanFactory.
-	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
-	 * @see #setServletContext
-	 * @see #registerBeanDefinition
-	 * @see #refresh
-	 */
 	public GenericWebApplicationContext(DefaultListableBeanFactory beanFactory) {
 		super(beanFactory);
 	}
 
-	/**
-	 * Create a new GenericWebApplicationContext with the given DefaultListableBeanFactory.
-	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
-	 * @param servletContext the ServletContext to run in
-	 * @see #registerBeanDefinition
-	 * @see #refresh
-	 */
 	public GenericWebApplicationContext(DefaultListableBeanFactory beanFactory, ServletContext servletContext) {
 		super(beanFactory);
 		this.servletContext = servletContext;

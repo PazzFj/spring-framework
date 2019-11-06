@@ -40,28 +40,12 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Abstract implementation of the {@link ApplicationEventMulticaster} interface,
- * providing the basic listener registration facility.
- *
- * <p>Doesn't permit multiple instances of the same listener by default,
- * as it keeps listeners in a linked Set. The collection class used to hold
- * ApplicationListener objects can be overridden through the "collectionClass"
- * bean property.
- *
- * <p>Implementing ApplicationEventMulticaster's actual {@link #multicastEvent} method
- * is left to subclasses. {@link SimpleApplicationEventMulticaster} simply multicasts
- * all events to all registered listeners, invoking them in the calling thread.
- * Alternative implementations could be more sophisticated in those respects.
- *
- * @author Juergen Hoeller
- * @author Stephane Nicoll
- * @since 1.2.3
- * @see #getApplicationListeners(ApplicationEvent, ResolvableType)
- * @see SimpleApplicationEventMulticaster
+ * {@link ApplicationEventMulticaster}接口的抽象实现，提供基本的侦听器注册功能。
  */
 public abstract class AbstractApplicationEventMulticaster
 		implements ApplicationEventMulticaster, BeanClassLoaderAware, BeanFactoryAware {
 
+	// 监听器回收器(注册器)
 	private final ListenerRetriever defaultRetriever = new ListenerRetriever(false);
 
 	final Map<ListenerCacheKey, ListenerRetriever> retrieverCache = new ConcurrentHashMap<>(64);
@@ -100,7 +84,9 @@ public abstract class AbstractApplicationEventMulticaster
 		return this.beanFactory;
 	}
 
-
+	/**
+	 * 注册应用监视器
+	 */
 	@Override
 	public void addApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.retrievalMutex) {
@@ -359,9 +345,7 @@ public abstract class AbstractApplicationEventMulticaster
 
 
 	/**
-	 * Helper class that encapsulates a specific set of target listeners,
-	 * allowing for efficient retrieval of pre-filtered listeners.
-	 * <p>An instance of this helper gets cached per event type and source type.
+	 * Helper类，它封装一组特定的目标侦听器，允许有效地检索预筛选的侦听器
 	 */
 	private class ListenerRetriever {
 
