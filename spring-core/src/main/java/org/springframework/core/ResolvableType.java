@@ -95,33 +95,36 @@ public class ResolvableType implements Serializable {
 
 
 	/**
-	 * The underlying Java type being managed.
+	 * 基础Java类型 (类对象)
 	 */
 	private final Type type;
 
 	/**
-	 * Optional provider for the type.
+	 * 默认空
 	 */
 	@Nullable
 	private final TypeProvider typeProvider;
 
 	/**
-	 * The {@code VariableResolver} to use or {@code null} if no resolver is available.
+	 * 默认空
 	 */
 	@Nullable
 	private final VariableResolver variableResolver;
 
 	/**
-	 * The component type for an array or {@code null} if the type should be deduced.
+	 * 默认空
 	 */
 	@Nullable
 	private final ResolvableType componentType;
 
+	/**
+	 * 默认空
+	 */
 	@Nullable
 	private final Integer hash;
 
 	@Nullable
-	private Class<?> resolved;
+	private Class<?> resolved;	//类对象
 
 	@Nullable
 	private volatile ResolvableType superType;
@@ -1080,14 +1083,7 @@ public class ResolvableType implements Serializable {
 	}
 
 	/**
-	 * Return a {@link ResolvableType} for the specified instance. The instance does not
-	 * convey generic information but if it implements {@link ResolvableTypeProvider} a
-	 * more precise {@link ResolvableType} can be used than the simple one based on
-	 * the {@link #forClass(Class) Class instance}.
-	 * @param instance the instance
-	 * @return a {@link ResolvableType} for the specified instance
-	 * @since 4.2
-	 * @see ResolvableTypeProvider
+	 * 参数 Object 为 ApplicationEvent 类型
 	 */
 	public static ResolvableType forInstance(Object instance) {
 		Assert.notNull(instance, "Instance must not be null");

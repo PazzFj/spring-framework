@@ -71,6 +71,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	@Override
 	public void multicastEvent(ApplicationEvent event) {
+		// 第二个参数将ApplicationEvent 封装成 ResolvableType
 		multicastEvent(event, resolveDefaultEventType(event));
 	}
 
@@ -87,6 +88,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		}
 	}
 
+	// 解决默认事件类型
 	private ResolvableType resolveDefaultEventType(ApplicationEvent event) {
 		return ResolvableType.forInstance(event);
 	}

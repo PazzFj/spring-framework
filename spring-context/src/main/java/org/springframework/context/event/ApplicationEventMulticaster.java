@@ -56,7 +56,7 @@ public interface ApplicationEventMulticaster {
 	void removeAllListeners();
 
 	/**
-	 * 将给定的应用程序事件多播到适当的侦听器
+	 * 启动应用事件
 	 */
 	void multicastEvent(ApplicationEvent event);
 

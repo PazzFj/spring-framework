@@ -20,14 +20,14 @@ import java.util.EventObject;
 
 /**
  * 抽象类由所有应用程序事件扩展, 因为直接发布一般事件是没有意义的
- * {@link org.springframework.boot.context.event.SpringApplicationEvent} 子类
- * EventObject 对象为: SpringApplication
+ * org.springframework.boot.context.event.SpringApplicationEvent
+ * {@link java.util.EventObject#source } 对象为: SpringApplication
  */
 public abstract class ApplicationEvent extends EventObject {
 
 	private static final long serialVersionUID = 7099057708183571937L;
 
-	private final long timestamp;
+	private final long timestamp;	// 当前时间戳
 
 	public ApplicationEvent(Object source) {
 		super(source);
