@@ -22,46 +22,42 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
- * 接口由可以管理多个 ApplicationListener 对象并向其发布事件的对象实现。
+ * 应用事件广播器 interface
  */
 public interface ApplicationEventMulticaster {
 
 	/**
-	 * 添加一个侦听器来接收所有事件的通知。
+	 * 添加应用监听器
 	 */
 	void addApplicationListener(ApplicationListener<?> listener);
 
 	/**
-	 * 添加一个侦听器bean来接收所有事件的通知。
+	 * 添加应用监听器bean名称
 	 */
 	void addApplicationListenerBean(String listenerBeanName);
 
 	/**
-	 * Remove a listener from the notification list.
-	 * @param listener the listener to remove
+	 * 清除应用监听器
 	 */
 	void removeApplicationListener(ApplicationListener<?> listener);
 
 	/**
-	 * Remove a listener bean from the notification list.
-	 * @param listenerBeanName the name of the listener bean to add
+	 * 清除应用监听器bean名称
 	 */
 	void removeApplicationListenerBean(String listenerBeanName);
 
 	/**
-	 * Remove all listeners registered with this multicaster.
-	 * <p>After a remove call, the multicaster will perform no action
-	 * on event notification until new listeners are being registered.
+	 * 清除所有监听器
 	 */
 	void removeAllListeners();
 
 	/**
-	 * 启动应用事件
+	 * 广播事件
 	 */
 	void multicastEvent(ApplicationEvent event);
 
 	/**
-	 * 将给定的应用程序事件多播到适当的侦听器
+	 * 广播事件
 	 */
 	void multicastEvent(ApplicationEvent event, @Nullable ResolvableType eventType);
 

@@ -45,9 +45,10 @@ import org.springframework.util.ObjectUtils;
 public abstract class AbstractApplicationEventMulticaster
 		implements ApplicationEventMulticaster, BeanClassLoaderAware, BeanFactoryAware {
 
-	// 监听器回收器(注册器)
+	// 监听器(注册器)
 	private final ListenerRetriever defaultRetriever = new ListenerRetriever(false);
 
+	// 监听器缓存key -> 监听器注册器
 	final Map<ListenerCacheKey, ListenerRetriever> retrieverCache = new ConcurrentHashMap<>(64);
 
 	@Nullable
@@ -56,6 +57,7 @@ public abstract class AbstractApplicationEventMulticaster
 	@Nullable
 	private BeanFactory beanFactory;
 
+	// 单例对象的缓存:bean名到bean实例  Map<String, Object> singletonObjects
 	private Object retrievalMutex = this.defaultRetriever;
 
 
@@ -288,6 +290,7 @@ public abstract class AbstractApplicationEventMulticaster
 
 	/**
 	 * Cache key for ListenerRetrievers, based on event type and source type.
+	 * 基于事件类型和源类型的ListenerRetrievers的缓存键
 	 */
 	private static final class ListenerCacheKey implements Comparable<ListenerCacheKey> {
 
@@ -348,7 +351,7 @@ public abstract class AbstractApplicationEventMulticaster
 
 		public final Set<String> applicationListenerBeans = new LinkedHashSet<>();
 
-		private final boolean preFiltered;
+		private final boolean preFiltered; //前置过滤
 
 		public ListenerRetriever(boolean preFiltered) {
 			this.preFiltered = preFiltered;
@@ -370,6 +373,7 @@ public abstract class AbstractApplicationEventMulticaster
 					catch (NoSuchBeanDefinitionException ex) {
 						// Singleton listener instance (without backing bean definition) disappeared -
 						// probably in the middle of the destruction phase
+						// 单例监听器实例(不支持bean定义)消失了——可能在销毁阶段的中间
 					}
 				}
 			}
