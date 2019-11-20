@@ -463,49 +463,43 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			// 准备刷新上下文。
+			// 1、准备刷新上下文。
 			prepareRefresh();
 
-			// 通知子类刷新内部bean工厂。实际上就是重新创建一个bean工厂。
+			// 2、获取Bean工厂。
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
-			// 给BeanFactory配置属性
+			// 3、Bean工厂准备。
 			prepareBeanFactory(beanFactory);
 
 			try {
-				// 允许在上下文对bean工厂之前进行后处理。
+				// 4、后置处理 Bean工厂。 (由子类具体实现)
 				postProcessBeanFactory(beanFactory);
 
-				// Invoke factory processors registered as beans in the context.
-				// 调用工厂处理注册bean在上下文
+				// 5、执行 BeanFactoryPostProcessor 处理 Bean工厂。
 				invokeBeanFactoryPostProcessors(beanFactory);
 
-				// Register bean processors that intercept bean creation.
-				// 使用处理器注册器代理注册Bean处理器
+				// 6、通过当前上下文获取 BeanPostProcessor 注册给当前 Bean工厂。
 				registerBeanPostProcessors(beanFactory);
 
-				// Initialize message source for this context.
-				// 初始化消息资源DelegatingMessageSource, 用于解析消息的策略接口，支持此类消息的参数化和国际化
+				// 7、初始化消息资源器。
 				initMessageSource();
 
-				// Initialize event multicaster for this context.
-				// 初始化应用事件广播 SimpleApplicationEventMulticaster
+				// 8、初始化应用事件广播 (SimpleApplicationEventMulticaster)。
 				initApplicationEventMulticaster();
 
-				// Initialize other special beans in specific context subclasses.
-				// 在实例化单例之前对特殊bean进行初始化时调用。
+				// 9、留给子类重写, 初始化主题资源. 主要用于如何定位相应的主题资源文件 (ThemeSource) 。
 				onRefresh();
 
-				// Check for listener beans and register them.
-				// 注册监听器
+				// 10、向广播器中心注册应用监听器, (ApplicationEventMulticaster) 添加 (ApplicationListener)
 				registerListeners();
 
-				// Instantiate all remaining (non-lazy-init) singletons.
-				// 结束BeanFactory初始化 初始话BeanDefinition
+				// 11、完成BeanFactory初始化.
+				// 		1)设置转换服务.  2)关闭对BeanDefinition操作. 3)实例化(非延迟初始化)单例
 				finishBeanFactoryInitialization(beanFactory);
 
-				// Last step: publish corresponding event.
-				// 发布相应的事件。(结束刷新)
+				// 12、完成刷新
+				// 		(a、清空资源缓存 b、初始化 LifecycleProcessor 生命周期处理器并调用 onRefresh() d、发布 ContextRefreshedEvent 上下文刷新事件 )
 				finishRefresh();
 			}
 
@@ -515,10 +509,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 							"cancelling refresh attempt: " + ex);
 				}
 
-				// 销毁已经创建的单例，以避免悬空资源。
+				// a\如果异常, 则销毁已经创建的单例，以避免悬空资源。 b\并重置“活跃”的旗帜为false
 				destroyBeans();
 
-				// 重置“活跃”的旗帜。
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
@@ -526,7 +519,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 
 			finally {
-				// 重置Spring内核中的常见自省缓存，因为我们可能再也不需要单例bean的元数据了……
+				// 13、清除缓存. 重置Spring内核中的常见自省缓存，因为我们可能再也不需要单例bean的元数据了……
 				resetCommonCaches();
 			}
 		}
