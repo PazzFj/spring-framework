@@ -37,6 +37,7 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 
 	/**
 	 * 获取应用名称
+	 * {@see javax.servlet.ServletContext#getContextPath() }
 	 */
 	String getApplicationName();
 
@@ -46,18 +47,18 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 	String getDisplayName();
 
 	/**
-	 * 返回启动时间
+	 * 获取启动时间
 	 */
 	long getStartupDate();
 
 	/**
-	 * 返回父的上下文
+	 * 获取父级上下文
 	 */
 	@Nullable
 	ApplicationContext getParent();
 
 	/**
-	 * 返回BeanFactory
+	 * 获取bean容器 (BeanFactory)
 	 */
 	AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException;
 

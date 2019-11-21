@@ -50,8 +50,7 @@ public interface ConfigurableListableBeanFactory extends ListableBeanFactory, Au
 			throws NoSuchBeanDefinitionException;
 
 	/**
-	 * 根据名称获取BeanDefinition
-	 * @see org.springframework.beans.factory.support.BeanDefinitionRegistry#getBeanDefinition(String)
+	 * 根据 beanName 获取 BeanDefinition
 	 */
 	BeanDefinition getBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
 
@@ -71,18 +70,12 @@ public interface ConfigurableListableBeanFactory extends ListableBeanFactory, Au
 	void freezeConfiguration();
 
 	/**
-	 * Return whether this factory's bean definitions are frozen,
-	 * i.e. are not supposed to be modified or post-processed any further.
-	 * @return {@code true} if the factory's configuration is considered frozen
+	 * 是否配置 BeanDefinition 冻结
 	 */
 	boolean isConfigurationFrozen();
 
 	/**
 	 * 确保所有非延迟初始化的单例都被实例化
-	 * @throws BeansException 如果无法创建一个单例bean。
-	 * Note: 这可能使工厂中已经初始化了一些bean !
-	 * Call {@link #destroySingletons()} 对于本例中的完全清理。
-	 * @see #destroySingletons()
 	 */
 	void preInstantiateSingletons() throws BeansException;
 

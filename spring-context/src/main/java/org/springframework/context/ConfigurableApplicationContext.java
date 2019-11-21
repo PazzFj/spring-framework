@@ -57,27 +57,54 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 
 	void setParent(@Nullable ApplicationContext parent);
 
+	/**
+	 * 应用设置环境
+	 */
 	void setEnvironment(ConfigurableEnvironment environment);
 
+	/**
+	 * 获取环境
+	 */
 	@Override
 	ConfigurableEnvironment getEnvironment();
 
+	/**
+	 * 添加 Bean工厂 处理器
+	 */
 	void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor);
 
+	/**
+	 * 添加应用监听器
+	 */
 	void addApplicationListener(ApplicationListener<?> listener);
 
+	/**
+	 * 添加协议分解器
+	 */
 	void addProtocolResolver(ProtocolResolver resolver);
 
 	// 刷新
 	void refresh() throws BeansException, IllegalStateException;
 
+	/**
+	 * 注册关机钩
+	 */
 	void registerShutdownHook();
 
+	/**
+	 * 关闭
+	 */
 	@Override
 	void close();
 
+	/**
+	 * 应用是否活动
+	 */
 	boolean isActive();
 
+	/**
+	 * 获取bean容器 （BeanFactory）
+	 */
 	ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
 
 }
