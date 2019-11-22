@@ -34,17 +34,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	private boolean validating = true;
 
-
-	/**
-	 * 创建一个 AbstractXmlApplicationContext 对象没有父类上下文.
-	 */
 	public AbstractXmlApplicationContext() {
 	}
 
-	/**
-	 * Create a new AbstractXmlApplicationContext with the given parent context.
-	 * @param parent the parent context
-	 */
 	public AbstractXmlApplicationContext(@Nullable ApplicationContext parent) {
 		super(parent);
 	}
@@ -99,7 +91,6 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	/**
 	 * 使用给定的 XmlBeanDefinitionReader 加载 BeanDefinition
-	 * @see XmlBeanDefinitionReader#loadBeanDefinitions(String location)
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
 		Resource[] configResources = getConfigResources();

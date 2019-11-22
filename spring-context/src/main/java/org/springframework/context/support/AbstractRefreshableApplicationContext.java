@@ -26,17 +26,17 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.lang.Nullable;
 
 /**
- * 可刷新应用
+ * 刷新BeanFactory, 定义创建 DefaultListableBeanFactory, 和 loadBeanDefinitions() 模板方法
  */
 public abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
 
 	@Nullable
-	private Boolean allowBeanDefinitionOverriding; //允许BeanDefinition覆盖
+	private Boolean allowBeanDefinitionOverriding;  //是否允许bean定义覆盖
 
 	@Nullable
-	private Boolean allowCircularReferences; //允许循环引用
+	private Boolean allowCircularReferences; 		//是否允许循环引用
 
-	/** 此上下文的BeanFactory */
+	/** 核心 容器 */
 	@Nullable
 	private DefaultListableBeanFactory beanFactory;
 

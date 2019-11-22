@@ -194,7 +194,7 @@ public abstract class AbstractRefreshableWebApplicationContext extends AbstractR
 	}
 
 	/**
-	 * Initialize the theme capability.
+	 * 初始化主题功能
 	 */
 	@Override
 	protected void onRefresh() {
@@ -202,8 +202,6 @@ public abstract class AbstractRefreshableWebApplicationContext extends AbstractR
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * <p>Replace {@code Servlet}-related property sources.
 	 */
 	@Override
 	protected void initPropertySources() {

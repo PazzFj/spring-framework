@@ -24,17 +24,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link AbstractRefreshableApplicationContext} subclass that adds common handling
- * of specified config locations. Serves as base class for XML-based application
- * context implementations such as {@link ClassPathXmlApplicationContext} and
- * {@link FileSystemXmlApplicationContext}, as well as
- * {@link org.springframework.web.context.support.XmlWebApplicationContext}.
- *
- * @author Juergen Hoeller
- * @since 2.5.2
- * @see #setConfigLocation
- * @see #setConfigLocations
- * @see #getDefaultConfigLocations
+ * {@link AbstractRefreshableApplicationContext}子类，
+ * 用于添加指定配置位置的公共处理。作为基于xml的应用程序上下文实现的基类，
+ * 如{@link ClassPathXmlApplicationContext}和{@link FileSystemXmlApplicationContext}，
+ * 以及{@link org.springframework.web.context.support.XmlWebApplicationContext}
  */
 public abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext
 		implements BeanNameAware, InitializingBean {
@@ -44,27 +37,14 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 
 	private boolean setIdCalled = false;
 
-
-	/**
-	 * Create a new AbstractRefreshableConfigApplicationContext with no parent.
-	 */
 	public AbstractRefreshableConfigApplicationContext() {
 	}
 
-	/**
-	 * Create a new AbstractRefreshableConfigApplicationContext with the given parent context.
-	 * @param parent the parent context
-	 */
 	public AbstractRefreshableConfigApplicationContext(@Nullable ApplicationContext parent) {
 		super(parent);
 	}
 
 
-	/**
-	 * Set the config locations for this application context in init-param style,
-	 * i.e. with distinct locations separated by commas, semicolons or whitespace.
-	 * <p>If not set, the implementation may use a default as appropriate.
-	 */
 	public void setConfigLocation(String location) {
 		setConfigLocations(StringUtils.tokenizeToStringArray(location, CONFIG_LOCATION_DELIMITERS));
 	}
@@ -85,16 +65,6 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 		}
 	}
 
-	/**
-	 * Return an array of resource locations, referring to the XML bean definition
-	 * files that this context should be built with. Can also include location
-	 * patterns, which will get resolved via a ResourcePatternResolver.
-	 * <p>The default implementation returns {@code null}. Subclasses can override
-	 * this to provide a set of resource locations to load bean definitions from.
-	 * @return an array of resource locations, or {@code null} if none
-	 * @see #getResources
-	 * @see #getResourcePatternResolver
-	 */
 	@Nullable
 	protected String[] getConfigLocations() {
 		return (this.configLocations != null ? this.configLocations : getDefaultConfigLocations());
@@ -103,10 +73,6 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	/**
 	 * Return the default config locations to use, for the case where no
 	 * explicit config locations have been specified.
-	 * <p>The default implementation returns {@code null},
-	 * requiring explicit config locations.
-	 * @return an array of default config locations, if any
-	 * @see #setConfigLocations
 	 */
 	@Nullable
 	protected String[] getDefaultConfigLocations() {
