@@ -23,6 +23,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 
 /**
+ * 独立的XML应用程序上下文，从文件系统或url获取上下文定义文件，
+ * 将普通路径解释为相对的文件系统位置(例如，“mydir / myfile.txt”)。
+ * 对测试用例和独立环境都很有用
+ *
  * Standalone XML application context, taking the context definition files
  * from the file system or from URLs, interpreting plain paths as relative
  * file system locations (e.g. "mydir/myfile.txt"). Useful for test harnesses

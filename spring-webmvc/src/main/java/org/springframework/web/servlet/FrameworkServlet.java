@@ -81,7 +81,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	public static final String DEFAULT_NAMESPACE_SUFFIX = "-servlet";
 
 	/**
-	 *
+	 * xml启动的 web应用上下文
 	 */
 	public static final Class<?> DEFAULT_CONTEXT_CLASS = XmlWebApplicationContext.class;
 

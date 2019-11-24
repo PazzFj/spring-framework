@@ -24,6 +24,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ * 独立的XML应用程序上下文，从类路径获取上下文定义文件，
+ * 将普通路径解释为包含包路径的类路径资源名称(例如，“mypackage/myresource.txt”)。
+ * 对于测试用例以及嵌入在jar中的应用程序上下文非常有用。
+ *
  * Standalone XML application context, taking the context definition files
  * from the class path, interpreting plain paths as class path resource names
  * that include the package path (e.g. "mypackage/myresource.txt"). Useful for

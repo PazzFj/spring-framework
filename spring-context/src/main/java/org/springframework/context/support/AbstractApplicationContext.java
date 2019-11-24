@@ -466,7 +466,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// 1、准备刷新上下文。
 			prepareRefresh();
 
-			// 2、获取Bean工厂。
+			// 2、获取Bean工厂。(解析资源路径)
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// 3、Bean工厂准备。
@@ -581,7 +581,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * 		XmlBeanDefinitionReader#loadBeanDefinitions(String location)
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
-		refreshBeanFactory(); //抽象方法
+		refreshBeanFactory(); //抽象方法  (加载资源,  解析xml 路径)
 		return getBeanFactory();
 	}
 
