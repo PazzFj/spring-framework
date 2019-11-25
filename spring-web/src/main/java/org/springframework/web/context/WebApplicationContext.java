@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 
 /**
- * 应用上下文
+ * web应用上下文
  */
 public interface WebApplicationContext extends ApplicationContext {
 
