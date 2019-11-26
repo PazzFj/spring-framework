@@ -24,7 +24,7 @@ import org.springframework.util.ResourceUtils;
  */
 public interface ResourceLoader {
 
-	/**  	classpath: 		*/
+	// classpath:
 	String CLASSPATH_URL_PREFIX = ResourceUtils.CLASSPATH_URL_PREFIX;
 
 	/**
@@ -33,7 +33,7 @@ public interface ResourceLoader {
 	Resource getResource(String location);
 
 	/**
-	 * 获取ClassLoader类加载器
+	 * 获取 类加载器
 	 */
 	@Nullable
 	ClassLoader getClassLoader();

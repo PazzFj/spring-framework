@@ -88,36 +88,8 @@ import org.springframework.util.ReflectionUtils;
  * implements common context functionality. Uses the Template Method design pattern,
  * requiring concrete subclasses to implement abstract methods.
  *
- * <p>In contrast to a plain BeanFactory, an ApplicationContext is supposed
- * to detect special beans defined in its internal bean factory:
- * Therefore, this class automatically registers
- * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessors},
- * {@link org.springframework.beans.factory.config.BeanPostProcessor BeanPostProcessors}
- * and {@link org.springframework.context.ApplicationListener ApplicationListeners}
- * which are defined as beans in the context.
- *
- * <p>A {@link org.springframework.context.MessageSource} may also be supplied
- * as a bean in the context, with the name "messageSource"; otherwise, message
- * resolution is delegated to the parent context. Furthermore, a multicaster
- * for application events can be supplied as "applicationEventMulticaster" bean
- * of type {@link org.springframework.context.event.ApplicationEventMulticaster}
- * in the context; otherwise, a default multicaster of type
- * {@link org.springframework.context.event.SimpleApplicationEventMulticaster} will be used.
- *
- * <p>Implements resource loading through extending
- * {@link org.springframework.core.io.DefaultResourceLoader}.
- * Consequently treats non-URL resource paths as class path resources
- * (supporting full class path resource names that include the package path,
- * e.g. "mypackage/myresource.dat"), unless the {@link #getResourceByPath}
- * method is overwritten in a subclass.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @author Stephane Nicoll
- * @since January 21, 2001
- * @see #refreshBeanFactory
- * @see #getBeanFactory
+ * @see #refreshBeanFactory  抽象方法
+ * @see #getBeanFactory	抽象方法
  * @see org.springframework.beans.factory.config.BeanFactoryPostProcessor
  * @see org.springframework.beans.factory.config.BeanPostProcessor
  * @see org.springframework.context.event.ApplicationEventMulticaster
@@ -656,7 +628,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * 实例化和调用所有已注册的BeanFactoryPostProcessor bean，如果给定了显式顺序，则尊重显式顺序。
-	 * 一、处理器注册代理处理所有的BeanFactory处理器
+	 * 一、处理所有的BeanFactory处理器
 	 * 二、给BeanFactory添加处理器
 	 * 三、设置临时类加载器
 	 */
@@ -699,7 +671,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 		}
 		else {
-			// Use empty MessageSource to be able to accept getMessage calls.
+			// 使用空的MessageSource来接受getMessage调用
 			DelegatingMessageSource dms = new DelegatingMessageSource();
 			dms.setParentMessageSource(getInternalParentMessageSource());
 			this.messageSource = dms;
