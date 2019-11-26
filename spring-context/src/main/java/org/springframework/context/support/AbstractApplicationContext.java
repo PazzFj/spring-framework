@@ -83,6 +83,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * 抽象实现的{@link org.springframework.context。ApplicationContext}接口。
+ * 不要求配置使用的存储类型;简单地实现通用的上下文功能。使用模板方法设计模式，需要具体的子类来实现抽象方法。
+ *
  * Abstract implementation of the {@link org.springframework.context.ApplicationContext}
  * interface. Doesn't mandate the type of storage used for configuration; simply
  * implements common context functionality. Uses the Template Method design pattern,

@@ -32,16 +32,9 @@ import org.springframework.ui.context.Theme;
 import org.springframework.ui.context.ThemeSource;
 
 /**
- * {@link ThemeSource} implementation that looks up an individual
- * {@link java.util.ResourceBundle} per theme. The theme name gets
- * interpreted as ResourceBundle basename, supporting a common
- * basename prefix for all themes.
- *
- * @author Jean-Pierre Pawlak
- * @author Juergen Hoeller
- * @see #setBasenamePrefix
- * @see java.util.ResourceBundle
- * @see org.springframework.context.support.ResourceBundleMessageSource
+ * {@link ThemeSource}实现，
+ * 它查找单个的{@link java.util。ResourceBundle} /主题。
+ * 主题名称被解释为ResourceBundle basename，支持所有主题的公共basename前缀
  */
 public class ResourceBundleThemeSource implements HierarchicalThemeSource, BeanClassLoaderAware {
 
