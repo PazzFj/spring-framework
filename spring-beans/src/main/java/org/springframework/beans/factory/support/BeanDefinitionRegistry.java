@@ -22,14 +22,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.core.AliasRegistry;
 
 /**
- * BeanDefinitionRegister bean定义注册接口
- * #注册BeanDefinition
- * #注销BeanDefinition
- * #获取BeanDefinition
- * #是否包含BeanDefinition
- * #获取所有BeanDefinition名称
- * #获取BeanDefinition数量
- * #是否在使用BeanDefinition
+ * BeanDefinition 注册器 继承 AliasRegistry
  */
 public interface BeanDefinitionRegistry extends AliasRegistry {
 

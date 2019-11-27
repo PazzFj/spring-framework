@@ -388,11 +388,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Set the parent of this application context.
-	 * <p>The parent {@linkplain ApplicationContext#getEnvironment() environment} is
-	 * {@linkplain ConfigurableEnvironment#merge(ConfigurableEnvironment) merged} with
-	 * this (child) application context environment if the parent is non-{@code null} and
-	 * its environment is an instance of {@link ConfigurableEnvironment}.
-	 * @see ConfigurableEnvironment#merge(ConfigurableEnvironment)
 	 */
 	@Override
 	public void setParent(@Nullable ApplicationContext parent) {
@@ -556,7 +551,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * 		XmlBeanDefinitionReader#loadBeanDefinitions(String location)
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
-		refreshBeanFactory(); //抽象方法  (加载资源,  解析xml 路径)
+		//抽象方法  (可用来加载资源 BeanDefinition 或者用来设置 Id)
+		refreshBeanFactory();
+		//抽象方法  (获取 Bean 容器)
 		return getBeanFactory();
 	}
 
@@ -876,11 +873,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Callback for destruction of this instance, originally attached
-	 * to a {@code DisposableBean} implementation (not anymore in 5.0).
-	 * <p>The {@link #close()} method is the native way to shut down
-	 * an ApplicationContext, which this method simply delegates to.
-	 * @deprecated as of Spring Framework 5.0, in favor of {@link #close()}
+	 *
 	 */
 	@Deprecated
 	public void destroy() {
@@ -888,11 +881,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Close this application context, destroying all beans in its bean factory.
-	 * <p>Delegates to {@code doClose()} for the actual closing procedure.
-	 * Also removes a JVM shutdown hook, if registered, as it's not needed anymore.
-	 * @see #doClose()
-	 * @see #registerShutdownHook()
+	 *
 	 */
 	@Override
 	public void close() {
@@ -912,13 +901,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Actually performs context closing: publishes a ContextClosedEvent and
-	 * destroys the singletons in the bean factory of this application context.
-	 * <p>Called by both {@code close()} and a JVM shutdown hook, if any.
-	 * @see org.springframework.context.event.ContextClosedEvent
-	 * @see #destroyBeans()
-	 * @see #close()
-	 * @see #registerShutdownHook()
+	 *
 	 */
 	protected void doClose() {
 		if (this.active.get() && this.closed.compareAndSet(false, true)) {
@@ -960,27 +943,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Template method for destroying all beans that this context manages.
-	 * The default implementation destroy all cached singletons in this context,
-	 * invoking {@code DisposableBean.destroy()} and/or the specified
-	 * "destroy-method".
-	 * <p>Can be overridden to add context-specific bean destruction steps
-	 * right before or right after standard singleton destruction,
-	 * while the context's BeanFactory is still active.
-	 * @see #getBeanFactory()
-	 * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#destroySingletons()
+	 *
 	 */
 	protected void destroyBeans() {
 		getBeanFactory().destroySingletons();
 	}
 
 	/**
-	 * Template method which can be overridden to add context-specific shutdown work.
-	 * The default implementation is empty.
-	 * <p>Called at the end of {@link #doClose}'s shutdown procedure, after
-	 * this context's BeanFactory has been closed. If custom shutdown logic
-	 * needs to execute while the BeanFactory is still active, override
-	 * the {@link #destroyBeans()} method instead.
+	 *
 	 */
 	protected void onClose() {
 		// For subclasses: do nothing by default.
@@ -992,13 +962,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Assert that this context's BeanFactory is currently active,
-	 * throwing an {@link IllegalStateException} if it isn't.
-	 * <p>Invoked by all {@link BeanFactory} delegation methods that depend
-	 * on an active context, i.e. in particular all bean accessor methods.
-	 * <p>The default implementation checks the {@link #isActive() 'active'} status
-	 * of this context overall. May be overridden for more specific checks, or for a
-	 * no-op if {@link #getBeanFactory()} itself throws an exception in such a case.
+	 * Assert
 	 */
 	protected void assertBeanFactoryActive() {
 		if (!this.active.get()) {

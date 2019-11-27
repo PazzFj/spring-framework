@@ -82,7 +82,7 @@ import java.lang.annotation.Target;
 public @interface Autowired {
 
 	/**
-	 * Declares whether the annotated dependency is required.
+	 * 声明是否需要带注释的依赖项
 	 * <p>Defaults to {@code true}.
 	 */
 	boolean required() default true;

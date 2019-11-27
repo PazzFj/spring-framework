@@ -83,8 +83,6 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * 如果路径为classpath:
 	 * 会创建ClassPathResource对象      Resource
 	 * 否则抛异常调用getResourceByPath方法创建ClassPathContextResource对象的  Resource
-	 * @param location the resource location
-	 * @return
 	 */
 	@Override
 	public Resource getResource(String location) {
@@ -105,7 +103,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 		}
 		else {
 			try {
-				// Try to parse the location as a URL...
+				// 尝试将位置解析为URL…
 				URL url = new URL(location);
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
 			}
@@ -117,15 +115,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	}
 
 	/**
-	 * Return a Resource handle for the resource at the given path.
-	 * <p>The default implementation supports class path locations. This should
-	 * be appropriate for standalone implementations but can be overridden,
-	 * e.g. for implementations targeted at a Servlet container.
-	 * @param path the path to the resource
-	 * @return the corresponding Resource handle
-	 * @see ClassPathResource
-	 * @see org.springframework.context.support.FileSystemXmlApplicationContext#getResourceByPath
-	 * @see org.springframework.web.context.support.XmlWebApplicationContext#getResourceByPath
+	 * 返回给定路径上的资源句柄
 	 */
 	protected Resource getResourceByPath(String path) {
 		return new ClassPathContextResource(path, getClassLoader());

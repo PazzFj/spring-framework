@@ -27,19 +27,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Standalone application context, accepting annotated classes as input - in particular
- * {@link Configuration @Configuration}-annotated classes, but also plain
- * {@link org.springframework.stereotype.Component @Component} types and JSR-330 compliant
- * classes using {@code javax.inject} annotations. Allows for registering classes one by
- * one using {@link #register(Class...)} as well as for classpath scanning using
- * {@link #scan(String...)}.
+ * 独立的应用程序上下文，接受带注释的类作为输入—特别是{@link Configuration @Configuration}—带注释的类，
+ * 但也接受普通的{@link org.springframework.stereotype。
+ * 使用{@code javax的Component @Component}类型和JSR-330兼容类。注入}注释。
+ * 允许使用{@link #register(Class…)}逐个注册类，也允许使用{@link #scan(String…)}进行类路径扫描
  *
- * <p>In case of multiple {@code @Configuration} classes, @{@link Bean} methods defined in
- * later classes will override those defined in earlier classes. This can be leveraged to
- * deliberately override certain bean definitions via an extra {@code @Configuration}
- * class.
- *
- * <p>See @{@link Configuration}'s javadoc for usage examples.
+ * <p>有关使用示例，请参见@{@link Configuration}的javadoc
  *
  * @see #register
  * @see #scan
@@ -72,7 +65,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	}
 
 	/**
-	 * 创建对象, 注册@Configurable 配置类
+	 * 通过 @Configuration 配置类创建上下文
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
 		this();
