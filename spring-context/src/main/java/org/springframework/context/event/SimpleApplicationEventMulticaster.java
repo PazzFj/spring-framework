@@ -81,14 +81,14 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		for (final ApplicationListener<?> listener : getApplicationListeners(event, type)) {
 			Executor executor = getTaskExecutor();
 			if (executor != null) {
-				executor.execute(() -> invokeListener(listener, event));
+				executor.execute(() -> invokeListener(listener, event));  // flase
 			} else {
-				invokeListener(listener, event);
+				invokeListener(listener, event); // 线程池为空
 			}
 		}
 	}
 
-	// 解决默认事件类型
+	// new ResolvableType(class);
 	private ResolvableType resolveDefaultEventType(ApplicationEvent event) {
 		return ResolvableType.forInstance(event);
 	}
@@ -97,12 +97,12 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		ErrorHandler errorHandler = getErrorHandler();
 		if (errorHandler != null) {
 			try {
-				doInvokeListener(listener, event);
+				doInvokeListener(listener, event); // false
 			} catch (Throwable err) {
 				errorHandler.handleError(err);
 			}
 		} else {
-			doInvokeListener(listener, event);
+			doInvokeListener(listener, event); // 异常管理器为空
 		}
 	}
 

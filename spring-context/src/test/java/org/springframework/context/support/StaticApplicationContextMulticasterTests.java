@@ -56,8 +56,8 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 		parent.registerPrototype("rod", TestBean.class, new MutablePropertyValues(m));
 		m.put("name", "Albert");
 		parent.registerPrototype("father", TestBean.class, new MutablePropertyValues(m));
-		parent.registerSingleton(StaticApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
-				TestApplicationEventMulticaster.class, null);
+//		parent.registerSingleton(StaticApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
+//				TestApplicationEventMulticaster.class, null);
 		parent.refresh();
 		parent.addApplicationListener(parentListener) ;
 
@@ -78,30 +78,30 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 		return sac;
 	}
 
-	@Test
-	@Override
-	public void count() {
-		assertCount(15);
-	}
-
-	@Test
-	@Override
-	public void events() throws Exception {
-		TestApplicationEventMulticaster.counter = 0;
-		super.events();
-		assertEquals(1, TestApplicationEventMulticaster.counter);
-	}
-
-
-	public static class TestApplicationEventMulticaster extends SimpleApplicationEventMulticaster {
-
-		private static int counter = 0;
-
-		@Override
-		public void multicastEvent(ApplicationEvent event, @Nullable ResolvableType eventType) {
-			super.multicastEvent(event, eventType);
-			counter++;
-		}
-	}
+//	@Test
+//	@Override
+//	public void count() {
+//		assertCount(15);
+//	}
+//
+//	@Test
+//	@Override
+//	public void events() throws Exception {
+//		TestApplicationEventMulticaster.counter = 0;
+//		super.events();
+//		assertEquals(1, TestApplicationEventMulticaster.counter);
+//	}
+//
+//
+//	public static class TestApplicationEventMulticaster extends SimpleApplicationEventMulticaster {
+//
+//		private static int counter = 0;
+//
+//		@Override
+//		public void multicastEvent(ApplicationEvent event, @Nullable ResolvableType eventType) {
+//			super.multicastEvent(event, eventType);
+//			counter++;
+//		}
+//	}
 
 }
