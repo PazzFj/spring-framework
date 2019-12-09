@@ -47,36 +47,11 @@ import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
 /**
+ * 简单的扩展{@link javax.servlet.http.HttpServlet}。
+ *
  * Simple extension of {@link javax.servlet.http.HttpServlet} which treats
  * its config parameters ({@code init-param} entries within the
  * {@code servlet} tag in {@code web.xml}) as bean properties.
- *
- * <p>A handy superclass for any type of servlet. Type conversion of config
- * parameters is automatic, with the corresponding setter method getting
- * invoked with the converted value. It is also possible for subclasses to
- * specify required properties. Parameters without matching bean property
- * setter will simply be ignored.
- *
- * <p>This servlet leaves request handling to subclasses, inheriting the default
- * behavior of HttpServlet ({@code doGet}, {@code doPost}, etc).
- *
- * <p>This generic servlet base class has no dependency on the Spring
- * {@link org.springframework.context.ApplicationContext} concept. Simple
- * servlets usually don't load their own context but rather access service
- * beans from the Spring root application context, accessible via the
- * filter's {@link #getServletContext() ServletContext} (see
- * {@link org.springframework.web.context.support.WebApplicationContextUtils}).
- *
- * <p>The {@link FrameworkServlet} class is a more specific servlet base
- * class which loads its own application context. FrameworkServlet serves
- * as direct base class of Spring's full-fledged {@link DispatcherServlet}.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see #addRequiredProperty
- * @see #initServletBean
- * @see #doGet
- * @see #doPost
  */
 @SuppressWarnings("serial")
 public abstract class HttpServletBean extends HttpServlet implements EnvironmentCapable, EnvironmentAware {
@@ -89,38 +64,16 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 
 	private final Set<String> requiredProperties = new HashSet<>(4);
 
-
-	/**
-	 * Subclasses can invoke this method to specify that this property
-	 * (which must match a JavaBean property they expose) is mandatory,
-	 * and must be supplied as a config parameter. This should be called
-	 * from the constructor of a subclass.
-	 * <p>This method is only relevant in case of traditional initialization
-	 * driven by a ServletConfig instance.
-	 * @param property name of the required property
-	 */
 	protected final void addRequiredProperty(String property) {
 		this.requiredProperties.add(property);
 	}
 
-	/**
-	 * Set the {@code Environment} that this servlet runs in.
-	 * <p>Any environment set here overrides the {@link StandardServletEnvironment}
-	 * provided by default.
-	 * @throws IllegalArgumentException if environment is not assignable to
-	 * {@code ConfigurableEnvironment}
-	 */
 	@Override
 	public void setEnvironment(Environment environment) {
 		Assert.isInstanceOf(ConfigurableEnvironment.class, environment, "ConfigurableEnvironment required");
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	/**
-	 * Return the {@link Environment} associated with this servlet.
-	 * <p>If none specified, a default environment will be initialized via
-	 * {@link #createEnvironment()}.
-	 */
 	@Override
 	public ConfigurableEnvironment getEnvironment() {
 		if (this.environment == null) {
@@ -131,8 +84,6 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 
 	/**
 	 * Create and return a new {@link StandardServletEnvironment}.
-	 * <p>Subclasses may override this in order to configure the environment or
-	 * specialize the environment type returned.
 	 */
 	protected ConfigurableEnvironment createEnvironment() {
 		return new StandardServletEnvironment();
@@ -178,19 +129,14 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	}
 
 	/**
-	 * Subclasses may override this to perform custom initialization.
-	 * All bean properties of this servlet will have been set before this
-	 * method is invoked.
-	 * <p>This default implementation is empty.
-	 * @throws ServletException if subclass initialization fails
+	 * 子类可以覆盖它来执行自定义初始化
+	 * 此servlet的所有bean属性将在调用此方法之前设置
 	 */
 	protected void initServletBean() throws ServletException {
 	}
 
 	/**
-	 * Overridden method that simply returns {@code null} when no
-	 * ServletConfig set yet.
-	 * @see #getServletConfig()
+	 * 当没有设置ServletConfig时，简单地返回{@code null}的覆盖方法
 	 */
 	@Override
 	@Nullable
@@ -200,16 +146,12 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 
 
 	/**
-	 * PropertyValues implementation created from ServletConfig init parameters.
+	 * 由ServletConfig init参数创建的PropertyValues实现
 	 */
 	private static class ServletConfigPropertyValues extends MutablePropertyValues {
 
 		/**
-		 * Create new ServletConfigPropertyValues.
-		 * @param config the ServletConfig we'll use to take PropertyValues from
-		 * @param requiredProperties set of property names we need, where
-		 * we can't accept default values
-		 * @throws ServletException if any required properties are missing
+		 *
 		 */
 		public ServletConfigPropertyValues(ServletConfig config, Set<String> requiredProperties)
 				throws ServletException {

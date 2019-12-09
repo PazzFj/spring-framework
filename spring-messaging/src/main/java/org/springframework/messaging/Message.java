@@ -17,23 +17,17 @@
 package org.springframework.messaging;
 
 /**
- * A generic message representation with headers and body.
- *
- * @author Mark Fisher
- * @author Arjen Poutsma
- * @since 4.0
- * @param <T> the payload type
- * @see org.springframework.messaging.support.MessageBuilder
+ * 具有标题和正文的通用消息表示
  */
 public interface Message<T> {
 
 	/**
-	 * Return the message payload.
+	 * 返回消息有效负载
 	 */
 	T getPayload();
 
 	/**
-	 * Return message headers for the message (never {@code null} but may be empty).
+	 * 返回消息头(决不是{@code null}，但可能是空的)
 	 */
 	MessageHeaders getHeaders();
 

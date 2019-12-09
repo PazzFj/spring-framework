@@ -94,32 +94,18 @@ public class ResolvableType implements Serializable {
 			new ConcurrentReferenceHashMap<>(256);
 
 
-	/**
-	 * 基础Java类型 (类对象)
-	 */
+	// 基础Java类型 (类对象)
 	private final Type type;
 
-	/**
-	 * 默认空
-	 */
 	@Nullable
 	private final TypeProvider typeProvider;
 
-	/**
-	 * 默认空
-	 */
 	@Nullable
 	private final VariableResolver variableResolver;
 
-	/**
-	 * 默认空
-	 */
 	@Nullable
 	private final ResolvableType componentType;
 
-	/**
-	 * 默认空
-	 */
 	@Nullable
 	private final Integer hash;
 
@@ -135,11 +121,6 @@ public class ResolvableType implements Serializable {
 	@Nullable
 	private volatile ResolvableType[] generics;
 
-
-	/**
-	 * Private constructor used to create a new {@link ResolvableType} for cache key purposes,
-	 * with no upfront resolution.
-	 */
 	private ResolvableType(
 			Type type, @Nullable TypeProvider typeProvider, @Nullable VariableResolver variableResolver) {
 
@@ -151,11 +132,6 @@ public class ResolvableType implements Serializable {
 		this.resolved = null;
 	}
 
-	/**
-	 * Private constructor used to create a new {@link ResolvableType} for cache value purposes,
-	 * with upfront resolution and a pre-calculated hash.
-	 * @since 4.2
-	 */
 	private ResolvableType(Type type, @Nullable TypeProvider typeProvider,
 			@Nullable VariableResolver variableResolver, @Nullable Integer hash) {
 
@@ -167,10 +143,6 @@ public class ResolvableType implements Serializable {
 		this.resolved = resolveClass();
 	}
 
-	/**
-	 * Private constructor used to create a new {@link ResolvableType} for uncached purposes,
-	 * with upfront resolution but lazily calculated hash.
-	 */
 	private ResolvableType(Type type, @Nullable TypeProvider typeProvider,
 			@Nullable VariableResolver variableResolver, @Nullable ResolvableType componentType) {
 
@@ -182,11 +154,6 @@ public class ResolvableType implements Serializable {
 		this.resolved = resolveClass();
 	}
 
-	/**
-	 * Private constructor used to create a new {@link ResolvableType} on a {@link Class} basis.
-	 * Avoids all {@code instanceof} checks in order to create a straight {@link Class} wrapper.
-	 * @since 4.2
-	 */
 	private ResolvableType(@Nullable Class<?> clazz) {
 		this.resolved = (clazz != null ? clazz : Object.class);
 		this.type = this.resolved;
@@ -197,17 +164,10 @@ public class ResolvableType implements Serializable {
 	}
 
 
-	/**
-	 * Return the underling Java {@link Type} being managed.
-	 */
 	public Type getType() {
 		return SerializableTypeWrapper.unwrap(this.type);
 	}
 
-	/**
-	 * Return the underlying Java {@link Class} being managed, if available;
-	 * otherwise {@code null}.
-	 */
 	@Nullable
 	public Class<?> getRawClass() {
 		if (this.type == this.resolved) {
@@ -220,13 +180,6 @@ public class ResolvableType implements Serializable {
 		return (rawType instanceof Class ? (Class<?>) rawType : null);
 	}
 
-	/**
-	 * Return the underlying source of the resolvable type. Will return a {@link Field},
-	 * {@link MethodParameter} or {@link Type} depending on how the {@link ResolvableType}
-	 * was constructed. With the exception of the {@link #NONE} constant, this method will
-	 * never return {@code null}. This method is primarily to provide access to additional
-	 * type information or meta-data that alternative JVM languages may provide.
-	 */
 	public Object getSource() {
 		Object source = (this.typeProvider != null ? this.typeProvider.getSource() : null);
 		return (source != null ? source : this.type);

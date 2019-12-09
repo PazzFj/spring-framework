@@ -49,19 +49,12 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	@Nullable
 	transient volatile Object resolvedTokens;
 
-
-	/**
-	 *
-	 */
 	public PropertyValue(String name, @Nullable Object value) {
 		Assert.notNull(name, "Name must not be null");
 		this.name = name;
 		this.value = value;
 	}
 
-	/**
-	 *
-	 */
 	public PropertyValue(PropertyValue original) {
 		Assert.notNull(original, "Original must not be null");
 		this.name = original.getName();
@@ -75,9 +68,6 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 		copyAttributesFrom(original);
 	}
 
-	/**
-	 *
-	 */
 	public PropertyValue(PropertyValue original, @Nullable Object newValue) {
 		Assert.notNull(original, "Original must not be null");
 		this.name = original.getName();

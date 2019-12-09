@@ -76,22 +76,22 @@ import org.springframework.web.util.WebUtils;
 public abstract class FrameworkServlet extends HttpServletBean implements ApplicationContextAware {
 
 	/**
-	 *
+	 * 默认命名空间后缀
 	 */
 	public static final String DEFAULT_NAMESPACE_SUFFIX = "-servlet";
 
 	/**
-	 * xml启动的 web应用上下文
+	 * 默认创建类型 web应用上下文
 	 */
 	public static final Class<?> DEFAULT_CONTEXT_CLASS = XmlWebApplicationContext.class;
 
 	/**
-	 *
+	 * 服务上下文前缀
 	 */
 	public static final String SERVLET_CONTEXT_PREFIX = FrameworkServlet.class.getName() + ".CONTEXT.";
 
 	/**
-	 *
+	 * 初始化参数分隔符
 	 */
 	private static final String INIT_PARAM_DELIMITERS = ",; \t\n";
 
@@ -102,7 +102,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	private String contextAttribute;
 
 	/**
-	 * 默认 XmlWebApplicationContext.class
+	 * 应用上下文类型
 	 */
 	private Class<?> contextClass = DEFAULT_CONTEXT_CLASS;
 
@@ -511,10 +511,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Callback that receives refresh events from this servlet's WebApplicationContext.
-	 * <p>The default implementation calls {@link #onRefresh},
-	 * triggering a refresh of this servlet's context-dependent state.
-	 * @param event the incoming ApplicationContext event
+	 * 从这个servlet的WebApplicationContext接收刷新事件的回调
 	 */
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		this.refreshEventReceived = true;
@@ -818,12 +815,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Determine the username for the given request.
-	 * <p>The default implementation takes the name of the UserPrincipal, if any.
-	 * Can be overridden in subclasses.
-	 * @param request current HTTP request
-	 * @return the username, or {@code null} if none found
-	 * @see javax.servlet.http.HttpServletRequest#getUserPrincipal()
+	 * 确定给定请求的用户名
 	 */
 	@Nullable
 	protected String getUsernameForRequest(HttpServletRequest request) {
@@ -836,7 +828,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 
 	/**
-	 * ApplicationListener实现
+	 * ApplicationListener 上下文刷新监听器
 	 */
 	private class ContextRefreshListener implements ApplicationListener<ContextRefreshedEvent> {
 		@Override
