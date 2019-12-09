@@ -23,13 +23,11 @@ public interface Ordered {
 
 	/**
 	 * 用于最高优先值的有用常数
-	 * @see java.lang.Integer#MIN_VALUE
 	 */
 	int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;
 
 	/**
 	 * 用于最低优先级值的有用常数
-	 * @see java.lang.Integer#MAX_VALUE
 	 */
 	int LOWEST_PRECEDENCE = Integer.MAX_VALUE;
 

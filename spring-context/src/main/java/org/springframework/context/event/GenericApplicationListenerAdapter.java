@@ -28,29 +28,17 @@ import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
- * {@link GenericApplicationListener} adapter that determines supported event types
- * through introspecting the generically declared type of the target listener.
- *
- * @author Juergen Hoeller
- * @author Stephane Nicoll
- * @since 3.0
- * @see org.springframework.context.ApplicationListener#onApplicationEvent
+ * {@link GenericApplicationListener}适配器，通过内省目标侦听器的一般声明类型来确定受支持的事件类型
  */
 public class GenericApplicationListenerAdapter implements GenericApplicationListener, SmartApplicationListener {
 
 	private static final Map<Class<?>, ResolvableType> eventTypeCache = new ConcurrentReferenceHashMap<>();
-
 
 	private final ApplicationListener<ApplicationEvent> delegate;
 
 	@Nullable
 	private final ResolvableType declaredEventType;
 
-
-	/**
-	 * Create a new GenericApplicationListener for the given delegate.
-	 * @param delegate the delegate listener to be invoked
-	 */
 	@SuppressWarnings("unchecked")
 	public GenericApplicationListenerAdapter(ApplicationListener<?> delegate) {
 		Assert.notNull(delegate, "Delegate listener must not be null");

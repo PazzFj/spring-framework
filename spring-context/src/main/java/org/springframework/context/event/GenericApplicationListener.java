@@ -24,27 +24,21 @@ import org.springframework.lang.Nullable;
 
 /**
  * 标准{@link ApplicationListener}接口的扩展变体，公开更多的元数据，如受支持的事件和源类型
- *
- * @see SmartApplicationListener
- * @see GenericApplicationListenerAdapter
  */
 public interface GenericApplicationListener extends ApplicationListener<ApplicationEvent>, Ordered {
 
 	/**
-	 * Determine whether this listener actually supports the given event type.
+	 * 确定此侦听器是否实际支持给定的事件类型
 	 */
 	boolean supportsEventType(ResolvableType eventType);
 
 	/**
-	 * Determine whether this listener actually supports the given source type.
+	 * 确定此侦听器是否实际支持给定的源类型
 	 */
 	default boolean supportsSourceType(@Nullable Class<?> sourceType) {
 		return true;
 	}
 
-	/**
-	 * Determine this listener's order in a set of listeners for the same event.
-	 */
 	@Override
 	default int getOrder() {
 		return LOWEST_PRECEDENCE;

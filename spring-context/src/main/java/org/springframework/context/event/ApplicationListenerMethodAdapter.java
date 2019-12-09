@@ -44,19 +44,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link GenericApplicationListener} adapter that delegates the processing of
- * an event to an {@link EventListener} annotated method.
- *
- * <p>Delegates to {@link #processEvent(ApplicationEvent)} to give sub-classes
- * a chance to deviate from the default. Unwraps the content of a
- * {@link PayloadApplicationEvent} if necessary to allow method declaration
- * to define any arbitrary event type. If a condition is defined, it is
- * evaluated prior to invoking the underlying method.
- *
- * @author Stephane Nicoll
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @since 4.2
+ * {@link GenericApplicationListener}适配器，它将事件的处理委托给{@link EventListener}带注释的方法
  */
 public class ApplicationListenerMethodAdapter implements GenericApplicationListener {
 

@@ -33,13 +33,11 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * 标准单例范围的范围标识符:“单例”
-	 * @see #setScope
 	 */
 	String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
 
 	/**
 	 *标准原型作用域的作用域标识符:"prototype"
-	 * @see #setScope
 	 */
 	String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -76,28 +74,17 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * 指定此BeanDefinition的bean类名
-	 *
-	 * @see #setParentName
-	 * @see #setFactoryBeanName
-	 * @see #setFactoryMethodName
 	 */
 	void setBeanClassName(@Nullable String beanClassName);
 
 	/**
 	 * 返回此bean定义的当前bean类名
-	 *
-	 * @see #getParentName()
-	 * @see #getFactoryBeanName()
-	 * @see #getFactoryMethodName()
 	 */
 	@Nullable
 	String getBeanClassName();
 
 	/**
 	 * 重写此bean的目标范围，指定一个新的范围名称
-	 *
-	 * @see #SCOPE_SINGLETON
-	 * @see #SCOPE_PROTOTYPE
 	 */
 	void setScope(@Nullable String scope);
 
@@ -152,7 +139,6 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * 指定要使用的工厂bean(如果有的话)
 	 * 这是要调用指定工厂方法的bean的名称
-	 * @see #setFactoryMethodName
 	 */
 	void setFactoryBeanName(@Nullable String factoryBeanName);
 
@@ -165,8 +151,6 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * 指定工厂方法(如果有的话)。此方法将使用构造函数参数调用，如果没有指定参数，则不使用参数调用。
 	 * 方法将在指定的工厂bean上调用(如果有的话)，或者作为本地bean类上的静态方法调用
-	 * @see #setFactoryBeanName
-	 * @see #setBeanClassName
 	 */
 	void setFactoryMethodName(@Nullable String factoryMethodName);
 

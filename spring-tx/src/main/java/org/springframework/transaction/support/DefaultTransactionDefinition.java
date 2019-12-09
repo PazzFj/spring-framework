@@ -36,16 +36,16 @@ import org.springframework.transaction.TransactionDefinition;
 @SuppressWarnings("serial")
 public class DefaultTransactionDefinition implements TransactionDefinition, Serializable {
 
-	/** Prefix for the propagation constants defined in TransactionDefinition. */
+	/** TransactionDefinition中定义的传播常数的前缀 */
 	public static final String PREFIX_PROPAGATION = "PROPAGATION_";
 
-	/** Prefix for the isolation constants defined in TransactionDefinition. */
+	/** 在TransactionDefinition中定义的隔离常数的前缀 */
 	public static final String PREFIX_ISOLATION = "ISOLATION_";
 
-	/** Prefix for transaction timeout values in description strings. */
+	/** 描述字符串中事务超时值的前缀 */
 	public static final String PREFIX_TIMEOUT = "timeout_";
 
-	/** Marker for read-only transactions in description strings. */
+	/** 描述字符串中只读事务的标记 */
 	public static final String READ_ONLY_MARKER = "readOnly";
 
 

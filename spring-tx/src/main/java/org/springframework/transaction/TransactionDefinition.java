@@ -63,61 +63,39 @@ public interface TransactionDefinition {
 	int PROPAGATION_NESTED = 6;
 
 
-	/**
-	 * 默认隔离
-	 */
+	// 默认隔离
 	int ISOLATION_DEFAULT = -1;
 
-	/**
-	 *
-	 */
+	// 指示可能发生脏读、不可重复读和幻像读
 	int ISOLATION_READ_UNCOMMITTED = Connection.TRANSACTION_READ_UNCOMMITTED;
 
-	/**
-	 *
-	 */
+	// 防止脏读的常数;可能会发生不可重复读取和幻像读取
 	int ISOLATION_READ_COMMITTED = Connection.TRANSACTION_READ_COMMITTED;
 
-	/**
-	 *
-	 */
+	// 防止脏读和不可重复读的常数;可能会发生幻像读取
 	int ISOLATION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
 
-	/**
-	 *
-	 */
+	// 防止脏读、不可重复读和虚读的常数
 	int ISOLATION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
 
 
-	/**
-	 *
-	 */
+	// 默认超时时间 (-1 代表不处理)
 	int TIMEOUT_DEFAULT = -1;
 
 
-	/**
-	 * 获取传播行为
-	 */
+	// 获取传播行为
 	int getPropagationBehavior();
 
-	/**
-	 *
-	 */
+	// 获取隔离级别
 	int getIsolationLevel();
 
-	/**
-	 *
-	 */
+	// 获取超时时长
 	int getTimeout();
 
-	/**
-	 *
-	 */
+	// 是否只读
 	boolean isReadOnly();
 
-	/**
-	 *
-	 */
+	// 获取名称
 	@Nullable
 	String getName();
 

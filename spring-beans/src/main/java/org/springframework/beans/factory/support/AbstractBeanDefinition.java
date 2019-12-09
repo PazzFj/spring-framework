@@ -104,8 +104,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 */
 	public static final int DEPENDENCY_CHECK_ALL = 3;
 
-	/**
-	 */
+	/**推测 推断*/
 	public static final String INFER_METHOD = "(inferred)";
 
 
