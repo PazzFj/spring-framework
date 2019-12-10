@@ -23,8 +23,8 @@ import org.springframework.lang.Nullable;
  * 这是Spring事务基础结构中的中心接口。应用程序可以直接使用它，但它并不主要意味着API:通常，应用程序将通过AOP使用TransactionTemplate或声明性事务界定
  *
  * <p>此策略接口的默认实现为
- * {@link org.springframework.transaction.jta.JtaTransactionManager} and
- * {@link org.springframework.jdbc.datasource.DataSourceTransactionManager},  jdbc 模块
+ * {@link org.springframework.transaction.jta.JtaTransactionManager}
+ * {@link org.springframework.jdbc.datasource.DataSourceTransactionManager}
  */
 public interface PlatformTransactionManager {
 

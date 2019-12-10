@@ -31,10 +31,7 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
- * Strategy implementation for parsing Spring's {@link Transactional} annotation.
- *
- * @author Juergen Hoeller
- * @since 2.5
+ * 解析Spring的{@link Transactional}注释的策略实现
  */
 @SuppressWarnings("serial")
 public class SpringTransactionAnnotationParser implements TransactionAnnotationParser, Serializable {

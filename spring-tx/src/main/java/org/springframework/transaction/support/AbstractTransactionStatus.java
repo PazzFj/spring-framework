@@ -24,8 +24,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.TransactionUsageException;
 
 /**
- * Abstract base implementation of the
- * {@link org.springframework.transaction.TransactionStatus} interface.
+ * 抽象实现的{@link org.springframework.transaction.TransactionStatus} 接口.
  *
  * <p>Pre-implements the handling of local rollback-only and completed flags, and
  * delegation to an underlying {@link org.springframework.transaction.SavepointManager}.

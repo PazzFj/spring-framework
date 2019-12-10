@@ -66,7 +66,7 @@ public abstract class AbstractFallbackTransactionAttributeSource implements Tran
 
 	/**
 	 * Logger available to subclasses.
-	 * <p>As this base class is not marked Serializable, the logger will be recreated
+	 * <p>As this base class is not marked Serializable, the loggetTransactionAttributeger will be recreated
 	 * after serialization - provided that the concrete subclass is Serializable.
 	 */
 	protected final Log logger = LogFactory.getLog(getClass());

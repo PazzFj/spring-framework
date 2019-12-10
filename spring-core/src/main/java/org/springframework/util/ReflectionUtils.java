@@ -374,9 +374,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * Determine whether the given field is a "public static final" constant.
-	 *
-	 * @param field the field to check
+	 * 确定给定字段是否是“公共静态final”常量
 	 */
 	public static boolean isPublicStaticFinal(Field field) {
 		int modifiers = field.getModifiers();
@@ -432,9 +430,6 @@ public abstract class ReflectionUtils {
 	/**
 	 * Determine whether the given method is a CGLIB 'renamed' method,
 	 * following the pattern "CGLIB$methodName$0".
-	 *
-	 * @param renamedMethod the method to check
-	 * @see org.springframework.cglib.proxy.Enhancer#rename
 	 */
 	public static boolean isCglibRenamedMethod(Method renamedMethod) {
 		String name = renamedMethod.getName();

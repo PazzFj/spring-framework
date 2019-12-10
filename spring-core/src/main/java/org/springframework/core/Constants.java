@@ -28,42 +28,22 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * This class can be used to parse other classes containing constant definitions
- * in public static final members. The {@code asXXXX} methods of this class
- * allow these constant values to be accessed via their string names.
- *
- * <p>Consider class Foo containing {@code public final static int CONSTANT1 = 66;}
- * An instance of this class wrapping {@code Foo.class} will return the constant value
- * of 66 from its {@code asNumber} method given the argument {@code "CONSTANT1"}.
- *
- * <p>This class is ideal for use in PropertyEditors, enabling them to
- * recognize the same names as the constants themselves, and freeing them
- * from maintaining their own mapping.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 16.03.2003
+ * 该类可用于解析公共静态最终成员中包含常量定义的其他类。
  */
 public class Constants {
 
-	/** The name of the introspected class. */
+	// 当前class对象
 	private final String className;
-
-	/** Map from String field name to object value. */
+	// 属性名称  ->  属性值
 	private final Map<String, Object> fieldCache = new HashMap<>();
 
-
-	/**
-	 * Create a new Constants converter class wrapping the given class.
-	 * <p>All <b>public</b> static final variables will be exposed, whatever their type.
-	 * @param clazz the class to analyze
-	 * @throws IllegalArgumentException if the supplied {@code clazz} is {@code null}
-	 */
 	public Constants(Class<?> clazz) {
 		Assert.notNull(clazz, "Class must not be null");
 		this.className = clazz.getName();
+		// 获取属性
 		Field[] fields = clazz.getFields();
 		for (Field field : fields) {
+			// 获取所有 public static final 的属性
 			if (ReflectionUtils.isPublicStaticFinal(field)) {
 				String name = field.getName();
 				try {
@@ -203,14 +183,7 @@ public class Constants {
 
 
 	/**
-	 * Return all values of the given group of constants.
-	 * <p>Note that this method assumes that constants are named
-	 * in accordance with the standard Java convention for constant
-	 * values (i.e. all uppercase). The supplied {@code namePrefix}
-	 * will be uppercased (in a locale-insensitive fashion) prior to
-	 * the main logic of this method kicking in.
-	 * @param namePrefix prefix of the constant names to search (may be {@code null})
-	 * @return the set of values
+	 * 返回给定常量组的所有值
 	 */
 	public Set<Object> getValues(@Nullable String namePrefix) {
 		String prefixToUse = (namePrefix != null ? namePrefix.trim().toUpperCase(Locale.ENGLISH) : "");

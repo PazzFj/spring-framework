@@ -7,6 +7,8 @@ import org.springframework.util.StringUtils;
 
 /**
  * Spring的公共事务属性实现。默认情况下回滚运行时异常，但未检查异常
+ *
+ * 默认 (事务属性 --> 事务定义)
  */
 @SuppressWarnings("serial")
 public class DefaultTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
@@ -48,8 +50,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 	}
 
 	/**
-	 * Return a qualifier value associated with this transaction attribute.
-	 * @since 3.0
+	 * 返回与此事务属性关联的限定符值
 	 */
 	@Override
 	@Nullable
@@ -58,9 +59,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 	}
 
 	/**
-	 * Set a descriptor for this transaction attribute,
-	 * e.g. indicating where the attribute is applying.
-	 * @since 4.3.4
+	 * 设置此事务属性的描述符，例如指示属性应用于何处。
 	 */
 	public void setDescriptor(@Nullable String descriptor) {
 		this.descriptor = descriptor;
@@ -68,7 +67,6 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 
 	/**
 	 * 返回此事务属性的描述符，如果没有，则返回{@code null}
-	 * @since 4.3.4
 	 */
 	@Nullable
 	public String getDescriptor() {
@@ -76,18 +74,10 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 	}
 
 	/**
-	 * The default behavior is as with EJB: rollback on unchecked exception
-	 * ({@link RuntimeException}), assuming an unexpected outcome outside of any
-	 * business rules. Additionally, we also attempt to rollback on {@link Error} which
-	 * is clearly an unexpected outcome as well. By contrast, a checked exception is
-	 * considered a business exception and therefore a regular expected outcome of the
-	 * transactional business method, i.e. a kind of alternative return value which
-	 * still allows for regular completion of resource operations.
-	 * <p>This is largely consistent with TransactionTemplate's default behavior,
-	 * except that TransactionTemplate also rolls back on undeclared checked exceptions
-	 * (a corner case). For declarative transactions, we expect checked exceptions to be
-	 * intentionally declared as business exceptions, leading to a commit by default.
-	 * @see org.springframework.transaction.support.TransactionTemplate#execute
+	 * 默认行为与EJB一样:回滚未检查的异常({@link RuntimeException})，假设在任何业务规则之外出现意外结果。
+	 * 此外，我们还尝试回滚{@link Error}，这显然也是一个意外结果。
+	 * 相反，检查异常被认为是业务异常，因此是事务性业务方法的常规预期结果，
+	 * 即一种可选的返回值，它仍然允许常规完成资源操作
 	 */
 	@Override
 	public boolean rollbackOn(Throwable ex) {
@@ -96,8 +86,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 
 
 	/**
-	 * Return an identifying description for this transaction attribute.
-	 * <p>Available to subclasses, for inclusion in their {@code toString()} result.
+	 * 返回此事务属性的标识说明
 	 */
 	protected final StringBuilder getAttributeDescription() {
 		StringBuilder result = getDefinitionDescription();
