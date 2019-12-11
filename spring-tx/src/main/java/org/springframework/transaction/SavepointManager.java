@@ -18,24 +18,21 @@ package org.springframework.transaction;
 
 /**
  * 接口，该接口指定一个API，以编程方式以通用方式管理事务保存点。通过TransactionStatus扩展，以公开特定事务的保存点管理功能
- * @see TransactionStatus
- * @see TransactionDefinition#PROPAGATION_NESTED
- * @see java.sql.Savepoint
  */
 public interface SavepointManager {
 
 	/**
-	 * 创建保存点
+	 * 创建保存点 java.sql.Savepoint
 	 */
 	Object createSavepoint() throws TransactionException;
 
 	/**
-	 * 回滚到给定的保存点
+	 * 回滚到给定的保存点  java.sql.Savepoint
 	 */
 	void rollbackToSavepoint(Object savepoint) throws TransactionException;
 
 	/**
-	 * 显式释放给定的保存点。
+	 * 显式释放给定的保存点。 java.sql.Savepoint
 	 */
 	void releaseSavepoint(Object savepoint) throws TransactionException;
 

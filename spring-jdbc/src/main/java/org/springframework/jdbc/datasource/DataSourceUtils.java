@@ -215,16 +215,12 @@ public abstract class DataSourceUtils {
 	}
 
 	/**
-	 * Reset the given Connection after a transaction,
-	 * regarding read-only flag and isolation level.
-	 * @param con the Connection to reset
-	 * @param previousIsolationLevel the isolation level to restore, if any
-	 * @see #prepareConnectionForTransaction
+	 * 根据只读标志和隔离级别，在事务之后重置给定的连接
 	 */
 	public static void resetConnectionAfterTransaction(Connection con, @Nullable Integer previousIsolationLevel) {
 		Assert.notNull(con, "No Connection specified");
 		try {
-			// Reset transaction isolation to previous value, if changed for the transaction.
+			// 如果事务已更改，则将事务隔离重置为以前的值
 			if (previousIsolationLevel != null) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Resetting isolation level of JDBC Connection [" +

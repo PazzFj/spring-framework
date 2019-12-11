@@ -128,11 +128,7 @@ public abstract class TransactionSynchronizationManager {
 	}
 
 	/**
-	 * Retrieve a resource for the given key that is bound to the current thread.
-	 * @param key the key to check (usually the resource factory)
-	 * @return a value bound to the current thread (usually the active
-	 * resource object), or {@code null} if none
-	 * @see ResourceTransactionManager#getResourceFactory()
+	 * 检索绑定到当前线程的给定键的资源
 	 */
 	@Nullable
 	public static Object getResource(Object key) {
@@ -146,7 +142,7 @@ public abstract class TransactionSynchronizationManager {
 	}
 
 	/**
-	 * Actually check the value of the resource that is bound for the given key.
+	 * 实际检查为给定键绑定的资源的值
 	 */
 	@Nullable
 	private static Object doGetResource(Object actualKey) {

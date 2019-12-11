@@ -46,9 +46,9 @@ import org.springframework.transaction.TransactionUsageException;
 public abstract class AbstractTransactionStatus implements TransactionStatus {
 
 	private boolean rollbackOnly = false;
-
+	// 完成
 	private boolean completed = false;
-
+	//保存点  java.sql.Savepoint
 	@Nullable
 	private Object savepoint;
 

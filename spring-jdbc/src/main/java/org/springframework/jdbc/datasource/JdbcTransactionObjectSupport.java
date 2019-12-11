@@ -33,9 +33,8 @@ import org.springframework.transaction.support.SmartTransactionObject;
 import org.springframework.util.Assert;
 
 /**
- * Convenient base class for JDBC-aware transaction objects. Can contain a
- * {@link ConnectionHolder} with a JDBC {@code Connection}, and implements the
- * {@link SavepointManager} interface based on that {@code ConnectionHolder}.
+ * 支持jdbc的事务对象的方便基类。可以使用JDBC {@code Connection}包含{@link ConnectionHolder}，
+ * 并基于该{@code ConnectionHolder}实现{@link SavepointManager}接口
  *
  * <p>Allows for programmatic management of JDBC {@link java.sql.Savepoint Savepoints}.
  * Spring's {@link org.springframework.transaction.support.DefaultTransactionStatus}
@@ -52,12 +51,12 @@ public abstract class JdbcTransactionObjectSupport implements SavepointManager, 
 
 
 	@Nullable
-	private ConnectionHolder connectionHolder;
+	private ConnectionHolder connectionHolder;	//数据库连接持有者
 
 	@Nullable
-	private Integer previousIsolationLevel;
+	private Integer previousIsolationLevel;		//隔离级别
 
-	private boolean savepointAllowed = false;
+	private boolean savepointAllowed = false;	//允许保存点
 
 
 	public void setConnectionHolder(@Nullable ConnectionHolder connectionHolder) {

@@ -40,7 +40,7 @@ public abstract class ResourceHolderSupport implements ResourceHolder {
 	private boolean rollbackOnly = false;
 
 	@Nullable
-	private Date deadline;
+	private Date deadline;	// 事务超时时间  最终期限
 
 	private int referenceCount = 0;
 
@@ -48,14 +48,14 @@ public abstract class ResourceHolderSupport implements ResourceHolder {
 
 
 	/**
-	 * Mark the resource as synchronized with a transaction.
+	 * 将资源标记为与事务同步
 	 */
 	public void setSynchronizedWithTransaction(boolean synchronizedWithTransaction) {
 		this.synchronizedWithTransaction = synchronizedWithTransaction;
 	}
 
 	/**
-	 * Return whether the resource is synchronized with a transaction.
+	 * 返回资源是否与事务同步
 	 */
 	public boolean isSynchronizedWithTransaction() {
 		return this.synchronizedWithTransaction;
