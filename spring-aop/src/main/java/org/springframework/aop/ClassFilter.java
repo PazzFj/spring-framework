@@ -17,15 +17,7 @@
 package org.springframework.aop;
 
 /**
- * Filter that restricts matching of a pointcut or introduction to
- * a given set of target classes.
- *
- * <p>Can be used as part of a {@link Pointcut} or for the entire
- * targeting of an {@link IntroductionAdvisor}.
- *
- * @author Rod Johnson
- * @see Pointcut
- * @see MethodMatcher
+ * 过滤器，它限制切入点或目标类集合的引入的匹配
  */
 @FunctionalInterface
 public interface ClassFilter {
@@ -37,7 +29,7 @@ public interface ClassFilter {
 
 
 	/**
-	 * Canonical instance of a ClassFilter that matches all classes.
+	 * 匹配所有类的类筛选器的规范实例
 	 */
 	ClassFilter TRUE = TrueClassFilter.INSTANCE;
 

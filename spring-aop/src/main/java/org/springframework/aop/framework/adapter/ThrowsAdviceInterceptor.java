@@ -31,28 +31,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Interceptor to wrap an after-throwing advice.
- *
- * <p>The signatures on handler methods on the {@code ThrowsAdvice}
- * implementation method argument must be of the form:<br>
- *
- * {@code void afterThrowing([Method, args, target], ThrowableSubclass);}
- *
- * <p>Only the last argument is required.
- *
- * <p>Some examples of valid methods would be:
- *
- * <pre class="code">public void afterThrowing(Exception ex)</pre>
- * <pre class="code">public void afterThrowing(RemoteException)</pre>
- * <pre class="code">public void afterThrowing(Method method, Object[] args, Object target, Exception ex)</pre>
- * <pre class="code">public void afterThrowing(Method method, Object[] args, Object target, ServletException ex)</pre>
- *
- * <p>This is a framework class that need not be used directly by Spring users.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @see MethodBeforeAdviceInterceptor
- * @see AfterReturningAdviceInterceptor
+ * 拦截器包装后异常抛出的通知
  */
 public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 
@@ -68,9 +47,7 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 
 
 	/**
-	 * Create a new ThrowsAdviceInterceptor for the given ThrowsAdvice.
-	 * @param throwsAdvice the advice object that defines the exception handler methods
-	 * (usually a {@link org.springframework.aop.ThrowsAdvice} implementation)
+	 * 为给定的ThrowsAdvice创建一个新的ThrowsAdviceInterceptor
 	 */
 	public ThrowsAdviceInterceptor(Object throwsAdvice) {
 		Assert.notNull(throwsAdvice, "Advice must not be null");

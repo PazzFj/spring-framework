@@ -37,24 +37,17 @@ public interface Advisor {
 
 	/**
 	 * 如果没有配置正确的通知(还没有)，则从{@link #getAdvice()}返回空的{@code Advice}的通用占位符
-	 * @since 5.0
 	 */
 	Advice EMPTY_ADVICE = new Advice() {};
 
 
 	/**
 	 * 返回这方面的建议部分。一个通知可以是一个拦截器，一个before通知，一个throw通知，等等
-	 * @return the advice that should apply if the pointcut matches
-	 * @see org.aopalliance.intercept.MethodInterceptor
-	 * @see BeforeAdvice
-	 * @see ThrowsAdvice
-	 * @see AfterReturningAdvice
 	 */
 	Advice getAdvice();
 
 	/**
-	 * 返回此通知是与特定实例关联(例如，创建mixin)，还是与从相同Spring bean工厂获得的建议类的所有实例共享
-	 * @return 此通知是否与特定目标实例关联
+	 * 返回此通知是与特定实例关联，还是与从相同Spring bean工厂获得的建议类的所有实例共享
 	 */
 	boolean isPerInstance();
 

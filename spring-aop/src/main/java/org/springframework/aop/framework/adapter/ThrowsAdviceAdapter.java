@@ -25,11 +25,7 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.ThrowsAdvice;
 
 /**
- * Adapter to enable {@link org.springframework.aop.MethodBeforeAdvice}
- * to be used in the Spring AOP framework.
- *
- * @author Rod Johnson
- * @author Juergen Hoeller
+ * 支持{@link org.springframework.aop.MethodBeforeAdvice}。将在Spring AOP框架中使用
  */
 @SuppressWarnings("serial")
 class ThrowsAdviceAdapter implements AdvisorAdapter, Serializable {

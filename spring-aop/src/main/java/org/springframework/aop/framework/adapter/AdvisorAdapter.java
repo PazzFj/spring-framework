@@ -22,41 +22,19 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.Advisor;
 
 /**
- * Interface allowing extension to the Spring AOP framework to allow
- * handling of new Advisors and Advice types.
- *
- * <p>Implementing objects can create AOP Alliance Interceptors from
- * custom advice types, enabling these advice types to be used
- * in the Spring AOP framework, which uses interception under the covers.
- *
- * <p>There is no need for most Spring users to implement this interface;
- * do so only if you need to introduce more Advisor or Advice types to Spring.
- *
- * @author Rod Johnson
+ * 接口允许对Spring AOP框架进行扩展，从而允许处理新的顾问和通知类型
  */
 public interface AdvisorAdapter {
 
 	/**
-	 * Does this adapter understand this advice object? Is it valid to
-	 * invoke the {@code getInterceptors} method with an Advisor that
-	 * contains this advice as an argument?
-	 * @param advice an Advice such as a BeforeAdvice
-	 * @return whether this adapter understands the given advice object
-	 * @see #getInterceptor(org.springframework.aop.Advisor)
-	 * @see org.springframework.aop.BeforeAdvice
+	 * 接口允许对Spring AOP框架进行扩展，从而允许处理新的建议器。
+	 * 这个适配器理解这个advice对象吗?
+	 * 使用包含此建议作为参数的Advisor函数调用{@code getInterceptors}方法是否有效
 	 */
 	boolean supportsAdvice(Advice advice);
 
 	/**
-	 * Return an AOP Alliance MethodInterceptor exposing the behavior of
-	 * the given advice to an interception-based AOP framework.
-	 * <p>Don't worry about any Pointcut contained in the Advisor;
-	 * the AOP framework will take care of checking the pointcut.
-	 * @param advisor the Advisor. The supportsAdvice() method must have
-	 * returned true on this object
-	 * @return an AOP Alliance interceptor for this Advisor. There's
-	 * no need to cache instances for efficiency, as the AOP framework
-	 * caches advice chains.
+	 * 返回一个AOP Alliance MethodInterceptor，将给出的建议的行为暴露给一个基于拦截的AOP框架
 	 */
 	MethodInterceptor getInterceptor(Advisor advisor);
 

@@ -18,9 +18,6 @@ package org.aopalliance.aop;
 
 /**
  * 用于通知的标记接口。实现可以是任何类型的通知，比如拦截器
- *
- * @author Rod Johnson
- * @version $Id: Advice.java,v 1.1 2004/03/19 17:02:16 johnsonr Exp $
  */
 public interface Advice {
 
