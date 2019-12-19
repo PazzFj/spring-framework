@@ -17,21 +17,13 @@
 package org.aopalliance.intercept;
 
 /**
- * Intercepts calls on an interface on its way to the target. These
- * are nested "on top" of the target.
+ * 拦截在到达目标的过程中对接口的调用。它们嵌套在目标的“顶部”
  */
 @FunctionalInterface
 public interface MethodInterceptor extends Interceptor {
 
 	/**
-	 * Implement this method to perform extra treatments before and
-	 * after the invocation. Polite implementations would certainly
-	 * like to invoke {@link Joinpoint#proceed()}.
-	 * @param invocation the method invocation joinpoint
-	 * @return the result of the call to {@link Joinpoint#proceed()};
-	 * might be intercepted by the interceptor
-	 * @throws Throwable if the interceptors or the target object
-	 * throws an exception
+	 * 实现此方法以在调用之前和之后执行额外的处理.
 	 */
 	Object invoke(MethodInvocation invocation) throws Throwable;
 

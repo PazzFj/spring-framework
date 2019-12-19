@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
  * 通用自动代理创建者，它基于为每个bean检测到的建议器为特定bean构建AOP代理
  */
 @SuppressWarnings("serial")
-public abstract class 	AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
+public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	/**
 	 * BeanFactoryAdvisorRetrievalHelperAdapter 内部类,扩展自 BeanFactoryAdvisorRetrievalHelper

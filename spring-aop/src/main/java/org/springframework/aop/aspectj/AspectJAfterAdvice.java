@@ -25,10 +25,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.AfterAdvice;
 
 /**
- * Spring AOP advice wrapping an AspectJ after advice method.
- *
- * @author Rod Johnson
- * @since 2.0
+ * Spring AOP通知 包装了一个AspectJ after通知方法
  */
 @SuppressWarnings("serial")
 public class AspectJAfterAdvice extends AbstractAspectJAdvice
