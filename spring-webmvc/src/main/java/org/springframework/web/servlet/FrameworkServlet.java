@@ -336,6 +336,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		if (this.publishContext) {
 			// 设置服务上下文的属性
 			String attrName = getServletContextAttributeName();
+			// 设置web应用上下文到ServletContext, 下次直接去
 			getServletContext().setAttribute(attrName, wac);
 		}
 
@@ -473,11 +474,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Return the ServletContext attribute name for this servlet's WebApplicationContext.
-	 * <p>The default implementation returns
-	 * {@code SERVLET_CONTEXT_PREFIX + servlet name}.
-	 * @see #SERVLET_CONTEXT_PREFIX
-	 * @see #getServletName
+	 * 返回 org.springframework.web.servlet.FrameworkServlet.CONTEXT. + ServletName
 	 */
 	public String getServletContextAttributeName() {
 		return SERVLET_CONTEXT_PREFIX + getServletName();

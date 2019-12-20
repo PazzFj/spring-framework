@@ -59,7 +59,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	@Nullable
 	private AnnotatedElement qualifiedElement;
-
+	// 允许缓存
 	boolean allowCaching = true;
 
 	boolean isFactoryMethodUnique = false;
@@ -100,7 +100,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	/** Common lock for the two post-processing fields below. */
 	final Object postProcessingLock = new Object();
 
-	/** 包可见字段，指示已经应用了MergedBeanDefinitionPostProcessor. */
+	/** 是否已后处理 */
 	boolean postProcessed = false;
 
 	/** 包可见字段，指示实例化前后处理程序已启动. */

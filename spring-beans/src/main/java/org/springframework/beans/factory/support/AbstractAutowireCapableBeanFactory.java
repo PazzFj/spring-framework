@@ -410,6 +410,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	/**
 	 * 根据BeanDefinition创建Bean(初始化bean)
 	 * 1、创建 BeanWrapper
+	 * 2、通过 BeanWrapper 得到 bean 对象
 	 */
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) throws BeanCreationException {
 		// 实例化bean
@@ -1483,12 +1484,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
-			//前置处理器
-			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName); //在初始化之前使用处理器
+			// 在初始化之后使用前处理器
+			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName); //do
 		}
 
 		try {
-			invokeInitMethods(beanName, wrappedBean, mbd);//调用初始化方法  如:InitializingBean # afterPropertiesSet()
+			// 调用初始化方法  如:InitializingBean # afterPropertiesSet()
+			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
 			throw new BeanCreationException("Invocation of init method failed", ex);

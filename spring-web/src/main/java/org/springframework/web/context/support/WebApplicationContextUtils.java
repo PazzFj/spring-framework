@@ -55,12 +55,6 @@ import org.springframework.web.context.request.WebRequest;
  * many web frameworks, either part of Spring or available as an external library.
  * This helper class is just the most generic way to access the root context.
  *
- * @author Juergen Hoeller
- * @see org.springframework.web.context.ContextLoader
- * @see org.springframework.web.servlet.FrameworkServlet
- * @see org.springframework.web.servlet.DispatcherServlet
- * @see org.springframework.web.jsf.FacesContextUtils
- * @see org.springframework.web.jsf.el.SpringBeanFacesELResolver
  */
 public abstract class WebApplicationContextUtils {
 
@@ -88,7 +82,9 @@ public abstract class WebApplicationContextUtils {
 	}
 
 	/**
-	 *
+	 * 从服务上下文获取 web应用上下文
+	 * @param sc Servlet.getServletConfig() ->  ServletConfig.getServletContext()
+	 * @param attrName org.springframework.web.context.WebApplicationContext.ROOT
 	 */
 	@Nullable
 	public static WebApplicationContext getWebApplicationContext(ServletContext sc, String attrName) {

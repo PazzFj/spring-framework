@@ -379,11 +379,7 @@ public abstract class ClassUtils {
 	}
 
 	/**
-	 * Check whether the given class is cache-safe in the given context,
-	 * i.e. whether it is loaded by the given ClassLoader or a parent of it.
-	 * @param clazz the class to analyze
-	 * @param classLoader the ClassLoader to potentially cache metadata in
-	 * (may be {@code null} which indicates the system class loader)
+	 * 检查给定的类在给定的上下文中是否是缓存安全的，也就是说，它是由给定的类装入器装入的还是由它的父类装入的。
 	 */
 	public static boolean isCacheSafe(Class<?> clazz, @Nullable ClassLoader classLoader) {
 		Assert.notNull(clazz, "Class must not be null");

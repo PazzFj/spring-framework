@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.context.ConfigurableWebEnvironment;
 
 /**
- * Standard标准,   Servlet环境
+ * Standard标准,   ServletEnvironment
  */
 public class StandardServletEnvironment extends StandardEnvironment implements ConfigurableWebEnvironment {
 

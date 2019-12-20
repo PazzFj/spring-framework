@@ -20,12 +20,12 @@ import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
 
 /**
- * 工厂钩子，允许自定义修改新的bean实例，例如检查标记接口或用代理包装它们
+ * Bean后处理器，允许自定义修改新的bean实例，例如检查标记接口或用代理包装它们
  */
 public interface BeanPostProcessor {
 
 	/**
-	 * 每个Bean初始化(即调用setter)之前和之后，
+	 * 每个Bean初始化之后, 前处理  （返回null 不会再执行其它的 BeanPostProcessor）
 	 */
 	@Nullable
 	default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -33,7 +33,7 @@ public interface BeanPostProcessor {
 	}
 
 	/**
-	 * 每个Bean初始化(即调用setter)之前和之后，
+	 * 每个Bean初始化之后, 后处理
 	 */
 	@Nullable
 	default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {

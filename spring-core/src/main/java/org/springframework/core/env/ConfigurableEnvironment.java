@@ -26,14 +26,17 @@ import java.util.Map;
 public interface ConfigurableEnvironment extends Environment, ConfigurablePropertyResolver {
 
 	/**
+	 * 先clean在添加
 	 */
 	void setActiveProfiles(String... profiles);
 
 	/**
+	 * 直接添加
 	 */
 	void addActiveProfile(String profile);
 
 	/**
+	 * 先clean在添加
 	 */
 	void setDefaultProfiles(String... profiles);
 
