@@ -20,9 +20,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- * Interface to be implemented in Servlet 3.0+ environments in order to configure the
- * {@link ServletContext} programmatically -- as opposed to (or possibly in conjunction
- * with) the traditional {@code web.xml}-based approach.
+ * 接口将在Servlet 3.0+环境中实现，以便以编程方式配置{@link ServletContext}
  *
  * <p>Implementations of this SPI will be detected automatically by {@link
  * SpringServletContainerInitializer}, which itself is bootstrapped automatically
@@ -35,22 +33,22 @@ import javax.servlet.ServletException;
  * DispatcherServlet}. For reference, in WEB-INF/web.xml, this would typically be done as
  * follows:
  * <pre class="code">
- * &lt;servlet&gt;
- *   &lt;servlet-name>dispatcher&lt;/servlet-name&gt;
- *   &lt;servlet-class&gt;
+ * <servlet>
+ *   <servlet-name>dispatcher</servlet-name>
+ *   <servlet-class>
  *     org.springframework.web.servlet.DispatcherServlet
- *   &lt;/servlet-class&gt;
- *   &lt;init-param>
- *     &lt;param-name>contextConfigLocation&lt;/param-name&gt;
- *     &lt;param-value>/WEB-INF/spring/dispatcher-config.xml&lt;/param-value&gt;
- *   &lt;/init-param&gt;
- *   &lt;load-on-startup>1&lt;/load-on-startup&gt;
- * &lt;/servlet&gt;
+ *   </servlet-class>
+ *   <init-param>
+ *     <param-name>contextConfigLocation</param-name>
+ *     <param-value>/WEB-INF/spring/dispatcher-config.xml</param-value>
+ *   </init-param>
+ *   <load-on-startup>1</load-on-startup>
+ * </servlet>
  *
- * &lt;servlet-mapping&gt;
- *   &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
- *   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
- * &lt;/servlet-mapping&gt;</pre>
+ * <servlet-mapping>
+ *   <servlet-name>dispatcher</servlet-name>
+ *   <url-pattern>/</url-pattern>
+ * </servlet-mapping></pre>
  *
  * <h3>The code-based approach with {@code WebApplicationInitializer}</h3>
  * Here is the equivalent {@code DispatcherServlet} registration logic,
@@ -58,7 +56,7 @@ import javax.servlet.ServletException;
  * <pre class="code">
  * public class MyWebAppInitializer implements WebApplicationInitializer {
  *
- *    &#064;Override
+ *    @Override
  *    public void onStartup(ServletContext container) {
  *      XmlWebApplicationContext appContext = new XmlWebApplicationContext();
  *      appContext.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
@@ -109,7 +107,7 @@ import javax.servlet.ServletException;
  * <pre class="code">
  * public class MyWebAppInitializer implements WebApplicationInitializer {
  *
- *    &#064;Override
+ *    @Override
  *    public void onStartup(ServletContext container) {
  *      // Create the 'root' Spring application context
  *      AnnotationConfigWebApplicationContext rootContext =
@@ -163,7 +161,7 @@ import javax.servlet.ServletException;
  *
  * <h3>Mapping to '/' under Tomcat</h3>
  * <p>Apache Tomcat maps its internal {@code DefaultServlet} to "/", and on Tomcat versions
- * &lt;= 7.0.14, this servlet mapping <em>cannot be overridden programmatically</em>.
+ * <= 7.0.14, this servlet mapping <em>cannot be overridden programmatically</em>.
  * 7.0.15 fixes this issue. Overriding the "/" servlet mapping has also been tested
  * successfully under GlassFish 3.1.<p>
  *
@@ -177,12 +175,8 @@ import javax.servlet.ServletException;
 public interface WebApplicationInitializer {
 
 	/**
-	 * Configure the given {@link ServletContext} with any servlets, filters, listeners
-	 * context-params and attributes necessary for initializing this web application. See
-	 * examples {@linkplain WebApplicationInitializer above}.
-	 * @param servletContext the {@code ServletContext} to initialize
-	 * @throws ServletException if any call against the given {@code ServletContext}
-	 * throws a {@code ServletException}
+	 * 使用任何servlet、过滤器、侦听器上下文参数和初始化此web应用程序所需的属性来配置给定的{@link ServletContext}。
+	 * 参见上面的示例{@linkplain WebApplicationInitializer}
 	 */
 	void onStartup(ServletContext servletContext) throws ServletException;
 
