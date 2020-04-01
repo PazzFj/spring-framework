@@ -74,72 +74,32 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	private RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
 
 
-	/**
-	 * Whether to use suffix pattern match (".*") when matching patterns to
-	 * requests. If enabled a method mapped to "/users" also matches to "/users.*".
-	 * <p>The default value is {@code true}.
-	 * <p>Also see {@link #setUseRegisteredSuffixPatternMatch(boolean)} for
-	 * more fine-grained control over specific suffixes to allow.
-	 */
 	public void setUseSuffixPatternMatch(boolean useSuffixPatternMatch) {
 		this.useSuffixPatternMatch = useSuffixPatternMatch;
 	}
 
-	/**
-	 * Whether suffix pattern matching should work only against path extensions
-	 * explicitly registered with the {@link ContentNegotiationManager}. This
-	 * is generally recommended to reduce ambiguity and to avoid issues such as
-	 * when a "." appears in the path for other reasons.
-	 * <p>By default this is set to "false".
-	 */
 	public void setUseRegisteredSuffixPatternMatch(boolean useRegisteredSuffixPatternMatch) {
 		this.useRegisteredSuffixPatternMatch = useRegisteredSuffixPatternMatch;
 		this.useSuffixPatternMatch = (useRegisteredSuffixPatternMatch || this.useSuffixPatternMatch);
 	}
 
-	/**
-	 * Whether to match to URLs irrespective of the presence of a trailing slash.
-	 * If enabled a method mapped to "/users" also matches to "/users/".
-	 * <p>The default value is {@code true}.
-	 */
 	public void setUseTrailingSlashMatch(boolean useTrailingSlashMatch) {
 		this.useTrailingSlashMatch = useTrailingSlashMatch;
 	}
 
-	/**
-	 * Configure path prefixes to apply to controller methods.
-	 * <p>Prefixes are used to enrich the mappings of every {@code @RequestMapping}
-	 * method whose controller type is matched by the corresponding
-	 * {@code Predicate}. The prefix for the first matching predicate is used.
-	 * <p>Consider using {@link org.springframework.web.method.HandlerTypePredicate
-	 * HandlerTypePredicate} to group controllers.
-	 * @param prefixes a map with path prefixes as key
-	 * @since 5.1
-	 */
 	public void setPathPrefixes(Map<String, Predicate<Class<?>>> prefixes) {
 		this.pathPrefixes = Collections.unmodifiableMap(new LinkedHashMap<>(prefixes));
 	}
 
-	/**
-	 * The configured path prefixes as a read-only, possibly empty map.
-	 * @since 5.1
-	 */
 	public Map<String, Predicate<Class<?>>> getPathPrefixes() {
 		return this.pathPrefixes;
 	}
 
-	/**
-	 * Set the {@link ContentNegotiationManager} to use to determine requested media types.
-	 * If not set, the default constructor is used.
-	 */
 	public void setContentNegotiationManager(ContentNegotiationManager contentNegotiationManager) {
 		Assert.notNull(contentNegotiationManager, "ContentNegotiationManager must not be null");
 		this.contentNegotiationManager = contentNegotiationManager;
 	}
 
-	/**
-	 * Return the configured {@link ContentNegotiationManager}.
-	 */
 	public ContentNegotiationManager getContentNegotiationManager() {
 		return this.contentNegotiationManager;
 	}
@@ -163,30 +123,18 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	}
 
 
-	/**
-	 * Whether to use suffix pattern matching.
-	 */
 	public boolean useSuffixPatternMatch() {
 		return this.useSuffixPatternMatch;
 	}
 
-	/**
-	 * Whether to use registered suffixes for pattern matching.
-	 */
 	public boolean useRegisteredSuffixPatternMatch() {
 		return this.useRegisteredSuffixPatternMatch;
 	}
 
-	/**
-	 * Whether to match to URLs irrespective of the presence of a trailing slash.
-	 */
 	public boolean useTrailingSlashMatch() {
 		return this.useTrailingSlashMatch;
 	}
 
-	/**
-	 * Return the file extensions to use for suffix pattern matching.
-	 */
 	@Nullable
 	public List<String> getFileExtensions() {
 		return this.config.getFileExtensions();
@@ -246,44 +194,16 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		return (requestMapping != null ? createRequestMappingInfo(requestMapping, condition) : null);
 	}
 
-	/**
-	 * Provide a custom type-level request condition.
-	 * The custom {@link RequestCondition} can be of any type so long as the
-	 * same condition type is returned from all calls to this method in order
-	 * to ensure custom request conditions can be combined and compared.
-	 * <p>Consider extending {@link AbstractRequestCondition} for custom
-	 * condition types and using {@link CompositeRequestCondition} to provide
-	 * multiple custom conditions.
-	 * @param handlerType the handler type for which to create the condition
-	 * @return the condition, or {@code null}
-	 */
 	@Nullable
 	protected RequestCondition<?> getCustomTypeCondition(Class<?> handlerType) {
 		return null;
 	}
 
-	/**
-	 * Provide a custom method-level request condition.
-	 * The custom {@link RequestCondition} can be of any type so long as the
-	 * same condition type is returned from all calls to this method in order
-	 * to ensure custom request conditions can be combined and compared.
-	 * <p>Consider extending {@link AbstractRequestCondition} for custom
-	 * condition types and using {@link CompositeRequestCondition} to provide
-	 * multiple custom conditions.
-	 * @param method the handler method for which to create the condition
-	 * @return the condition, or {@code null}
-	 */
 	@Nullable
 	protected RequestCondition<?> getCustomMethodCondition(Method method) {
 		return null;
 	}
 
-	/**
-	 * Create a {@link RequestMappingInfo} from the supplied
-	 * {@link RequestMapping @RequestMapping} annotation, which is either
-	 * a directly declared annotation, a meta-annotation, or the synthesized
-	 * result of merging annotation attributes within an annotation hierarchy.
-	 */
 	protected RequestMappingInfo createRequestMappingInfo(
 			RequestMapping requestMapping, @Nullable RequestCondition<?> customCondition) {
 
@@ -301,10 +221,6 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		return builder.options(this.config).build();
 	}
 
-	/**
-	 * Resolve placeholder values in the given array of patterns.
-	 * @return a new array with updated patterns
-	 */
 	protected String[] resolveEmbeddedValuesInPatterns(String[] patterns) {
 		if (this.embeddedValueResolver == null) {
 			return patterns;

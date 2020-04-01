@@ -72,7 +72,7 @@ public class HandlerExecutionChain {
 
 
 	/**
-	 *
+	 * 获取处理器, HandlerMethod
 	 */
 	public Object getHandler() {
 		return this.handler;
@@ -101,7 +101,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
-	 *
+	 * 获取所有拦截器 HandlerInterceptor
 	 */
 	@Nullable
 	public HandlerInterceptor[] getInterceptors() {
@@ -186,9 +186,6 @@ public class HandlerExecutionChain {
 	}
 
 
-	/**
-	 * Delegates to the handler and interceptors' {@code toString()}.
-	 */
 	@Override
 	public String toString() {
 		Object handler = getHandler();
